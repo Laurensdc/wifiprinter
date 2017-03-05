@@ -1,5 +1,6 @@
 package de.httptandooripalace.restaurantorderprinter;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,13 +21,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendMessage(View view) {
-//        Intent intent = new Intent(this, DisplayMessageActivity.class);
-//        EditText editText = (EditText) findViewById(R.id.search);
-//        String message = editText.getText().toString();
-//        intent.putExtra(EXTRA_MESSAGE, message);
-//        startActivity(intent);
 
-        new HttpHandler(this.getApplicationContext()).execute("http://tandooripalace.de/billprinter/api.php");
+        try {
+            new HttpHandler(this.getApplicationContext()).execute("http://tandooripalace.de/billprinter/api.php");
+
+        }
+        catch(Exception ex) {
+            throw new IllegalArgumentException(ex.getMessage());
+        }
+
+    }
+
+    public void hideSpinner() {
 
     }
 }

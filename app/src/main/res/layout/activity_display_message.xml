@@ -16,7 +16,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/dataview"
         android:scrollbars="vertical"
-        android:maxLines="3000" />
+        android:maxLines="3000"
+        />
 
 
 

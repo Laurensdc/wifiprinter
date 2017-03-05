@@ -45,20 +45,6 @@ public class HttpHandler extends AsyncTask<String, JSONArray, JSONArray> {
         JSONObject object = null;
         InputStream inStream = null;
         try {
-//            url = new URL(urlString[0]);
-//            urlConnection = (HttpURLConnection) url.openConnection();
-//            urlConnection.setRequestMethod("GET");
-//            urlConnection.setDoOutput(true);
-//            urlConnection.setDoInput(true);
-//            urlConnection.connect();
-//            inStream = urlConnection.getInputStream();
-//            BufferedReader bReader = new BufferedReader(new InputStreamReader(inStream));
-//            String temp, response = "";
-//            while ((temp = bReader.readLine()) != null) {
-//                response += temp;
-//            }
-
-
             url = new URL(urlString[0]);
 
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -70,27 +56,13 @@ public class HttpHandler extends AsyncTask<String, JSONArray, JSONArray> {
 
             BufferedReader br=new BufferedReader(new InputStreamReader(url.openStream()));
 
-//            char[] buffer = new char[1024];
-//
-//            String jsonString = new String();
-//
-//            StringBuilder sb = new StringBuilder();
-//            String line;
-//            while ((line = br.readLine()) != null) {
-//                sb.append(line+"\n");
-//            }
-
             String temp, response = "";
             while ((temp = br.readLine()) != null) {
                 response += temp;
             }
             br.close();
 
-
-            Log.d("LOG TEST", response);
-
             return new JSONArray(response);
-
 
         } catch (Exception e) {
             Log.d("JSON ERROR", e.getMessage());
@@ -101,24 +73,19 @@ public class HttpHandler extends AsyncTask<String, JSONArray, JSONArray> {
                     // this will close the bReader as well
                     inStream.close();
                 } catch (IOException ignored) {
-
+                    Log.d("IOException thrown", ignored.getMessage());
                 }
             }
             if (urlConnection != null) {
                 urlConnection.disconnect();
             }
-
-
         }
     }
 
     protected void onPostExecute(JSONArray result) {
-        // TODO: check this.exception
-        // TODO: do something with the feed
 
+        //super.onPostExecute(result);
 
-        super.onPostExecute(result);
-        //context.startActivity(new Intent(context, DisplayMessageActivity.class).putExtra("apiData", result));
 
         Intent intent = new Intent(context, DisplayMessageActivity.class);
 
