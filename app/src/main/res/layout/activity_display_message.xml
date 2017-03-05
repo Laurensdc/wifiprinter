@@ -8,17 +8,30 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="de.httptandooripalace.restaurantorderprinter.DisplayMessageActivity">
+    android:orientation="vertical"
+    tools:context="de.httptandooripalace.restaurantorderprinter.DisplayMessageActivity"
+   >
 
 
-    <TextView
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/dataview"-->
+        <!--android:scrollbars="vertical"-->
+        <!--android:maxLines="3000"-->
+        <!--/>-->
+
+
+    <GridView
+        android:id="@+id/gridview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/dataview"
-        android:scrollbars="vertical"
-        android:maxLines="3000"
+        android:numColumns="auto_fit"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="40dp"
+        android:gravity="start"
+
+
         />
-
-
 
 </LinearLayout>
