@@ -6,25 +6,23 @@ package helper;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
+import java.util.HashSet;
+import java.util.Set;
 
-import de.httptandooripalace.restaurantorderprinter.DisplayMessageActivity;
+import de.httptandooripalace.restaurantorderprinter.ProductSelectionActivity;
 
 /**
  * Created by Ravi Tamada on 01/09/16.
@@ -87,9 +85,17 @@ public class HttpHandler extends AsyncTask<String, JSONArray, JSONArray> {
         //super.onPostExecute(result);
 
 
-        Intent intent = new Intent(context, DisplayMessageActivity.class);
 
-        intent.putExtra("apiData", result.toString());
+        SharedPreferences settings = context.getSharedPreferences("cart", 0);
+        // We need an Editor object to make preference changes.
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("apiData", result.toString());
+        editor.commit();
+
+
+        Intent intent = new Intent(context, ProductSelectionActivity.class);
+
+        //intent.putExtra("apiData", result.toString());
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
