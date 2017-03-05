@@ -3,8 +3,11 @@ package de.httptandooripalace.restaurantorderprinter;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import org.json.JSONObject;
 
 public class DisplayMessageActivity extends AppCompatActivity {
 
@@ -16,11 +19,19 @@ public class DisplayMessageActivity extends AppCompatActivity {
         Intent intent = getIntent();
         //String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
         String message = intent.getExtras().getString("apiData");
-        TextView textView = new TextView(this);
-        textView.setTextSize(20);
-        textView.setText(message);
+//        JSONObject jsonData;
+//        try {
+//            jsonData = new JSONObject(message);
+//        }
+//        catch(Exception ex) {
+//            throw new IllegalArgumentException(ex.getMessage());
+//        }
 
-        ViewGroup layout = (ViewGroup) findViewById(R.id.activity_display_message);
-        layout.addView(textView);
+        TextView changedtv = (TextView) findViewById(R.id.dataview);
+        changedtv.setMovementMethod(new ScrollingMovementMethod());
+        changedtv.setText(message);
+
+//        ViewGroup layout = (ViewGroup) findViewById(R.id.activity_display_message);
+//        layout.addView(textView);
     }
 }

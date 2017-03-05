@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 //        intent.putExtra(EXTRA_MESSAGE, message);
 //        startActivity(intent);
 
-        new HttpHandler(this.getApplicationContext()).execute("http://192.168.178.34/restaurantprinter/api.php");
+        new HttpHandler(this.getApplicationContext()).execute("http://tandooripalace.de/billprinter/api.php");
 
     }
 }
