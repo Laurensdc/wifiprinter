@@ -1,5 +1,6 @@
 package de.httptandooripalace.restaurantorderprinter;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -25,9 +26,15 @@ public class DisplayMessageActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Display back button
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        // Set layout and stuff
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_message);
 
+        // Get passed data from API request
         Intent intent = getIntent();
         String message = intent.getExtras().getString("apiData");
 
@@ -35,6 +42,7 @@ public class DisplayMessageActivity extends AppCompatActivity {
         try {
             final JSONArray data = new JSONArray(message);
 
+            // Convert json data to arrayList to pass it to gridView
             ArrayList<String> list = new ArrayList<String>();
 
             if (data != null) {
@@ -45,40 +53,42 @@ public class DisplayMessageActivity extends AppCompatActivity {
                     String productId = obj.getString("id_product");
                     String description = obj.getString("description_short");
 
+                    // Cut off strings too long
                     if (description.length() > 30)
                         description = description.substring(0, 30) + "...";
 
+                    // Fix layout glitches with Grid View
                     if(description == "") description = "\n\n\n";
 
-
+                    // Actual list view data
                     list.add(
                             "ID: " + productId + "\n" +
                             description
                     );
 
-
                 }
             }
 
-
-
+            // Get the grid view and bind array
             GridView view = (GridView) findViewById(R.id.gridview);
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                     android.R.layout.simple_list_item_1, list);
 
-            // Bind to view
             view.setAdapter(adapter);
 
             final Context context = this.getApplicationContext();
 
+            // Tap listener on items
             view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View v,
                                         int position, long id) {
 
                     try {
+                        // Fetch id_product of tapped item
                         String prodId = data.getJSONObject(position).getString("id_product");
 
+                        // Toast it
                         Toast.makeText(context, "" + prodId,
                                 Toast.LENGTH_SHORT).show();
 
@@ -95,20 +105,7 @@ public class DisplayMessageActivity extends AppCompatActivity {
         catch(Exception ex) {
             throw new IllegalArgumentException(ex.getMessage());
         }
-
-//        for(int i = 0; i < data.length(); i++) {
-//
-//            try {
-//                JSONObject obj = data.getJSONObject(i);
-//
-//                Log.d("id product", obj.getString("id_product"));
-//                Log.d("desscription", obj.getString("description"));
-//
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        }
-
+        
     }
 
 }
