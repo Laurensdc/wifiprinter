@@ -15,8 +15,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+
+import helpers.SharedPrefHelper;
 
 public class ProductSelectionActivity extends AppCompatActivity {
 
@@ -84,34 +84,39 @@ public class ProductSelectionActivity extends AppCompatActivity {
                                         int position, long id) {
 
                     try {
-                        // Init filename and variables
-                        String FILENAME = "cart";
 
                         // Fetch properties of tapped item
                         String prodId = data.getJSONObject(position).getString("id_product");
                         String description = data.getJSONObject(position).getString("description_short");
 
                         // Get saved products
-                        SharedPreferences settings = getSharedPreferences(FILENAME, 0);
-                        Set<String> ids = settings.getStringSet("product_ids", new HashSet<String>());
-                        Set<String> descriptions = settings.getStringSet("product_descriptions", new HashSet<String>());
+                        //SharedPreferences settings = getSharedPreferences("cart", 0);
+                        ArrayList<String> ids = SharedPrefHelper.loadArrayList("product_ids", getApplicationContext());
+                        ArrayList<String> descriptions = SharedPrefHelper.loadArrayList("descriptions", getApplicationContext());
+
+
+                        //Set<String> ids = settings.getStringSet("product_ids", new HashSet<String>());
+                        //Set<String> descriptions = settings.getStringSet("product_descriptions", new HashSet<String>());
 
 
                         // Add the values to the sets
                         ids.add(prodId);
                         descriptions.add(description);
 
+                        SharedPrefHelper.saveArrayList(ids, "product_ids", getApplicationContext());
+                        SharedPrefHelper.saveArrayList(descriptions, "descriptions", getApplicationContext());
+
 
                         // We need an Editor object to make preference changes.
-                        SharedPreferences.Editor editor = settings.edit();
+                        //SharedPreferences.Editor editor = settings.edit();
 
                         // Write them back
-                        editor.putStringSet("product_ids", ids);
-                        editor.putStringSet("product_descriptions", descriptions);
+                        //editor.putStringSet("product_ids", ids);
+                        //editor.putStringSet("product_descriptions", descriptions);
 
 
                         // Commit the edits
-                        editor.commit();
+                        //editor.commit();
 
 
                         // Toast it

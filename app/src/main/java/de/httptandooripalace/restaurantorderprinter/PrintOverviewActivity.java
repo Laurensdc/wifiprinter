@@ -1,18 +1,15 @@
 package de.httptandooripalace.restaurantorderprinter;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
 
-import static de.httptandooripalace.restaurantorderprinter.R.id.activity_overview;
+import helpers.SharedPrefHelper;
 
 public class PrintOverviewActivity extends AppCompatActivity {
 
@@ -25,9 +22,14 @@ public class PrintOverviewActivity extends AppCompatActivity {
         LinearLayout theLayout = (LinearLayout) findViewById(R.id.listingLayout);
 
         // Get saved products
-        SharedPreferences settings = getSharedPreferences("cart", 0);
-        Set<String> ids = settings.getStringSet("product_ids", new HashSet<String>());
-        Set<String> descriptions = settings.getStringSet("product_descriptions", new HashSet<String>());
+//        SharedPreferences settings = getSharedPreferences("cart", 0);
+//        Set<String> ids = settings.getStringSet("product_ids", new HashSet<String>());
+//        Set<String> descriptions = settings.getStringSet("product_descriptions", new HashSet<String>());
+
+
+        ArrayList<String> ids = SharedPrefHelper.loadArrayList("product_ids", getApplicationContext());
+        ArrayList<String> descriptions = SharedPrefHelper.loadArrayList("descriptions", getApplicationContext());
+
 
         String[] idsArr = ids.toArray(new String[ids.size()]);
         String[] descriptionsArr = descriptions.toArray(new String[descriptions.size()]);
@@ -46,11 +48,14 @@ public class PrintOverviewActivity extends AppCompatActivity {
     }
 
     public void deletePrintOverview(View view) {
-        SharedPreferences settings = getSharedPreferences("cart", 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.remove("product_ids");
-        editor.remove("product_descriptions");
-        editor.commit();
+//        SharedPreferences settings = getSharedPreferences("cart", 0);
+//        SharedPreferences.Editor editor = settings.edit();
+//        editor.remove("product_ids");
+//        editor.remove("product_descriptions");
+//        editor.commit();
+
+        SharedPrefHelper.deleteArrayList("product_ids", getApplicationContext());
+        SharedPrefHelper.deleteArrayList("descriptions", getApplicationContext());
 
         finish();
         startActivity(getIntent());
