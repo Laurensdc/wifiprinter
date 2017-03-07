@@ -7,6 +7,9 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingBottom="8dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingTop="18dp"
     tools:context="de.httptandooripalace.restaurantorderprinter.PrintOverviewActivity">
 
     <ScrollView

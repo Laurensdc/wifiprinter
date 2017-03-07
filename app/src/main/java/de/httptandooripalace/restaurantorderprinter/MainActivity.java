@@ -2,6 +2,7 @@ package de.httptandooripalace.restaurantorderprinter;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -116,6 +117,20 @@ public class MainActivity extends AppCompatActivity {
             throw new IllegalArgumentException(ex.getMessage());
         }
 
+        SwipeRefreshLayout swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+
+        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshContent();
+            }
+        });
+
+    }
+
+    private void refreshContent() {
+        finish();
+        startActivity(getIntent());
 
     }
 
