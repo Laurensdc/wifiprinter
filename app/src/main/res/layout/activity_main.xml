@@ -21,6 +21,14 @@
         <!--android:layout_weight="0.55"-->
         <!--/>-->
 
+    <GridView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="auto_fit"
+        android:id="@+id/category_gridview">
+
+
+    </GridView>
 
     <Button
         android:layout_width="wrap_content"

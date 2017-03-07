@@ -29,9 +29,9 @@ public class ProductSelectionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product_selection);
 
         // Get passed data from API request
-        SharedPreferences settings = getSharedPreferences("cart", 0);
+        SharedPreferences sharedprefs = getSharedPreferences("cart", 0);
 
-        String apiData = settings.getString("apiData", "");
+        String apiData = sharedprefs.getString("apiData", "");
 
 
         try {
@@ -45,9 +45,9 @@ public class ProductSelectionActivity extends AppCompatActivity {
                 for (int i=0;i<len;i++){
                     JSONObject obj = data.getJSONObject(i);
 
-                    String id = obj.getString("id");
-                    String name = obj.getString("name");
-                    String price = obj.getString("price");
+                    String id = obj.getString("id_prod");
+                    String name = obj.getString("name_prod");
+                    String price = obj.getString("price_prod");
 
                     // Cut off strings too long
                     if (name.length() > 30)
@@ -67,7 +67,7 @@ public class ProductSelectionActivity extends AppCompatActivity {
             }
 
             // Get the grid view and bind array
-            GridView view = (GridView) findViewById(R.id.gridview);
+            GridView view = (GridView) findViewById(R.id.product_gridview);
 
             // ArrayList to ArrayAdapter
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -83,35 +83,35 @@ public class ProductSelectionActivity extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> parent, View v,
                                         int position, long clickedid) {
 
-                    try {
-                        // Fetch properties of tapped item
-                        String id = data.getJSONObject(position).getString("id");
-                        String name = data.getJSONObject(position).getString("name");
-                        String price = data.getJSONObject(position).getString("price");
+                try {
+                    // Fetch properties of tapped item
+                    String id = data.getJSONObject(position).getString("id_prod");
+                    String name = data.getJSONObject(position).getString("name_prod");
+                    String price = data.getJSONObject(position).getString("price_prod");
 
-                        // Get saved products
-                        ArrayList<String> ids = SharedPrefHelper.loadArrayList("ids", getApplicationContext());
-                        ArrayList<String> names = SharedPrefHelper.loadArrayList("names", getApplicationContext());
-                        ArrayList<String> prices = SharedPrefHelper.loadArrayList("prices", getApplicationContext());
+                    // Get saved products
+                    ArrayList<String> ids = SharedPrefHelper.loadArrayList("ids", getApplicationContext());
+                    ArrayList<String> names = SharedPrefHelper.loadArrayList("names", getApplicationContext());
+                    ArrayList<String> prices = SharedPrefHelper.loadArrayList("prices", getApplicationContext());
 
-                        // Add the values to the lists
-                        ids.add(id);
-                        names.add(name);
-                        prices.add(price);
+                    // Add the values to the lists
+                    ids.add(id);
+                    names.add(name);
+                    prices.add(price);
 
-                        SharedPrefHelper.saveArrayList(ids, "ids", getApplicationContext());
-                        SharedPrefHelper.saveArrayList(names, "names", getApplicationContext());
-                        SharedPrefHelper.saveArrayList(prices, "prices", getApplicationContext());
+                    SharedPrefHelper.saveArrayList(ids, "ids", getApplicationContext());
+                    SharedPrefHelper.saveArrayList(names, "names", getApplicationContext());
+                    SharedPrefHelper.saveArrayList(prices, "prices", getApplicationContext());
 
-                        // Toast it
-                        if(currentToast != null) currentToast.cancel();
-                        currentToast = Toast.makeText(context, "Added product " + name,
-                                Toast.LENGTH_SHORT);
-                        currentToast.show();
+                    // Toast it
+                    if(currentToast != null) currentToast.cancel();
+                    currentToast = Toast.makeText(context, "Added product " + name,
+                            Toast.LENGTH_SHORT);
+                    currentToast.show();
 
-                    } catch(Exception ex) {
-                        throw new IllegalArgumentException(ex.getMessage());
-                    }
+                } catch(Exception ex) {
+                    throw new IllegalArgumentException(ex.getMessage());
+                }
                 }
             });
         }

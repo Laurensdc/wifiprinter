@@ -58,6 +58,12 @@ public class HttpHandler extends AsyncTask<String, JSONArray, JSONArray> {
             }
             br.close();
 
+            SharedPreferences settings = context.getSharedPreferences("cart", 0);
+            // We need an Editor object to make preference changes.
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("apiData", response.toString());
+            editor.commit();
+
             return new JSONArray(response);
 
         } catch (Exception e) {
@@ -81,11 +87,8 @@ public class HttpHandler extends AsyncTask<String, JSONArray, JSONArray> {
     protected void onPostExecute(JSONArray result) {
 
         //super.onPostExecute(result);
-        SharedPreferences settings = context.getSharedPreferences("cart", 0);
-        // We need an Editor object to make preference changes.
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString("apiData", result.toString());
-        editor.commit();
+
+
 
     }
 }
