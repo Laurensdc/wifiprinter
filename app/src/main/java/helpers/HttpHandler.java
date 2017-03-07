@@ -81,20 +81,11 @@ public class HttpHandler extends AsyncTask<String, JSONArray, JSONArray> {
     protected void onPostExecute(JSONArray result) {
 
         //super.onPostExecute(result);
-
-
-
         SharedPreferences settings = context.getSharedPreferences("cart", 0);
         // We need an Editor object to make preference changes.
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("apiData", result.toString());
         editor.commit();
 
-
-        Intent intent = new Intent(context, ProductSelectionActivity.class);
-
-        //intent.putExtra("apiData", result.toString());
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
     }
 }

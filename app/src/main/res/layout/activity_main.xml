@@ -29,7 +29,9 @@
 
         android:text="@string/btn_send"
 
-        android:onClick="sendMessage"/>
+        android:onClick="sendMessage"
+
+        />
 
 
 

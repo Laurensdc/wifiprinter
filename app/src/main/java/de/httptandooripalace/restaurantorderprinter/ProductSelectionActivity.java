@@ -24,45 +24,43 @@ public class ProductSelectionActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         // Set layout and stuff
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_selection);
 
         // Get passed data from API request
-        //Intent intent = getIntent();
-        //String message = intent.getExtras().getString("apiData");
-
         SharedPreferences settings = getSharedPreferences("cart", 0);
 
-        String message = settings.getString("apiData", "");
+        String apiData = settings.getString("apiData", "");
 
 
         try {
-            final JSONArray data = new JSONArray(message);
+            final JSONArray data = new JSONArray(apiData);
 
             // Convert json data to arrayList to pass it to gridView
-            ArrayList<String> list = new ArrayList<String>();
+            ArrayList<String> list = new ArrayList<>();
 
             if (data != null) {
                 int len = data.length();
                 for (int i=0;i<len;i++){
                     JSONObject obj = data.getJSONObject(i);
 
-                    String productId = obj.getString("id_product");
-                    String description = obj.getString("description_short");
+                    String id = obj.getString("id");
+                    String name = obj.getString("name");
+                    String price = obj.getString("price");
 
                     // Cut off strings too long
-                    if (description.length() > 30)
-                        description = description.substring(0, 30) + "...";
+                    if (name.length() > 30)
+                        name = name.substring(0, 30) + "...";
 
                     // Fix layout glitches with Grid View
-                    if(description == "") description = "\n\n\n";
+                    if(name == "") name = "\n\n\n";
 
                     // Actual list view data
                     list.add(
-                            "ID: " + productId + "\n" +
-                            description
+                            "ID: " + id + "\n" +
+                            name + "\n" +
+                            price
                     );
 
                 }
@@ -71,9 +69,11 @@ public class ProductSelectionActivity extends AppCompatActivity {
             // Get the grid view and bind array
             GridView view = (GridView) findViewById(R.id.gridview);
 
+            // ArrayList to ArrayAdapter
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                     android.R.layout.simple_list_item_1, list);
 
+            // Bind arrayAdapter to view
             view.setAdapter(adapter);
 
             final Context context = this.getApplicationContext();
@@ -81,59 +81,39 @@ public class ProductSelectionActivity extends AppCompatActivity {
             // Tap listener on items
             view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View v,
-                                        int position, long id) {
+                                        int position, long clickedid) {
 
                     try {
-
                         // Fetch properties of tapped item
-                        String prodId = data.getJSONObject(position).getString("id_product");
-                        String description = data.getJSONObject(position).getString("description_short");
+                        String id = data.getJSONObject(position).getString("id");
+                        String name = data.getJSONObject(position).getString("name");
+                        String price = data.getJSONObject(position).getString("price");
 
                         // Get saved products
-                        //SharedPreferences settings = getSharedPreferences("cart", 0);
-                        ArrayList<String> ids = SharedPrefHelper.loadArrayList("product_ids", getApplicationContext());
-                        ArrayList<String> descriptions = SharedPrefHelper.loadArrayList("descriptions", getApplicationContext());
+                        ArrayList<String> ids = SharedPrefHelper.loadArrayList("ids", getApplicationContext());
+                        ArrayList<String> names = SharedPrefHelper.loadArrayList("names", getApplicationContext());
+                        ArrayList<String> prices = SharedPrefHelper.loadArrayList("prices", getApplicationContext());
 
+                        // Add the values to the lists
+                        ids.add(id);
+                        names.add(name);
+                        prices.add(price);
 
-                        //Set<String> ids = settings.getStringSet("product_ids", new HashSet<String>());
-                        //Set<String> descriptions = settings.getStringSet("product_descriptions", new HashSet<String>());
-
-
-                        // Add the values to the sets
-                        ids.add(prodId);
-                        descriptions.add(description);
-
-                        SharedPrefHelper.saveArrayList(ids, "product_ids", getApplicationContext());
-                        SharedPrefHelper.saveArrayList(descriptions, "descriptions", getApplicationContext());
-
-
-                        // We need an Editor object to make preference changes.
-                        //SharedPreferences.Editor editor = settings.edit();
-
-                        // Write them back
-                        //editor.putStringSet("product_ids", ids);
-                        //editor.putStringSet("product_descriptions", descriptions);
-
-
-                        // Commit the edits
-                        //editor.commit();
-
+                        SharedPrefHelper.saveArrayList(ids, "ids", getApplicationContext());
+                        SharedPrefHelper.saveArrayList(names, "names", getApplicationContext());
+                        SharedPrefHelper.saveArrayList(prices, "prices", getApplicationContext());
 
                         // Toast it
                         if(currentToast != null) currentToast.cancel();
-                        currentToast = Toast.makeText(context, "Added product with ID " + prodId,
+                        currentToast = Toast.makeText(context, "Added product " + name,
                                 Toast.LENGTH_SHORT);
                         currentToast.show();
 
                     } catch(Exception ex) {
                         throw new IllegalArgumentException(ex.getMessage());
                     }
-
-
                 }
             });
-
-
         }
         catch(Exception ex) {
             throw new IllegalArgumentException(ex.getMessage());
@@ -144,7 +124,6 @@ public class ProductSelectionActivity extends AppCompatActivity {
     public void gotoOverview(View view) {
         Intent intent = new Intent(this, PrintOverviewActivity.class);
         startActivity(intent);
-
     }
 
 }

@@ -21,18 +21,14 @@ public class PrintOverviewActivity extends AppCompatActivity {
         // Get the layout
         LinearLayout theLayout = (LinearLayout) findViewById(R.id.listingLayout);
 
-        // Get saved products
-//        SharedPreferences settings = getSharedPreferences("cart", 0);
-//        Set<String> ids = settings.getStringSet("product_ids", new HashSet<String>());
-//        Set<String> descriptions = settings.getStringSet("product_descriptions", new HashSet<String>());
-
-
-        ArrayList<String> ids = SharedPrefHelper.loadArrayList("product_ids", getApplicationContext());
-        ArrayList<String> descriptions = SharedPrefHelper.loadArrayList("descriptions", getApplicationContext());
+        ArrayList<String> ids = SharedPrefHelper.loadArrayList("ids", getApplicationContext());
+        ArrayList<String> names = SharedPrefHelper.loadArrayList("names", getApplicationContext());
+        ArrayList<String> prices = SharedPrefHelper.loadArrayList("prices", getApplicationContext());
 
 
         String[] idsArr = ids.toArray(new String[ids.size()]);
-        String[] descriptionsArr = descriptions.toArray(new String[descriptions.size()]);
+        String[] namesArr = names.toArray(new String[names.size()]);
+        String[] pricesArr = prices.toArray(new String[prices.size()]);
 
         for(int i = 0; i < idsArr.length; i++) {
             TextView t = new TextView(this);
@@ -40,22 +36,24 @@ public class PrintOverviewActivity extends AppCompatActivity {
             theLayout.addView(t);
 
             TextView t2 = new TextView(this);
-            t2.setText("Description: " + descriptionsArr[i] + "\n\n");
+            t2.setText("Description: " + namesArr[i]);
             theLayout.addView(t2);
+
+            TextView t3 = new TextView(this);
+            t3.setText("Price: " + pricesArr[i] + "\n\n");
+            theLayout.addView(t3);
+
+
         }
 
 
     }
 
     public void deletePrintOverview(View view) {
-//        SharedPreferences settings = getSharedPreferences("cart", 0);
-//        SharedPreferences.Editor editor = settings.edit();
-//        editor.remove("product_ids");
-//        editor.remove("product_descriptions");
-//        editor.commit();
+        SharedPrefHelper.deleteArrayList("ids", getApplicationContext());
+        SharedPrefHelper.deleteArrayList("names", getApplicationContext());
+        SharedPrefHelper.deleteArrayList("prices", getApplicationContext());
 
-        SharedPrefHelper.deleteArrayList("product_ids", getApplicationContext());
-        SharedPrefHelper.deleteArrayList("descriptions", getApplicationContext());
 
         finish();
         startActivity(getIntent());
