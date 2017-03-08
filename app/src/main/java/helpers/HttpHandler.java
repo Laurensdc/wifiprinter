@@ -83,9 +83,5 @@ public class HttpHandler extends AsyncTask<String, JSONArray, JSONArray> {
 
     protected void onPostExecute(JSONArray result) {
 
-        //super.onPostExecute(result);
-
-
-
     }
 }

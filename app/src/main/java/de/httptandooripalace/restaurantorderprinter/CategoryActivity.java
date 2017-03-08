@@ -83,27 +83,19 @@ public class CategoryActivity extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> parent, View v,
                                         int position, long clickedid) {
 
-                try {
-                    // Fetch properties of tapped item
-                    String id = data.getJSONObject(position).getString("id_cat");
-                    String name = data.getJSONObject(position).getString("name_cat");
+                    try {
+                        // Fetch properties of tapped item
+                        String id = data.getJSONObject(position).getString("id_cat");
+                        String name = data.getJSONObject(position).getString("name_cat");
 
-                    //Log.d("cat", id);
+                        new HttpHandler(getApplicationContext()).execute("http://print.nepali.mobi/printer/api.php?function=getproducts&catid=" + id).get();
 
-                    // Load API products for selected category
-//                    SharedPreferences.Editor editor = sharedprefs.edit();
-//                    editor.putString("selectedCategory", id);
-//                    editor.commit();
+                        Intent intent = new Intent(getApplicationContext(), ProductActivity.class);
+                        startActivity(intent);
 
-
-                    new HttpHandler(getApplicationContext()).execute("http://print.nepali.mobi/printer/api.php?function=getproducts&catid=" + id).get();
-
-                    Intent intent = new Intent(getApplicationContext(), ProductActivity.class);
-                    startActivity(intent);
-
-                } catch(Exception ex) {
-                    throw new IllegalArgumentException(ex.getMessage());
-                }
+                    } catch(Exception ex) {
+                        throw new IllegalArgumentException(ex.getMessage());
+                    }
                 }
             });
 

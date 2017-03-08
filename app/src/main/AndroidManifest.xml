@@ -10,13 +10,13 @@
         android:name="MainApplication"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:label="Restaurant Order Printer"
         >
         <activity
             android:name=".CategoryActivity"
             android:launchMode="singleTask"
-            android:label="Categories">
-            <intent-filter
-                android:label="Restaurant Order Printer">
+            android:label="Restaurant Order Printer">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
