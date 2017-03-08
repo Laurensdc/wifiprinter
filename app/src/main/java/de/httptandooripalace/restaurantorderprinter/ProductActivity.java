@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 import helpers.SharedPrefHelper;
 
-public class ProductSelectionActivity extends AppCompatActivity {
+public class ProductActivity extends AppCompatActivity {
 
     private Toast currentToast;
 

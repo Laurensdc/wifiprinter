@@ -7,11 +7,12 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-
+        android:name="MainApplication"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        >
         <activity
-            android:name=".MainActivity"
+            android:name=".CategoryActivity"
             android:launchMode="singleTask"
             android:label="Categories">
             <intent-filter
@@ -22,18 +23,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ProductSelectionActivity"
+            android:name=".ProductActivity"
             android:label="Products">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".CategoryActivity" />
         </activity>
         <activity
             android:name=".PrintOverviewActivity"
             android:label="Printing overview">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ProductSelectionActivity" />
+                android:value=".ProductActivity" />
         </activity>
     </application>
 

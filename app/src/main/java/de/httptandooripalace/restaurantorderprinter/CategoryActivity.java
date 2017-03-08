@@ -5,24 +5,20 @@ import android.content.SharedPreferences;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import helpers.HttpHandler;
-import helpers.SharedPrefHelper;
 
-public class MainActivity extends AppCompatActivity {
+public class CategoryActivity extends AppCompatActivity {
 
 
 
@@ -102,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
                     new HttpHandler(getApplicationContext()).execute("http://print.nepali.mobi/printer/api.php?function=getproducts&catid=" + id).get();
 
-                    Intent intent = new Intent(getApplicationContext(), ProductSelectionActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), ProductActivity.class);
                     startActivity(intent);
 
                 } catch(Exception ex) {
@@ -138,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
         try {
 
-            Intent intent = new Intent(this.getApplicationContext(), ProductSelectionActivity.class);
+            Intent intent = new Intent(this.getApplicationContext(), ProductActivity.class);
 
             //intent.putExtra("apiData", result.toString());
             //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

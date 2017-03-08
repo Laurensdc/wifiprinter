@@ -5,7 +5,6 @@ package helpers;
  */
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -19,8 +18,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-import de.httptandooripalace.restaurantorderprinter.ProductSelectionActivity;
 
 /**
  * Created by Ravi Tamada on 01/09/16.

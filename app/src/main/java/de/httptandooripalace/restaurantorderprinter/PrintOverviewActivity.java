@@ -7,11 +7,14 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import helpers.SharedPrefHelper;
 
 public class PrintOverviewActivity extends AppCompatActivity {
+
+    ArrayList<String> ids, names, prices;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,21 +29,21 @@ public class PrintOverviewActivity extends AppCompatActivity {
         ArrayList<String> prices = SharedPrefHelper.loadArrayList("prices", getApplicationContext());
 
 
-        String[] idsArr = ids.toArray(new String[ids.size()]);
-        String[] namesArr = names.toArray(new String[names.size()]);
-        String[] pricesArr = prices.toArray(new String[prices.size()]);
+//        idsArr = ids.toArray(new String[ids.size()]);
+//        namesArr = names.toArray(new String[names.size()]);
+//        pricesArr = prices.toArray(new String[prices.size()]);
 
-        for(int i = 0; i < idsArr.length; i++) {
+        for(int i = 0; i < ids.size(); i++) {
             TextView t = new TextView(this);
-            t.setText("ID: " + idsArr[i]);
+            t.setText("ID: " + ids.get(i));
             theLayout.addView(t);
 
             TextView t2 = new TextView(this);
-            t2.setText("Description: " + namesArr[i]);
+            t2.setText("Description: " + names.get(i));
             theLayout.addView(t2);
 
             TextView t3 = new TextView(this);
-            t3.setText("Price: " + pricesArr[i] + "\n\n");
+            t3.setText("Price: " + prices.get(i) + "\n\n");
             theLayout.addView(t3);
 
 
@@ -50,10 +53,7 @@ public class PrintOverviewActivity extends AppCompatActivity {
     }
 
     public void deletePrintOverview(View view) {
-        SharedPrefHelper.deleteArrayList("ids", getApplicationContext());
-        SharedPrefHelper.deleteArrayList("names", getApplicationContext());
-        SharedPrefHelper.deleteArrayList("prices", getApplicationContext());
-
+        SharedPrefHelper.deleteSharedPrefs(getApplicationContext());
 
         finish();
         startActivity(getIntent());

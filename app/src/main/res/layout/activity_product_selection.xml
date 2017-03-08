@@ -10,7 +10,7 @@
     android:paddingRight="8dp"
     android:paddingTop="18dp"
     android:orientation="vertical"
-    tools:context="de.httptandooripalace.restaurantorderprinter.ProductSelectionActivity"
+    tools:context="de.httptandooripalace.restaurantorderprinter.ProductActivity"
 
    >
 

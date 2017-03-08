@@ -39,4 +39,11 @@ public class SharedPrefHelper {
         editor.remove(arrayName + "_size");
         editor.commit();
     }
+
+    public static void deleteSharedPrefs(Context context) {
+        SharedPrefHelper.deleteArrayList("ids", context);
+        SharedPrefHelper.deleteArrayList("names", context);
+        SharedPrefHelper.deleteArrayList("prices", context);
+
+    }
 }
