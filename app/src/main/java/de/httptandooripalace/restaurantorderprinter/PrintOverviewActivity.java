@@ -1,9 +1,17 @@
 package de.httptandooripalace.restaurantorderprinter;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.print.PrintAttributes;
+import android.print.PrintDocumentAdapter;
+import android.print.PrintJob;
+import android.print.PrintManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,7 +22,9 @@ import helpers.SharedPrefHelper;
 
 public class PrintOverviewActivity extends AppCompatActivity {
 
-    ArrayList<String> ids, names, prices;
+    private ArrayList<String> ids, names, prices;
+
+    private WebView mWebView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,14 +34,9 @@ public class PrintOverviewActivity extends AppCompatActivity {
         // Get the layout
         LinearLayout theLayout = (LinearLayout) findViewById(R.id.listingLayout);
 
-        ArrayList<String> ids = SharedPrefHelper.loadArrayList("ids", getApplicationContext());
-        ArrayList<String> names = SharedPrefHelper.loadArrayList("names", getApplicationContext());
-        ArrayList<String> prices = SharedPrefHelper.loadArrayList("prices", getApplicationContext());
-
-
-//        idsArr = ids.toArray(new String[ids.size()]);
-//        namesArr = names.toArray(new String[names.size()]);
-//        pricesArr = prices.toArray(new String[prices.size()]);
+        ids = SharedPrefHelper.loadArrayList("ids", getApplicationContext());
+        names = SharedPrefHelper.loadArrayList("names", getApplicationContext());
+        prices = SharedPrefHelper.loadArrayList("prices", getApplicationContext());
 
         for(int i = 0; i < ids.size(); i++) {
             TextView t = new TextView(this);
@@ -52,11 +57,79 @@ public class PrintOverviewActivity extends AppCompatActivity {
 
     }
 
+    // Delete the print overview and refresh activity
     public void deletePrintOverview(View view) {
         SharedPrefHelper.deleteSharedPrefs(getApplicationContext());
 
         finish();
         startActivity(getIntent());
 
+    }
+
+    // Do print job button clicked
+    public void doPrintJob(View view) {
+        doWebViewPrint(ids, names, prices);
+
+    }
+
+
+    private void doWebViewPrint(ArrayList<String> ids, ArrayList<String> names, ArrayList<String> prices) {
+        // Create a WebView object specifically for printing
+        WebView webView = new WebView(this);
+        webView.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                Log.i("PAGE FINISHED", "page finished loading " + url);
+                createWebPrintJob(view);
+                mWebView = null;
+            }
+        });
+
+        // Generate an HTML document on the fly:
+
+        StringBuilder strb = new StringBuilder();
+
+        strb.append("<html><body>");
+
+        strb.append("<h1>Bill</h1>"); // Todo table number and other info
+        strb.append("<ul>");
+        for(int i = 0; i < ids.size(); i++) {
+            strb.append("<li>" + names.get(i) + " - " + prices.get(i) + "</li>");
+
+        }
+
+        strb.append("</ul>");
+        strb.append("</body></html>");
+
+        webView.loadDataWithBaseURL(null, strb.toString(), "text/HTML", "UTF-8", null);
+
+        // Keep a reference to WebView object until you pass the PrintDocumentAdapter
+        // to the PrintManager
+        mWebView = webView;
+    }
+
+    private void createWebPrintJob(WebView webView) {
+
+        // Get a PrintManager instance
+        PrintManager printManager = (PrintManager) this
+                .getSystemService(Context.PRINT_SERVICE);
+
+        // Get a print adapter instance
+        PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter("printdoc");
+
+        // Create a print job with name and adapter instance
+        String jobName = getString(R.string.app_name) + " Document";
+
+        PrintJob printJob = printManager.print(jobName, printAdapter,
+                new PrintAttributes.Builder()
+                        //.setMediaSize(PrintAttributes.MediaSize.ISO_A7)
+                        .setMediaSize(new PrintAttributes.MediaSize("customMediaId", "customMediaLabel", 80, 210))
+                        .setMinMargins(new PrintAttributes.Margins(5, 10, 5, 20))
+                        .setResolution(new PrintAttributes.Resolution("customResId", "customResLabel", 203, 203))
+                        .build());
+
+        // Save the job object for later status checking
+        //mPrintJobs.add(printJob);
     }
 }

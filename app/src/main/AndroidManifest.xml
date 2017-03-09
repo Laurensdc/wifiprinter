@@ -5,17 +5,16 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:name="MainApplication"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme"
         android:label="Restaurant Order Printer"
-        >
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
         <activity
             android:name=".CategoryActivity"
-            android:launchMode="singleTask"
-            android:label="Restaurant Order Printer">
+            android:label="Restaurant Order Printer"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,6 +35,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ProductActivity" />
         </activity>
+        <activity android:name=".PrintDemo"></activity>
     </application>
 
 </manifest>
