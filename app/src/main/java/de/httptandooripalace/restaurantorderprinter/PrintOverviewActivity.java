@@ -1,6 +1,7 @@
 package de.httptandooripalace.restaurantorderprinter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
@@ -68,8 +69,45 @@ public class PrintOverviewActivity extends AppCompatActivity {
 
     // Do print job button clicked
     public void doPrintJob(View view) {
-        doWebViewPrint(ids, names, prices);
+        //doWebViewPrint(ids, names, prices);
+        //String dataToPrint="$big$This is a printer test$intro$posprinterdriver.com$intro$$intro$$cut$$intro$";
 
+//
+//
+//        //String textToSend="$intro$$big$Test test 123 test$intro$$intro$$intro$";
+//        String textToSend="$intro$$intro$$intro$$big$AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA$intro$$intro$$intro$$intro$$intro$$small$BBBBBBBBBBBBBBBBBBBB$intro$$intro$$intro$";
+//        Intent intentPrint = new Intent();
+//        intentPrint.setAction(Intent.ACTION_SEND);
+//        intentPrint.putExtra(Intent.EXTRA_TEXT, textToSend);
+//        intentPrint.putExtra("printer_type_id", "1");// For IP
+//        intentPrint.putExtra("printer_ip", "192.168.178.105");
+//        intentPrint.putExtra("printer_port", "9100");
+//
+//        intentPrint.setType("text/plain");
+//        Log.i("Print job log: ", "sendDataToIPPrinter Start Intent");
+//
+//        this.startActivity(intentPrint);
+//
+
+
+        StringBuilder strb = new StringBuilder();
+
+
+
+        strb.append("<BIG>Bill<BR><BR>"); // Todo table number and other info
+
+        for(int i = 0; i < ids.size(); i++) {
+            strb.append("Product: " + names.get(i) + "<BR>Price: €" + prices.get(i) + "<BR><BR>");
+
+        }
+
+        strb.append("<BR><BR>");
+
+        Intent intent = new Intent("pe.diegoveloper.printing");
+        //intent.setAction(android.content.Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(android.content.Intent.EXTRA_TEXT,strb.toString());
+        startActivity(intent);
     }
 
 
