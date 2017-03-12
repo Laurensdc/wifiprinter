@@ -26,7 +26,7 @@ public class ProductActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         // Set layout and stuff
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_product_selection);
+        setContentView(R.layout.activity_product_overview);
 
         // Get passed data from API request
         SharedPreferences sharedprefs = getSharedPreferences("cart", 0);
