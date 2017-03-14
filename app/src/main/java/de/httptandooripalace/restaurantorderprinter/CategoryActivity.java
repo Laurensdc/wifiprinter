@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ExpandableListView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 
@@ -15,8 +16,16 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import helpers.HttpHandler;
+import helpers.MainOverviewAdapter;
+
+import static android.R.attr.id;
+import static android.R.attr.name;
+import static android.R.id.list;
+import static android.media.CamcorderProfile.get;
 
 public class CategoryActivity extends AppCompatActivity {
 
@@ -42,62 +51,67 @@ public class CategoryActivity extends AppCompatActivity {
             final JSONArray data = new JSONArray(apiData);
 
             // Convert json data to arrayList to pass it to gridView
-            ArrayList<String> list = new ArrayList<>();
+            ArrayList<String> catlist = new ArrayList<>();
+            HashMap<String, List<String>> prodlist = new HashMap<>();
 
             if (data != null) {
                 int len = data.length();
                 for (int i=0;i<len;i++){
                     JSONObject obj = data.getJSONObject(i);
 
-                    String id = obj.getString("id_cat");
-                    String name = obj.getString("name_cat");
 
-                    // Cut off strings too long
-                    if (name.length() > 30)
-                        name = name.substring(0, 30) + "...";
-
-                    // Fix layout glitches with Grid View
-                    if(name == "") name = "\n\n\n";
-
+                    String catname = obj.getString("name_cat");
                     // Actual list view data
-                    list.add(
-                            "ID: " + id + "\n" +
-                                    name
-                    );
+                    catlist.add(catname);
+
+
+                    List<String> prods = prodlist.get(catname);
+                    if(prods == null) {
+                        prods = new ArrayList<>();
+                    }
+
+                    prods.add(obj.getString("name_prod"));
+
+                    prodlist.put(catname, prods);
+
+
+
 
                 }
             }
 
             // Get the grid view and bind array
-            GridView view = (GridView) findViewById(R.id.category_gridview);
+            ExpandableListView view = (ExpandableListView) findViewById(R.id.overview_main);
+
+            MainOverviewAdapter adapter = new MainOverviewAdapter(this, catlist, prodlist);
 
             // ArrayList to ArrayAdapter
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                    android.R.layout.simple_list_item_1, list);
+//            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+//                    android.R.layout.simple_list_item_1, list);
 
             // Bind arrayAdapter to view
             view.setAdapter(adapter);
 
-            // Tap listener on items
-            view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> parent, View v,
-                                        int position, long clickedid) {
-
-                    try {
-                        // Fetch properties of tapped item
-                        String id = data.getJSONObject(position).getString("id_cat");
-                        String name = data.getJSONObject(position).getString("name_cat");
-
-                        new HttpHandler(getApplicationContext()).execute("http://print.nepali.mobi/printer/api.php?function=getproducts&catid=" + id).get();
-
-                        Intent intent = new Intent(getApplicationContext(), ProductActivity.class);
-                        startActivity(intent);
-
-                    } catch(Exception ex) {
-                        throw new IllegalArgumentException(ex.getMessage());
-                    }
-                }
-            });
+//            // Tap listener on items
+//            view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                public void onItemClick(AdapterView<?> parent, View v,
+//                                        int position, long clickedid) {
+//
+//                    try {
+//                        // Fetch properties of tapped item
+//                        String id = data.getJSONObject(position).getString("id_cat");
+//                        String name = data.getJSONObject(position).getString("name_cat");
+//
+//                        new HttpHandler(getApplicationContext()).execute("http://print.nepali.mobi/printer/api.php?function=getproducts&catid=" + id).get();
+//
+//                        Intent intent = new Intent(getApplicationContext(), ProductActivity.class);
+//                        startActivity(intent);
+//
+//                    } catch(Exception ex) {
+//                        throw new IllegalArgumentException(ex.getMessage());
+//                    }
+//                }
+//            });
 
         }
         catch(Exception ex) {
