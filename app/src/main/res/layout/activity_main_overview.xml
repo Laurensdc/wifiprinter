@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="8dp"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
-    android:paddingTop="18dp"
+    android:padding="0dp"
     android:orientation="vertical"
-    tools:context="de.httptandooripalace.restaurantorderprinter.CategoryActivity"
+    tools:context="de.httptandooripalace.restaurantorderprinter.MainOverviewActivity"
     android:weightSum="1">
 
     <!--<EditText-->
@@ -20,6 +18,18 @@
         <!--android:hint="@string/search"-->
         <!--android:layout_weight="0.55"-->
         <!--/>-->
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:fabSize="normal"
+        app:srcCompat="@android:drawable/ic_menu_agenda"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="12dp"
+        android:onClick="gotoOverview"
+        android:id="@+id/floatingActionButton4" />
+
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swiperefresh"
@@ -43,24 +53,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/overview_main"
+
             />
 
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-
-        android:text="@string/btn_send"
-
-        android:onClick="sendMessage"
-
-        />
-
-
-
-
-</LinearLayout>
+</RelativeLayout>

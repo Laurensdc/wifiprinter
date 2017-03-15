@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".CategoryActivity"
+            android:name=".MainOverviewActivity"
             android:label="Restaurant Order Printer"
             android:launchMode="singleTask">
             <intent-filter>
@@ -26,16 +26,16 @@
             android:label="Products">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".CategoryActivity" />
+                android:value=".MainOverviewActivity" />
         </activity>
         <activity
             android:name=".PrintOverviewActivity"
             android:label="Printing overview">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ProductActivity" />
+                android:value=".MainOverviewActivity" />
         </activity>
-        <activity android:name=".PrintDemo"></activity>
+
     </application>
 
 </manifest>

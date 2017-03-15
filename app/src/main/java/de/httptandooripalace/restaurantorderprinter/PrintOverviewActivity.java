@@ -34,22 +34,14 @@ public class PrintOverviewActivity extends AppCompatActivity {
         // Get the layout
         LinearLayout theLayout = (LinearLayout) findViewById(R.id.listingLayout);
 
-        ids = SharedPrefHelper.loadArrayList("ids", getApplicationContext());
-        names = SharedPrefHelper.loadArrayList("names", getApplicationContext());
-        prices = SharedPrefHelper.loadArrayList("prices", getApplicationContext());
+        names = SharedPrefHelper.loadArrayList("printItems", getApplicationContext());
 
-        for(int i = 0; i < ids.size(); i++) {
+        for(int i = 0; i < names.size(); i++) {
             TextView t = new TextView(this);
-            t.setText("ID: " + ids.get(i));
+            t.setText(names.get(i));
             theLayout.addView(t);
 
-            TextView t2 = new TextView(this);
-            t2.setText("Description: " + names.get(i));
-            theLayout.addView(t2);
 
-            TextView t3 = new TextView(this);
-            t3.setText("Price: " + prices.get(i) + "\n\n");
-            theLayout.addView(t3);
 
         }
 
@@ -70,8 +62,8 @@ public class PrintOverviewActivity extends AppCompatActivity {
 
         strb.append("<BIG>Bill<BR><BR>"); // Todo table number and other info
 
-        for(int i = 0; i < ids.size(); i++) {
-            strb.append("Product: " + names.get(i) + "<BR>Price: €" + prices.get(i) + "<BR><BR>");
+        for(int i = 0; i < names.size(); i++) {
+            strb.append(names.get(i) + "<BR><BR>");
         }
 
         strb.append("<BR><BR>");

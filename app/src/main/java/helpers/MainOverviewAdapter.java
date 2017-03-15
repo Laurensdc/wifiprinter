@@ -8,8 +8,11 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import de.httptandooripalace.restaurantorderprinter.R;
 
@@ -20,11 +23,11 @@ import de.httptandooripalace.restaurantorderprinter.R;
 public class MainOverviewAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
-    private List<String> _listDataHeader; // header titles
+    private ArrayList<String> _listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
 
-    public MainOverviewAdapter(Context context, List<String> listDataHeader,
+    public MainOverviewAdapter(Context context, ArrayList<String> listDataHeader,
                                  HashMap<String, List<String>> listChildData) {
         this._context = context;
         this._listDataHeader = listDataHeader;

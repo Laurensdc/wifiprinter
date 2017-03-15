@@ -41,9 +41,7 @@ public class SharedPrefHelper {
     }
 
     public static void deleteSharedPrefs(Context context) {
-        SharedPrefHelper.deleteArrayList("ids", context);
-        SharedPrefHelper.deleteArrayList("names", context);
-        SharedPrefHelper.deleteArrayList("prices", context);
+        SharedPrefHelper.deleteArrayList("printItems", context);
 
     }
 }
