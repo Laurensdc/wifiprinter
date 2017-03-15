@@ -22,13 +22,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ProductActivity"
-            android:label="Products">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainOverviewActivity" />
-        </activity>
-        <activity
             android:name=".PrintOverviewActivity"
             android:label="Printing overview">
             <meta-data
