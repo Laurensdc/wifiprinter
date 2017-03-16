@@ -43,10 +43,7 @@ public class PrintOverviewActivity extends AppCompatActivity {
             t.setText(products.get(i).getCategory() + " / " + products.get(i).getName());
             theLayout.addView(t);
 
-
-
         }
-
 
     }
 
@@ -59,7 +56,7 @@ public class PrintOverviewActivity extends AppCompatActivity {
     }
 
     // Do print job button clicked
-    public void doPrintJob(View view) {
+    public void printWithQuickPrinter(View view) {
         StringBuilder strb = new StringBuilder();
 
         strb.append("<BIG>Bill<BR><BR>"); // Todo table number and other info

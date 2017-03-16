@@ -99,27 +99,13 @@ public class MainOverviewActivity extends AppCompatActivity {
                 @Override
                 public boolean onChildClick(ExpandableListView parent, View v,
                                             int groupPosition, int childPosition, long id) {
-//                    Toast.makeText(
-//                            getApplicationContext(),
-//                            catlist.get(groupPosition)
-//                                    + " : "
-//                                    + prodlist.get(
-//                                    catlist.get(groupPosition)).get(
-//                                    childPosition), Toast.LENGTH_SHORT)
-//                            .show();
-//                    return false;
 
                     try {
                         // Fetch properties of tapped item
                         String cat = catlist.get(groupPosition);
-
                         Product prod = prodlist.get(catlist.get(groupPosition)).get(childPosition);
 
                         String printOverviewItem = cat + " / " + prod.getName() + ": " + prod.getPrice();
-
-                        // Get saved products
-                        // ArrayList<String> printItems = SharedPrefHelper.loadArrayList("printItems", getApplicationContext());
-
                         List<Product> products = SharedPrefHelper.getPrintItems(getApplicationContext());
 
                         if(products == null) products = new ArrayList<Product>();
