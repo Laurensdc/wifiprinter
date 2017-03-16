@@ -75,4 +75,26 @@ public class PrintOverviewActivity extends AppCompatActivity {
     }
 
 
+    public void printWithPOSPrinterDriverEsc(View view) {
+        StringBuilder strb = new StringBuilder();
+
+        strb.append("$big$Bill$intro$$intro$$intro$"); // Todo table number and other info
+
+        for(int i = 0; i < products.size(); i++) {
+            strb.append(products.get(i).getName() + "$intro$" + products.get(i).getPrice() + "$intro$$intro$");
+        }
+
+        String dataToPrint = strb.toString();
+        Intent intentPrint = new Intent();
+        intentPrint.setAction(Intent.ACTION_SEND);
+        intentPrint.putExtra(Intent.EXTRA_TEXT, dataToPrint);
+        intentPrint.putExtra("printer_type_id", "1");// For IP
+        intentPrint.putExtra("printer_ip", "192.168.178.105");
+        intentPrint.putExtra("printer_port", "9100");
+
+        intentPrint.setType("text/plain");
+
+        this.startActivity(intentPrint);
+    }
+
 }
