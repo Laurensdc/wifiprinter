@@ -10,6 +10,8 @@ import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -19,6 +21,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import entities.Product;
 import helpers.HttpHandler;
 import helpers.MainOverviewAdapter;
 import helpers.SharedPrefHelper;
@@ -49,7 +52,7 @@ public class MainOverviewActivity extends AppCompatActivity {
 
             // Convert json data to arrayList to pass it to gridView
             final ArrayList<String> catlist = new ArrayList<>();
-            final HashMap<String, List<String>> prodlist = new HashMap<>();
+            final HashMap<String, List<Product>> prodlist = new HashMap<>();
 
             if (data != null) {
                 int len = data.length();
@@ -64,12 +67,17 @@ public class MainOverviewActivity extends AppCompatActivity {
                     }
 
 
-                    List<String> prods = prodlist.get(catname);
+                    List<Product> prods = prodlist.get(catname);
                     if(prods == null) {
                         prods = new ArrayList<>();
                     }
 
-                    prods.add(obj.getString("name_prod") + " - €" + obj.getString("price_prod"));
+                    prods.add(new Product(
+                            Integer.parseInt(obj.getString("id_prod")),
+                            obj.getString("name_prod"),
+                            Float.parseFloat(obj.getString("price_prod")),
+                            catname
+                    ));
 
                     prodlist.put(catname, prods);
 
@@ -104,18 +112,19 @@ public class MainOverviewActivity extends AppCompatActivity {
                     try {
                         // Fetch properties of tapped item
                         String cat = catlist.get(groupPosition);
-                        String prod = prodlist.get(catlist.get(groupPosition)).get(childPosition);
 
-                        String printOverviewItem = cat + " / " + prod;
+                        Product prod = prodlist.get(catlist.get(groupPosition)).get(childPosition);
+
+                        String printOverviewItem = cat + " / " + prod.getName() + ": " + prod.getPrice();
 
                         // Get saved products
-                        ArrayList<String> printItems = SharedPrefHelper.loadArrayList("printItems", getApplicationContext());
+                        // ArrayList<String> printItems = SharedPrefHelper.loadArrayList("printItems", getApplicationContext());
 
-                        // Add the values to the lists
-                        printItems.add(printOverviewItem);
+                        List<Product> products = SharedPrefHelper.getPrintItems(getApplicationContext());
 
-                        SharedPrefHelper.saveArrayList(printItems, "printItems", getApplicationContext());
-
+                        if(products == null) products = new ArrayList<Product>();
+                        products.add(prod);
+                        SharedPrefHelper.setPrintItems(getApplicationContext(), products);
 
                         // Toast it
                         if(currentToast != null) currentToast.cancel();

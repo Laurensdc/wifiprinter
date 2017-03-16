@@ -18,12 +18,14 @@ import android.widget.TextView;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
+import entities.Product;
 import helpers.SharedPrefHelper;
 
 public class PrintOverviewActivity extends AppCompatActivity {
 
-    private ArrayList<String> ids, names, prices;
+    private List<Product> products;
     private WebView mWebView;
 
     @Override
@@ -34,11 +36,11 @@ public class PrintOverviewActivity extends AppCompatActivity {
         // Get the layout
         LinearLayout theLayout = (LinearLayout) findViewById(R.id.listingLayout);
 
-        names = SharedPrefHelper.loadArrayList("printItems", getApplicationContext());
+        products = SharedPrefHelper.getPrintItems(getApplicationContext());
 
-        for(int i = 0; i < names.size(); i++) {
+        for(int i = 0; i < products.size(); i++) {
             TextView t = new TextView(this);
-            t.setText(names.get(i));
+            t.setText(products.get(i).getCategory() + " / " + products.get(i).getName());
             theLayout.addView(t);
 
 
@@ -62,8 +64,8 @@ public class PrintOverviewActivity extends AppCompatActivity {
 
         strb.append("<BIG>Bill<BR><BR>"); // Todo table number and other info
 
-        for(int i = 0; i < names.size(); i++) {
-            strb.append(names.get(i) + "<BR><BR>");
+        for(int i = 0; i < products.size(); i++) {
+            strb.append(products.get(i).getName() + "<BR>" + products.get(i).getPrice() + "<BR><BR>");
         }
 
         strb.append("<BR><BR>");

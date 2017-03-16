@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 import de.httptandooripalace.restaurantorderprinter.R;
+import entities.Product;
 
 /**
  * Created by uizen on 14.03.2017.
@@ -25,10 +26,10 @@ public class MainOverviewAdapter extends BaseExpandableListAdapter {
     private Context _context;
     private ArrayList<String> _listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<String>> _listDataChild;
+    private HashMap<String, List<Product>> _listDataChild;
 
     public MainOverviewAdapter(Context context, ArrayList<String> listDataHeader,
-                                 HashMap<String, List<String>> listChildData) {
+                                 HashMap<String, List<Product>> listChildData) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
@@ -49,7 +50,7 @@ public class MainOverviewAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        final String childText = (String) getChild(groupPosition, childPosition);
+        final Product childText = (Product) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
@@ -60,7 +61,7 @@ public class MainOverviewAdapter extends BaseExpandableListAdapter {
         TextView txtListChild = (TextView) convertView
                 .findViewById(R.id.prod_title);
 
-        txtListChild.setText(childText);
+        txtListChild.setText(childText.getName());
         return convertView;
     }
 
