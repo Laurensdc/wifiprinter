@@ -41,6 +41,7 @@ public class MainOverviewActivity extends AppCompatActivity {
 
 
         try {
+            // Todo: Save function in configuration
             new HttpHandler(this.getApplicationContext()).execute("http://print.nepali.mobi/printer/api.php?function=getcategories").get();
 
 

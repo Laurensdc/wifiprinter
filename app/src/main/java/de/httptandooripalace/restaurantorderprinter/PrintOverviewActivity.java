@@ -59,7 +59,8 @@ public class PrintOverviewActivity extends AppCompatActivity {
     public void printWithQuickPrinter(View view) {
         StringBuilder strb = new StringBuilder();
 
-        strb.append("<BIG>Bill<BR><BR>"); // Todo table number and other info
+        // Todo: save heading in server settings on load it in dynamically
+        strb.append("<BIG>Bill<BR><BR>"); // Todo: table number and other info
 
         for(int i = 0; i < products.size(); i++) {
             strb.append(products.get(i).getName() + "<BR>" + products.get(i).getPrice() + "<BR><BR>");
@@ -78,7 +79,8 @@ public class PrintOverviewActivity extends AppCompatActivity {
     public void printWithPOSPrinterDriverEsc(View view) {
         StringBuilder strb = new StringBuilder();
 
-        strb.append("$big$Bill$intro$$intro$$intro$"); // Todo table number and other info
+        // Todo: save heading in server settings on load it in dynamically
+        strb.append("$big$Bill$intro$$intro$$intro$"); // Todo: table number and other info
 
         for(int i = 0; i < products.size(); i++) {
             strb.append(products.get(i).getName() + "$intro$" + products.get(i).getPrice() + "$intro$$intro$");
