@@ -19,10 +19,10 @@ public class Product {
         this.count = 1;
     }
 
-    public Product(String name, String category) {
-        this.name = name;
-        this.category = category;
-    }
+//    public Product(String name, String category) {
+//        this.name = name;
+//        this.category = category;
+//    }
 
     public void increaseCount() { count++; }
     public void decreaseCount() { count--; }

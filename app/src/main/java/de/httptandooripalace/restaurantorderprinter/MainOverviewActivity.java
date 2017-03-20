@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
@@ -54,20 +55,18 @@ public class MainOverviewActivity extends AppCompatActivity {
 
             // Convert json data to arrayList to pass it to gridView
             final ArrayList<String> catlist = new ArrayList<>();
-            final HashMap<String, List<Product>> prodlist = new HashMap<>();
+            HashMap<String, List<Product>> prodlist = new HashMap<>();
 
             if (data != null) {
                 int len = data.length();
                 for (int i=0;i<len;i++){
                     JSONObject obj = data.getJSONObject(i);
 
-
                     String catname = obj.getString("name_cat");
                     // Actual list view data
                     if(!catlist.contains(catname)) {
                         catlist.add(catname);
                     }
-
 
                     List<Product> prods = prodlist.get(catname);
                     if(prods == null) {
@@ -95,6 +94,8 @@ public class MainOverviewActivity extends AppCompatActivity {
             view.setAdapter(adapter);
 
 
+            final HashMap<String, List<Product>> prodlist2 = prodlist;
+
             // Listview on child click listener
             view.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
@@ -105,12 +106,14 @@ public class MainOverviewActivity extends AppCompatActivity {
                     try {
                         // Fetch properties of tapped item
                         String cat = catlist.get(groupPosition);
-                        Product prod = prodlist.get(catlist.get(groupPosition)).get(childPosition);
+                        Product prod = prodlist2.get(catlist.get(groupPosition)).get(childPosition);
 
-                        String printOverviewItem = prod.getName() + ": " + prod.getPrice_excl() + ", " + prod.getPrice_incl();
                         List<Product> products = SharedPrefHelper.getPrintItems(getApplicationContext());
+                        if(products == null) products = new ArrayList<>();
 
-                        if(products == null) products = new ArrayList<Product>();
+                        Log.d("Product", prod.toString());
+                        Log.d("Products array helper", products.toString());
+
 
                         // If item is already in the list, just increase the count
                         if(products.contains(prod)) {
@@ -118,6 +121,7 @@ public class MainOverviewActivity extends AppCompatActivity {
                             prod.increaseCount();
                             products.add(prod);
                         }
+                        // Otherwise add the product to print overview list
                         else {
                             products.add(prod);
                         }
@@ -125,7 +129,7 @@ public class MainOverviewActivity extends AppCompatActivity {
 
                         // Toast it
                         if(currentToast != null) currentToast.cancel();
-                        currentToast = Toast.makeText(getApplicationContext(), "Added product " + printOverviewItem,
+                        currentToast = Toast.makeText(getApplicationContext(), "Added product " + prod.getName(),
                                 Toast.LENGTH_SHORT);
                         currentToast.show();
 

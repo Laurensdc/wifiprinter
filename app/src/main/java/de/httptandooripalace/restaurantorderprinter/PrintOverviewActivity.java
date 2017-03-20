@@ -37,50 +37,50 @@ public class PrintOverviewActivity extends AppCompatActivity {
         LinearLayout theLayout = (LinearLayout) findViewById(R.id.listingLayout);
 
         products = SharedPrefHelper.getPrintItems(getApplicationContext());
+
+        Log.d("ya", "ya");
+
         if(products == null) products = new ArrayList<>();
 
         // Dynamically add textviews
         for(int i = 0; i < products.size(); i++) {
             TextView t = new TextView(this);
-            t.setText(products.get(i).getName()
-                        + "\nPrice excl: " + products.get(i).getPrice_excl()
-                        + "\nPrice incl: " + products.get(i).getPrice_incl()
-                        + "\nCount: " + products.get(i).getCount()
-                        + "\n\n");
+            t.setText(products.get(i).getName() + "x" + products.get(i).getCount()
+                    + "\nPrice excl: " + products.get(i).getPrice_excl()
+                    + "\nPrice incl: " + products.get(i).getPrice_incl()
+                    + "\n\n");
             theLayout.addView(t);
 
         }
+
+
+    }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+
+        super.onPause();
+//
+//        LinearLayout ll = (LinearLayout) findViewById(R.id.listingLayout);
+//        ll.removeAllViews();
 
     }
 
     // Delete the print overview and refresh activity
     public void deletePrintOverview(View view) {
+
         SharedPrefHelper.deleteSharedPrefs(getApplicationContext());
         finish();
         startActivity(getIntent());
 
     }
 
-    // Do print job button clicked
-    // !! NOT UPDATED
-    public void printWithQuickPrinter(View view) {
-        StringBuilder strb = new StringBuilder();
-
-        // Todo: save heading in server settings on load it in dynamically
-        strb.append("<BIG>Bill<BR><BR>"); // Todo: table number and other info
-
-        for(int i = 0; i < products.size(); i++) {
-            strb.append(products.get(i).getName() + "<BR>" + products.get(i).getPrice_incl() + "<BR><BR>");
-        }
-
-        strb.append("<BR><BR>");
-
-        Intent intent = new Intent("pe.diegoveloper.printing");
-        //intent.setAction(android.content.Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(android.content.Intent.EXTRA_TEXT,strb.toString());
-        startActivity(intent);
-    }
 
 
     public void printWithPOSPrinterDriverEsc(View view) {
@@ -134,5 +134,28 @@ public class PrintOverviewActivity extends AppCompatActivity {
 
         this.startActivity(intentPrint);
     }
+
+
+    // Do print job button clicked
+    // !! NOT UPDATED
+    public void printWithQuickPrinter(View view) {
+        StringBuilder strb = new StringBuilder();
+
+        // Todo: save heading in server settings on load it in dynamically
+        strb.append("<BIG>Bill<BR><BR>"); // Todo: table number and other info
+
+        for(int i = 0; i < products.size(); i++) {
+            strb.append(products.get(i).getName() + "<BR>" + products.get(i).getPrice_incl() + "<BR><BR>");
+        }
+
+        strb.append("<BR><BR>");
+
+        Intent intent = new Intent("pe.diegoveloper.printing");
+        //intent.setAction(android.content.Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(android.content.Intent.EXTRA_TEXT,strb.toString());
+        startActivity(intent);
+    }
+
 
 }
