@@ -39,9 +39,14 @@ public class PrintOverviewActivity extends AppCompatActivity {
         products = SharedPrefHelper.getPrintItems(getApplicationContext());
         if(products == null) products = new ArrayList<>();
 
+        // Dynamically add textviews
         for(int i = 0; i < products.size(); i++) {
             TextView t = new TextView(this);
-            t.setText(products.get(i).getCategory() + " / " + products.get(i).getName());
+            t.setText(products.get(i).getName()
+                        + "\nPrice excl: " + products.get(i).getPrice_excl()
+                        + "\nPrice incl: " + products.get(i).getPrice_incl()
+                        + "\nCount: " + products.get(i).getCount()
+                        + "\n\n");
             theLayout.addView(t);
 
         }

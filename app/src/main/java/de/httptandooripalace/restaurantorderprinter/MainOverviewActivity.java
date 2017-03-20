@@ -111,7 +111,16 @@ public class MainOverviewActivity extends AppCompatActivity {
                         List<Product> products = SharedPrefHelper.getPrintItems(getApplicationContext());
 
                         if(products == null) products = new ArrayList<Product>();
-                        products.add(prod);
+
+                        // If item is already in the list, just increase the count
+                        if(products.contains(prod)) {
+                            products.remove(prod);
+                            prod.increaseCount();
+                            products.add(prod);
+                        }
+                        else {
+                            products.add(prod);
+                        }
                         SharedPrefHelper.setPrintItems(getApplicationContext(), products);
 
                         // Toast it
