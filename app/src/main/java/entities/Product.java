@@ -6,14 +6,16 @@ package entities;
 
 public class Product {
     private String name;
-    private float price;
+    private float price_excl;
+    private float price_incl;
+
     private int id;
     private String category;
 
-    public Product(int id, String name, float price, String category) {
+    public Product(String name, float price_excl, float price_incl, String category) {
         this.category = category;
-        this.price = price;
-        this.id = id;
+        this.price_excl = price_excl;
+        this.price_incl = price_incl;
         this.name = name;
     }
 
@@ -30,12 +32,21 @@ public class Product {
         this.name = name;
     }
 
-    public float getPrice() {
-        return price;
+
+    public float getPrice_excl() {
+        return price_excl;
     }
 
-    public void setPrice(float price) {
-        this.price = price;
+    public void setPrice_excl(float price_excl) {
+        this.price_excl = price_excl;
+    }
+
+    public float getPrice_incl() {
+        return price_incl;
+    }
+
+    public void setPrice_incl(float price_incl) {
+        this.price_incl = price_incl;
     }
 
     public int getId() {

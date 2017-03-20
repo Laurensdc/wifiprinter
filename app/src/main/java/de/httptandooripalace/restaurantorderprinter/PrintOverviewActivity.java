@@ -37,6 +37,7 @@ public class PrintOverviewActivity extends AppCompatActivity {
         LinearLayout theLayout = (LinearLayout) findViewById(R.id.listingLayout);
 
         products = SharedPrefHelper.getPrintItems(getApplicationContext());
+        if(products == null) products = new ArrayList<>();
 
         for(int i = 0; i < products.size(); i++) {
             TextView t = new TextView(this);
@@ -56,6 +57,7 @@ public class PrintOverviewActivity extends AppCompatActivity {
     }
 
     // Do print job button clicked
+    // !! NOT UPDATED
     public void printWithQuickPrinter(View view) {
         StringBuilder strb = new StringBuilder();
 
@@ -63,7 +65,7 @@ public class PrintOverviewActivity extends AppCompatActivity {
         strb.append("<BIG>Bill<BR><BR>"); // Todo: table number and other info
 
         for(int i = 0; i < products.size(); i++) {
-            strb.append(products.get(i).getName() + "<BR>" + products.get(i).getPrice() + "<BR><BR>");
+            strb.append(products.get(i).getName() + "<BR>" + products.get(i).getPrice_incl() + "<BR><BR>");
         }
 
         strb.append("<BR><BR>");
@@ -77,14 +79,43 @@ public class PrintOverviewActivity extends AppCompatActivity {
 
 
     public void printWithPOSPrinterDriverEsc(View view) {
+        byte dot = 0x10;
+        String tab = "9";
+        String tabtest = "▪9▪tabtest▪9▪▪9▪▪9▪▪9▪tabtest▪9▪$intro$▪9▪▪9▪▪9▪▪9▪tabtest3$intro$";
+        // ------------------------
+
+        String tableNr = SharedPrefHelper.getString(getApplicationContext(), "tableNr");
+
         StringBuilder strb = new StringBuilder();
 
         // Todo: save heading in server settings on load it in dynamically
-        strb.append("$big$Bill$intro$$intro$$intro$"); // Todo: table number and other info
+        strb.append("$intro$$bighw$Restaurant Tandoori$intro$$intro$$intro$"); // Todo: table number and other info
+        strb.append("$big$Table nr: " + tableNr + "$intro$$intro$$intro$");
+
+        float totalPriceExcl = 0;
+        float totalPriceIncl = 0;
 
         for(int i = 0; i < products.size(); i++) {
-            strb.append(products.get(i).getName() + "$intro$" + products.get(i).getPrice() + "$intro$$intro$");
+            Float priceEx = products.get(i).getPrice_excl();
+            Float priceInc = products.get(i).getPrice_incl();
+            strb.append(products.get(i).getName() + "$intro$" +
+                    "Price excl: " + priceEx + "$intro$" +
+                    "Price incl: " + priceInc + "$intro$$intro$" );
+
+            totalPriceExcl += priceEx;
+            totalPriceIncl += priceInc;
+
         }
+
+        double tax = totalPriceIncl - totalPriceExcl;
+
+        strb.append("--------------------------$intro$");
+        strb.append("Total price excl. tax: " + totalPriceExcl + "$intro$");
+        strb.append("Tax: " + tax + "$intro$");
+        strb.append("==========================");
+        strb.append("Total price incl. tax: " + totalPriceIncl + "$intro$");
+        strb.append("$intro$$intro$$intro$$intro$$intro$$intro$$intro$$intro$$intro$$cut$");
+
 
         String dataToPrint = strb.toString();
         Intent intentPrint = new Intent();

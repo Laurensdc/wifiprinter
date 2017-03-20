@@ -6,6 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -74,9 +75,9 @@ public class MainOverviewActivity extends AppCompatActivity {
                     }
 
                     prods.add(new Product(
-                            Integer.parseInt(obj.getString("id_prod")),
                             obj.getString("name_prod"),
-                            Float.parseFloat(obj.getString("price_prod")),
+                            Float.parseFloat(obj.getString("price_prod_excl")),
+                            Float.parseFloat(obj.getString("price_prod_incl")),
                             catname
                     ));
 
@@ -106,7 +107,7 @@ public class MainOverviewActivity extends AppCompatActivity {
                         String cat = catlist.get(groupPosition);
                         Product prod = prodlist.get(catlist.get(groupPosition)).get(childPosition);
 
-                        String printOverviewItem = cat + " / " + prod.getName() + ": " + prod.getPrice();
+                        String printOverviewItem = prod.getName() + ": " + prod.getPrice_excl() + ", " + prod.getPrice_incl();
                         List<Product> products = SharedPrefHelper.getPrintItems(getApplicationContext());
 
                         if(products == null) products = new ArrayList<Product>();
@@ -149,6 +150,10 @@ public class MainOverviewActivity extends AppCompatActivity {
 
 
     public void gotoOverview(View view) {
+        EditText e = (EditText) findViewById(R.id.table_number);
+        String val = e.getText().toString();
+
+        SharedPrefHelper.putString(getApplicationContext(), "tableNr", val);
         Intent intent = new Intent(this, PrintOverviewActivity.class);
         startActivity(intent);
     }

@@ -28,7 +28,6 @@ public class SharedPrefHelper {
 
     public static List<Product> getPrintItems(Context context) {
         SharedPreferences prefs = context.getSharedPreferences("cart", 0);
-        SharedPreferences.Editor editor = prefs.edit();
 
         String productstr = prefs.getString("printItems", null);
         Gson gson = new Gson();
@@ -48,4 +47,18 @@ public class SharedPrefHelper {
 
     }
 
+    public static void putString(Context context, String name, String value) {
+        SharedPreferences prefs = context.getSharedPreferences("cart", 0);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putString(name, value);
+        editor.commit();
+    }
+
+
+    public static String getString(Context context, String name) {
+        SharedPreferences prefs = context.getSharedPreferences("cart", 0);
+        return prefs.getString(name, null);
+
+    }
 }
