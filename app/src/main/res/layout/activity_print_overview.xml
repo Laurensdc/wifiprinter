@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             app:fabSize="normal"
-            app:srcCompat="@android:drawable/ic_menu_upload"
+            app:srcCompat="@android:drawable/ic_menu_send"
             android:layout_margin="12dp"
             android:id="@+id/floatingActionButton3"
             android:onClick="printWithPOSPrinterDriverEsc"

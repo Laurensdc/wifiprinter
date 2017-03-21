@@ -6,12 +6,12 @@ package entities;
 
 public class Product {
     private String name;
-    private float price_excl;
-    private float price_incl;
+    private double price_excl;
+    private double price_incl;
     private String category;
     private int count;
 
-    public Product(String name, float price_excl, float price_incl, String category) {
+    public Product(String name, double price_excl, double price_incl, String category) {
         this.category = category;
         this.price_excl = price_excl;
         this.price_incl = price_incl;
@@ -44,7 +44,7 @@ public class Product {
     }
 
 
-    public float getPrice_excl() {
+    public double getPrice_excl() {
         return price_excl;
     }
 
@@ -52,7 +52,7 @@ public class Product {
         this.price_excl = price_excl;
     }
 
-    public float getPrice_incl() {
+    public double getPrice_incl() {
         return price_incl;
     }
 
