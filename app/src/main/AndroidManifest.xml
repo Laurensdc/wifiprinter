@@ -8,12 +8,12 @@
         android:name=".MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="Restaurant Order Printer"
+        android:label="Order &amp; Print"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainOverviewActivity"
-            android:label="Restaurant Order Printer"
+            android:label="Order &amp; Print"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

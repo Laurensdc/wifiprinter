@@ -53,8 +53,8 @@ public class PrintOverviewActivity extends AppCompatActivity {
         for(int i = 0; i < products.size(); i++) {
             TextView t = new TextView(this);
             t.setText(products.get(i).getName() + " x " + products.get(i).getCount()
-                    + "\nPrice excl: " + Rounder.round(products.get(i).getPrice_excl(), 2)
-                    + "\nPrice incl: " + Rounder.round(products.get(i).getPrice_incl(), 2)
+                    + "\nPrice excl: " + Rounder.round(products.get(i).getPrice_excl())
+                    + "\nPrice incl: " + Rounder.round(products.get(i).getPrice_incl())
                     + "\n\n");
             theLayout.addView(t);
 
@@ -127,8 +127,8 @@ public class PrintOverviewActivity extends AppCompatActivity {
         double totalPriceIncl = 0;
 
         for(int i = 0; i < products.size(); i++) {
-            double priceEx = Rounder.round(products.get(i).getPrice_excl(), 2);
-            double priceInc = Rounder.round(products.get(i).getPrice_incl(), 2);
+            double priceEx = products.get(i).getPrice_excl();
+            double priceInc = products.get(i).getPrice_incl();
 
             for(int j = 0; j < CHARCOUNT_BIG; j++) {
                 strb.append("-");
@@ -136,16 +136,16 @@ public class PrintOverviewActivity extends AppCompatActivity {
             strb.append("$intro$");
 
             // 2 x 2.15
-            strb.append(products.get(i).getCount() + " x " + EURO + Rounder.round(products.get(i).getPrice_excl(), 2));
+            strb.append(products.get(i).getCount() + " x " + EURO + Rounder.round(products.get(i).getPrice_excl()));
             strb.append("$intro$");
 
             // All Star Product                 4.30
-            String totalPriceForThisProduct = (products.get(i).getCount() * Rounder.round(products.get(i).getPrice_excl(), 2)) + "";
+            String totalPriceForThisProduct = Rounder.round(products.get(i).getCount() * products.get(i).getPrice_excl());
             strb.append(products.get(i).getName() + alignRight((EURO + totalPriceForThisProduct), products.get(i).getName().length()) );
             strb.append("$intro$");
 
-            totalPriceExcl += priceEx;
-            totalPriceIncl += priceInc;
+            totalPriceExcl += (priceEx * products.get(i).getCount());
+            totalPriceIncl += (priceInc * products.get(i).getCount());
 
         }
 
@@ -155,17 +155,17 @@ public class PrintOverviewActivity extends AppCompatActivity {
         strb.append("$intro$");
 
         // Total excl
-        strb.append("Nettoumsatz" + alignRight((EURO + Rounder.round(totalPriceExcl, 2)), ("Nettoumsatz").length()));
+        strb.append("Nettoumsatz" + alignRight((EURO + Rounder.round(totalPriceExcl)), ("Nettoumsatz").length()));
         strb.append("$intro$");
 
         // Tax
-        double tax = Rounder.round(totalPriceIncl - totalPriceExcl, 2);
+        String tax = Rounder.round(totalPriceIncl - totalPriceExcl);
         strb.append("Mwst." + alignRight((EURO + tax), ("Mwst.").length()));
         strb.append("$intro$");
 
 
         // Total incl
-        strb.append("Total" + alignRight((EURO + Rounder.round(totalPriceIncl, 2)), ("Total").length()));
+        strb.append("Total" + alignRight((EURO + Rounder.round(totalPriceIncl)), ("Total").length()));
         strb.append("$intro$");
 
 
