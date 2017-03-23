@@ -13,8 +13,10 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -23,6 +25,8 @@ import java.util.List;
 import entities.Product;
 import helpers.Rounder;
 import helpers.SharedPrefHelper;
+
+import static android.media.CamcorderProfile.get;
 
 public class PrintOverviewActivity extends AppCompatActivity {
 
@@ -48,17 +52,64 @@ public class PrintOverviewActivity extends AppCompatActivity {
 
         if(products == null) products = new ArrayList<>();
 
+        // Adding all dynamically created textviews to an arrayList, so we can edit the text later
+        // When pressing + or - buttons
+        final ArrayList<TextView> textviews = new ArrayList<>();
+
         // Dynamically add textviews
         for(int i = 0; i < products.size(); i++) {
-            TextView t = new TextView(this);
-            t.setText(products.get(i).getName() + " x " + products.get(i).getCount()
-                    + "\nPrice excl: " + Rounder.round(products.get(i).getPrice_excl())
-                    + "\nPrice incl: " + Rounder.round(products.get(i).getPrice_incl())
-                    + "\n\n");
-            theLayout.addView(t);
+            // Create new horizontal linear layout
+            LinearLayout row = new LinearLayout(this);
+            row.setOrientation(LinearLayout.HORIZONTAL);
 
+            TextView t = new TextView(this);
+            t.setText(printOverviewItemText(products.get(i)));
+
+            row.addView(t);
+            textviews.add(t);
+
+            final int i2 = i;
+            Button buttonPlus = new Button(this);
+            buttonPlus.setText("+");
+            buttonPlus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Product p = products.get(i2);
+                    products.remove(i2);
+                    p.increaseCount();
+                    products.add(p);
+
+                    textviews.get(i2).setText(printOverviewItemText(products.get(i2)));
+
+                }
+            });
+            row.addView(buttonPlus);
+
+            Button buttonMinus = new Button(this);
+            buttonMinus.setText("-");
+            buttonMinus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Product p = products.get(i2);
+                    products.remove(i2);
+                    p.decreaseCount();
+                    products.add(p);
+
+                    textviews.get(i2).setText(printOverviewItemText(products.get(i2)));
+
+                }
+            });
+            row.addView(buttonMinus);
+            theLayout.addView(row);
         }
 
+    }
+
+    private String printOverviewItemText(Product p) {
+        return (p.getName() + " x " + p.getCount()
+                + "\nPrice incl: €" + Rounder.round(p.getPrice_incl())
+                + "\nReference nr: " + p.getReference()
+                + "\n\n");
     }
 
     @Override

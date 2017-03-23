@@ -77,6 +77,7 @@ public class MainOverviewActivity extends AppCompatActivity {
                             obj.getString("name_prod"),
                             Float.parseFloat(obj.getString("price_prod_excl")),
                             Float.parseFloat(obj.getString("price_prod_incl")),
+                            obj.getString("reference_prod"),
                             catname
                     ));
 
@@ -120,6 +121,7 @@ public class MainOverviewActivity extends AppCompatActivity {
                             products.remove(prod);
                             prod.increaseCount();
                             products.add(prod);
+
                         }
                         // Otherwise add the product to print overview list
                         else {

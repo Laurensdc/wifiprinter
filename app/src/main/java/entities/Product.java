@@ -11,11 +11,15 @@ public class Product {
     private String category;
     private int count;
 
-    public Product(String name, double price_excl, double price_incl, String category) {
+
+    private String reference;
+
+    public Product(String name, double price_excl, double price_incl, String reference, String category) {
         this.category = category;
         this.price_excl = price_excl;
         this.price_incl = price_incl;
         this.name = name;
+        this.reference = reference;
         this.count = 1;
     }
 
@@ -43,6 +47,13 @@ public class Product {
         this.name = name;
     }
 
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
 
     public double getPrice_excl() {
         return price_excl;

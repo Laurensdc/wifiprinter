@@ -29,6 +29,7 @@ try {
                         catl.name AS 'name_cat',
                         p.id_product AS 'id_prod',
                         pl.name AS 'name_prod',
+                        p.reference AS 'reference_prod',
                         ROUND(p.price, 2) AS 'price_prod_excl',
                         ROUND(p.price * (COALESCE(ptx.rate, 0) / 100 + 1), 2) AS 'price_prod_incl',
                         pl.description_short AS 'description_prod'
