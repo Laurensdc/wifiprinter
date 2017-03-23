@@ -71,15 +71,19 @@ public class PrintOverviewActivity extends AppCompatActivity {
             final int i2 = i;
             Button buttonPlus = new Button(this);
             buttonPlus.setText("+");
+
             buttonPlus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Product p = products.get(i2);
-                    products.remove(i2);
-                    p.increaseCount();
-                    products.add(p);
 
-                    textviews.get(i2).setText(printOverviewItemText(products.get(i2)));
+                    // Todo: Find a better way to do this
+
+                    p.increaseCount();
+                    products.set(i2, p);
+                    Log.d("Button plus", textviews.get(i2).getText().toString());
+
+                    textviews.get(i2).setText(printOverviewItemText(p));
 
                 }
             });
@@ -87,22 +91,22 @@ public class PrintOverviewActivity extends AppCompatActivity {
 
             Button buttonMinus = new Button(this);
             buttonMinus.setText("-");
+
             buttonMinus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Product p = products.get(i2);
-                    products.remove(i2);
-                    p.decreaseCount();
-                    products.add(p);
 
-                    textviews.get(i2).setText(printOverviewItemText(products.get(i2)));
+                    p.decreaseCount();
+                    products.set(i2, p);
+
+                    textviews.get(i2).setText(printOverviewItemText(p));
 
                 }
             });
             row.addView(buttonMinus);
             theLayout.addView(row);
         }
-
     }
 
     private String printOverviewItemText(Product p) {
@@ -114,6 +118,7 @@ public class PrintOverviewActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+
 
         super.onResume();
     }
