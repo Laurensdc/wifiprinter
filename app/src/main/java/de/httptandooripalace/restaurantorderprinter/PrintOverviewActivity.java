@@ -32,7 +32,6 @@ public class PrintOverviewActivity extends AppCompatActivity {
 
     private final String INITIATE = "·27··64·"; // ESC @
     private final String CHAR_TABLE_EURO = "·27··116··19·"; // ESC t 19 -- 19 for euro table
-
     private final String EURO = "·213·";
 
     @Override
@@ -59,7 +58,6 @@ public class PrintOverviewActivity extends AppCompatActivity {
             theLayout.addView(t);
 
         }
-
 
     }
 

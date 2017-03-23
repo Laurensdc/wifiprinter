@@ -3,7 +3,6 @@
 require("config.php");
 
 
-
 // get the HTTP method, path and body of the request
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -24,11 +23,8 @@ try {
     // set the PDO error mode to exception
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-
-
-
     $stmt = $conn->prepare("SELECT
-    
+
                         cat.id_category AS 'id_cat',
                         catl.name AS 'name_cat',
                         p.id_product AS 'id_prod',
@@ -52,8 +48,11 @@ try {
     $stmt->execute();
     $result = $stmt->fetchAll();
 
+
+
     header('Content-Type: application/json');
-    echo json_encode($result);
+    echo json_encode(utf8ize($result));
+
     die();
 
 }
@@ -61,3 +60,15 @@ catch(PDOException $e) {
     echo "Error api: " . $e->getMessage();
 }
 $conn = null;
+
+
+function utf8ize($d) {
+    if (is_array($d)) {
+        foreach ($d as $k => $v) {
+            $d[$k] = utf8ize($v);
+        }
+    } else if (is_string ($d)) {
+        return utf8_encode($d);
+    }
+    return $d;
+}
