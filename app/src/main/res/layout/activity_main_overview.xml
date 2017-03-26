@@ -38,18 +38,20 @@
         android:orientation="vertical"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        >
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:orientation="horizontal"
             >
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Table number:"
-                android:paddingLeft="20dp"/>
+                android:paddingLeft="20dp"
+                android:textAppearance="@android:style/TextAppearance.Holo.Medium" />
 
             <EditText
                 android:layout_width="wrap_content"
@@ -74,7 +76,7 @@
 
             <ExpandableListView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="433dp"
                 android:id="@+id/overview_main"
 
                 />
@@ -84,9 +86,6 @@
         </android.support.v4.widget.SwipeRefreshLayout>
 
     </LinearLayout>
-
-
-
 
 
 </RelativeLayout>

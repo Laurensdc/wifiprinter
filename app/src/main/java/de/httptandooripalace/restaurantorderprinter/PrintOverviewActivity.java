@@ -11,10 +11,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +28,7 @@ import entities.Product;
 import helpers.Rounder;
 import helpers.SharedPrefHelper;
 
+import static android.R.attr.button;
 import static android.media.CamcorderProfile.get;
 
 public class PrintOverviewActivity extends AppCompatActivity {
@@ -38,6 +41,9 @@ public class PrintOverviewActivity extends AppCompatActivity {
     private final String CHAR_TABLE_EURO = "·27··116··19·"; // ESC t 19 -- 19 for euro table
     private final String EURO = "·213·";
 
+    private float totalPrice;
+    private TextView totalPriceTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,10 +51,7 @@ public class PrintOverviewActivity extends AppCompatActivity {
 
         // Get the layout
         LinearLayout theLayout = (LinearLayout) findViewById(R.id.listingLayout);
-
         products = SharedPrefHelper.getPrintItems(getApplicationContext());
-
-        Log.d("ya", "ya");
 
         if(products == null) products = new ArrayList<>();
 
@@ -56,21 +59,47 @@ public class PrintOverviewActivity extends AppCompatActivity {
         // When pressing + or - buttons
         final ArrayList<TextView> textviews = new ArrayList<>();
 
+        totalPrice = 0;
+
         // Dynamically add textviews
         for(int i = 0; i < products.size(); i++) {
+            totalPrice += products.get(i).getPrice_incl();
+
             // Create new horizontal linear layout
             LinearLayout row = new LinearLayout(this);
             row.setOrientation(LinearLayout.HORIZONTAL);
 
             TextView t = new TextView(this);
+        //    t.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             t.setText(printOverviewItemText(products.get(i)));
+            t.setTextSize(16f);
 
             row.addView(t);
             textviews.add(t);
 
+
+//            // Add spacer to align buttons to the right
+//            View spacingView = new View(this);
+//            LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
+//                    LinearLayout.LayoutParams.MATCH_PARENT,
+//                    LinearLayout.LayoutParams.MATCH_PARENT,
+//                    2.0f
+//            );
+//            spacingView.setLayoutParams(p);
+//            row.addView(spacingView);
+
+            // Buttons
+            LinearLayout buttonLayout = new LinearLayout(this);
+            buttonLayout.setOrientation(LinearLayout.VERTICAL);
+
             final int i2 = i;
+
             Button buttonPlus = new Button(this);
             buttonPlus.setText("+");
+            buttonPlus.setMinimumWidth(0);
+            buttonPlus.setMinimumHeight(0);
+            buttonPlus.setWidth(100);
+            buttonPlus.setHeight(100);
 
             buttonPlus.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -78,16 +107,16 @@ public class PrintOverviewActivity extends AppCompatActivity {
                     Product p = products.get(i2);
 
                     // Todo: Find a better way to do this
-
                     p.increaseCount();
                     products.set(i2, p);
                     Log.d("Button plus", textviews.get(i2).getText().toString());
-
                     textviews.get(i2).setText(printOverviewItemText(p));
 
+                    totalPrice += p.getPrice_incl();
+                    totalPriceTextView.setText("Total: €" + Rounder.round(totalPrice));
                 }
             });
-            row.addView(buttonPlus);
+            buttonLayout.addView(buttonPlus);
 
             Button buttonMinus = new Button(this);
             buttonMinus.setText("-");
@@ -97,51 +126,53 @@ public class PrintOverviewActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Product p = products.get(i2);
 
+                    if(p.getCount() < 1) return;
+
                     p.decreaseCount();
                     products.set(i2, p);
-
                     textviews.get(i2).setText(printOverviewItemText(p));
+
+                    totalPrice -= p.getPrice_incl();
+                    totalPriceTextView.setText("Total: €" + Rounder.round(totalPrice));
 
                 }
             });
-            row.addView(buttonMinus);
+            buttonLayout.addView(buttonMinus);
+            row.addView(buttonLayout);
             theLayout.addView(row);
         }
+
+        totalPriceTextView = new TextView(this);
+        totalPriceTextView.setText("Total: €" + Rounder.round(totalPrice));
+        totalPriceTextView.setTextSize(20f);
+        theLayout.addView(totalPriceTextView);
     }
 
     private String printOverviewItemText(Product p) {
         return (p.getName() + " x " + p.getCount()
-                + "\nPrice incl: €" + Rounder.round(p.getPrice_incl())
-                + "\nReference nr: " + p.getReference()
+                + "\nPrice incl: €" + Rounder.round(p.getPrice_incl() * p.getCount())
+                + "\nRef: " + p.getReference()
                 + "\n\n");
     }
 
     @Override
     protected void onResume() {
-
-
         super.onResume();
     }
 
     @Override
     protected void onPause() {
-
         super.onPause();
-//
-//        LinearLayout ll = (LinearLayout) findViewById(R.id.listingLayout);
-//        ll.removeAllViews();
 
     }
 
     // Delete the print overview and refresh activity
     public void deletePrintOverview(View view) {
-
         SharedPrefHelper.deleteSharedPrefs(getApplicationContext());
         finish();
         startActivity(getIntent());
 
     }
-
 
     private String alignRight(String s) {
         int length = s.length();
@@ -167,7 +198,6 @@ public class PrintOverviewActivity extends AppCompatActivity {
 
     public void printWithPOSPrinterDriverEsc(View view) {
         String tableNr = SharedPrefHelper.getString(getApplicationContext(), "tableNr");
-
         StringBuilder strb = new StringBuilder(" $intro$");
 
         strb.append(INITIATE);
@@ -181,6 +211,8 @@ public class PrintOverviewActivity extends AppCompatActivity {
         double totalPriceIncl = 0;
 
         for(int i = 0; i < products.size(); i++) {
+            if(products.get(i).getCount() < 1) continue;
+
             double priceEx = products.get(i).getPrice_excl();
             double priceInc = products.get(i).getPrice_incl();
 

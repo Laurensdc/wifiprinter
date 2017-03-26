@@ -77,7 +77,7 @@ public class MainOverviewActivity extends AppCompatActivity {
                             obj.getString("name_prod"),
                             Float.parseFloat(obj.getString("price_prod_excl")),
                             Float.parseFloat(obj.getString("price_prod_incl")),
-                            obj.getString("reference_prod"),
+                            stripCommaAtEnd(obj.getString("reference_prod")),
                             catname
                     ));
 
@@ -104,42 +104,42 @@ public class MainOverviewActivity extends AppCompatActivity {
                 public boolean onChildClick(ExpandableListView parent, View v,
                                             int groupPosition, int childPosition, long id) {
 
-                    try {
-                        // Fetch properties of tapped item
-                        String cat = catlist.get(groupPosition);
-                        Product prod = prodlist2.get(catlist.get(groupPosition)).get(childPosition);
+                try {
+                    // Fetch properties of tapped item
+                    String cat = catlist.get(groupPosition);
+                    Product prod = prodlist2.get(catlist.get(groupPosition)).get(childPosition);
 
-                        List<Product> products = SharedPrefHelper.getPrintItems(getApplicationContext());
-                        if(products == null) products = new ArrayList<>();
+                    List<Product> products = SharedPrefHelper.getPrintItems(getApplicationContext());
+                    if(products == null) products = new ArrayList<>();
 
-                        Log.d("Product", prod.toString());
-                        Log.d("Products array helper", products.toString());
+                    Log.d("Product", prod.toString());
+                    Log.d("Products array helper", products.toString());
 
 
-                        // If item is already in the list, just increase the count
-                        if(products.contains(prod)) {
-                            products.remove(prod);
-                            prod.increaseCount();
-                            products.add(prod);
+                    // If item is already in the list, just increase the count
+                    if(products.contains(prod)) {
+                        products.remove(prod);
+                        prod.increaseCount();
+                        products.add(prod);
 
-                        }
-                        // Otherwise add the product to print overview list
-                        else {
-                            products.add(prod);
-                        }
-                        SharedPrefHelper.setPrintItems(getApplicationContext(), products);
-
-                        // Toast it
-                        if(currentToast != null) currentToast.cancel();
-                        currentToast = Toast.makeText(getApplicationContext(), "Added product " + prod.getName(),
-                                Toast.LENGTH_SHORT);
-                        currentToast.show();
-
-                    } catch(Exception ex) {
-                        throw new IllegalArgumentException(ex.getMessage());
                     }
+                    // Otherwise add the product to print overview list
+                    else {
+                        products.add(prod);
+                    }
+                    SharedPrefHelper.setPrintItems(getApplicationContext(), products);
 
-                    return true;
+                    // Toast it
+                    if(currentToast != null) currentToast.cancel();
+                    currentToast = Toast.makeText(getApplicationContext(), "Added product " + prod.getName(),
+                            Toast.LENGTH_SHORT);
+                    currentToast.show();
+
+                } catch(Exception ex) {
+                    throw new IllegalArgumentException(ex.getMessage());
+                }
+
+                return true;
                 }
             });
         }
@@ -163,6 +163,13 @@ public class MainOverviewActivity extends AppCompatActivity {
 
     }
 
+    public String stripCommaAtEnd(String s) {
+        if(s.equals("") || s == null || s.length() < 1) return "";
+        if(s.charAt(s.length() - 1) == ',') {
+            return s.substring(0, s.length() - 1);
+        }
+        else return s;
+    }
 
     public void gotoOverview(View view) {
         EditText e = (EditText) findViewById(R.id.table_number);
