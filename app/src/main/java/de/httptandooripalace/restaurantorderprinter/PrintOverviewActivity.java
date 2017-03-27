@@ -34,8 +34,7 @@ import static android.media.CamcorderProfile.get;
 public class PrintOverviewActivity extends AppCompatActivity {
 
     private List<Product> products;
-    private WebView mWebView;
-    private final int CHARCOUNT_BIG = 48;
+    private final int CHARCOUNT_BIG = 48; // Amount of characters fit on one printed line, using $big$ format
 
     private final String INITIATE = "·27··64·"; // ESC @
     private final String CHAR_TABLE_EURO = "·27··116··19·"; // ESC t 19 -- 19 for euro table
@@ -58,23 +57,39 @@ public class PrintOverviewActivity extends AppCompatActivity {
         // Adding all dynamically created textviews to an arrayList, so we can edit the text later
         // When pressing + or - buttons
         final ArrayList<TextView> textviews = new ArrayList<>();
-
         totalPrice = 0;
 
         // Dynamically add textviews
         for(int i = 0; i < products.size(); i++) {
             totalPrice += products.get(i).getPrice_incl();
 
+            /* Programmatic layout structure */
+            // Horizontal linear layout: row
+                // Relative layout relativeRow
+                    // Textview
+                    // LinearLayout buttonLayout
+                        // Button +
+                        // Button -
+
             // Create new horizontal linear layout
             LinearLayout row = new LinearLayout(this);
             row.setOrientation(LinearLayout.HORIZONTAL);
 
+            RelativeLayout relativeRow = new RelativeLayout(this);
+            relativeRow.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            row.addView(relativeRow);
+
             TextView t = new TextView(this);
-        //    t.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            t.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             t.setText(printOverviewItemText(products.get(i)));
             t.setTextSize(16f);
+            t.setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
 
-            row.addView(t);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            t.setLayoutParams(params);
+
+            relativeRow.addView(t);
             textviews.add(t);
 
 
@@ -91,6 +106,12 @@ public class PrintOverviewActivity extends AppCompatActivity {
             // Buttons
             LinearLayout buttonLayout = new LinearLayout(this);
             buttonLayout.setOrientation(LinearLayout.VERTICAL);
+
+
+            RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+           // params.addRule(RelativeLayout.RIGHT_OF, t.getId());
+            buttonLayout.setLayoutParams(params2);
 
             final int i2 = i;
 
@@ -138,7 +159,7 @@ public class PrintOverviewActivity extends AppCompatActivity {
                 }
             });
             buttonLayout.addView(buttonMinus);
-            row.addView(buttonLayout);
+            relativeRow.addView(buttonLayout);
             theLayout.addView(row);
         }
 
