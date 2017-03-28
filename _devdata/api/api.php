@@ -40,7 +40,7 @@ try {
                 INNER JOIN  ps_category_lang catl ON cat.id_category = catl.id_category
                 INNER JOIN  ps_tax_rule ptxgrp ON ptxgrp.id_tax_rules_group = p.id_tax_rules_group
                 INNER JOIN  ps_tax ptx ON ptx.id_tax = ptxgrp.id_tax
-                ORDER BY cat.id_category
+                ORDER BY catl.name ASC
 
                 ;
 
