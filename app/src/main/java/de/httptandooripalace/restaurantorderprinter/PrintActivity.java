@@ -1,37 +1,28 @@
 package de.httptandooripalace.restaurantorderprinter;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.print.PrintAttributes;
-import android.print.PrintDocumentAdapter;
-import android.print.PrintJob;
-import android.print.PrintManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 import entities.Product;
+import helpers.PrintAdapter;
 import helpers.Rounder;
 import helpers.SharedPrefHelper;
 
-import static android.R.attr.button;
 import static android.media.CamcorderProfile.get;
 
-public class PrintOverviewActivity extends AppCompatActivity {
+public class PrintActivity extends AppCompatActivity {
 
     private List<Product> products;
     private final int CHARCOUNT_BIG = 48; // Amount of characters fit on one printed line, using $big$ format
@@ -46,12 +37,22 @@ public class PrintOverviewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_print_overview);
+        setContentView(R.layout.print_activity);
 
         // Get the layout
-        LinearLayout theLayout = (LinearLayout) findViewById(R.id.listingLayout);
+        ListView view = (ListView) findViewById(R.id.listingLayout);
         products = SharedPrefHelper.getPrintItems(getApplicationContext());
 
+        PrintAdapter adapter = new PrintAdapter(getApplicationContext(), products);
+        view.setAdapter(adapter);
+
+//        totalPriceTextView = new TextView(this);
+//        totalPriceTextView.setText("Total: €" + Rounder.round(totalPrice));
+//        totalPriceTextView.setTextSize(20f);
+//        view.addView(totalPriceTextView);
+    }
+
+    private void oldCode(LinearLayout theLayout) {
         if(products == null) products = new ArrayList<>();
 
         // Adding all dynamically created textviews to an arrayList, so we can edit the text later
@@ -65,11 +66,11 @@ public class PrintOverviewActivity extends AppCompatActivity {
 
             /* Programmatic layout structure */
             // Horizontal linear layout: row
-                // Relative layout relativeRow
-                    // Textview
-                    // LinearLayout buttonLayout
-                        // Button +
-                        // Button -
+            // Relative layout relativeRow
+            // Textview
+            // LinearLayout buttonLayout
+            // Button +
+            // Button -
 
             // Create new horizontal linear layout
             LinearLayout row = new LinearLayout(this);
@@ -110,7 +111,7 @@ public class PrintOverviewActivity extends AppCompatActivity {
 
             RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-           // params.addRule(RelativeLayout.RIGHT_OF, t.getId());
+            // params.addRule(RelativeLayout.RIGHT_OF, t.getId());
             buttonLayout.setLayoutParams(params2);
 
             final int i2 = i;
@@ -135,6 +136,9 @@ public class PrintOverviewActivity extends AppCompatActivity {
 
                     totalPrice += p.getPrice_incl();
                     totalPriceTextView.setText("Total: €" + Rounder.round(totalPrice));
+
+
+
                 }
             });
             buttonLayout.addView(buttonPlus);
@@ -163,10 +167,6 @@ public class PrintOverviewActivity extends AppCompatActivity {
             theLayout.addView(row);
         }
 
-        totalPriceTextView = new TextView(this);
-        totalPriceTextView.setText("Total: €" + Rounder.round(totalPrice));
-        totalPriceTextView.setTextSize(20f);
-        theLayout.addView(totalPriceTextView);
     }
 
     private String printOverviewItemText(Product p) {

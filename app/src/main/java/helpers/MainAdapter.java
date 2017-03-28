@@ -10,9 +10,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import de.httptandooripalace.restaurantorderprinter.R;
 import entities.Product;
@@ -21,15 +19,15 @@ import entities.Product;
  * Created by uizen on 14.03.2017.
  */
 
-public class MainOverviewAdapter extends BaseExpandableListAdapter {
+public class MainAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
     private ArrayList<String> _listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<Product>> _listDataChild;
 
-    public MainOverviewAdapter(Context context, ArrayList<String> listDataHeader,
-                                 HashMap<String, List<Product>> listChildData) {
+    public MainAdapter(Context context, ArrayList<String> listDataHeader,
+                       HashMap<String, List<Product>> listChildData) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
@@ -58,10 +56,9 @@ public class MainOverviewAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.main_list_item, null);
         }
 
-        TextView txtListChild = (TextView) convertView
-                .findViewById(R.id.prod_title);
-
+        TextView txtListChild = (TextView) convertView.findViewById(R.id.prod_title);
         txtListChild.setText(childText.getName());
+
         return convertView;
     }
 

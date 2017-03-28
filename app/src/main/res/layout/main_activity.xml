@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:padding="0dp"
     android:orientation="vertical"
-    tools:context="de.httptandooripalace.restaurantorderprinter.MainOverviewActivity"
+    tools:context="de.httptandooripalace.restaurantorderprinter.MainActivity"
     android:weightSum="1">
 
     <!--<EditText-->
@@ -43,29 +43,37 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:onClick="setFocusToTableNumber"
             >
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Table number:"
-                android:paddingLeft="20dp"
+                android:paddingLeft="12dp"
                 android:textAppearance="@android:style/TextAppearance.Holo.Medium" />
 
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:layout_marginLeft="15dp"
-                android:minWidth="50dp"
+                android:layout_marginLeft="12dp"
+                android:background="@android:color/transparent"
                 android:maxLines="1"
                 android:imeOptions="actionDone"
+                android:minWidth="62dp"
                 android:id="@+id/table_number"
-                android:hint="10"
+                android:hint="#"
                 />
 
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorAccent"/>
 
         <android.support.v4.widget.SwipeRefreshLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -78,7 +86,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="433dp"
                 android:id="@+id/overview_main"
-
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:clickable="true"
+               
                 />
 
 

@@ -1,5 +1,6 @@
 package de.httptandooripalace.restaurantorderprinter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -7,31 +8,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
-
-import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import entities.Product;
 import helpers.HttpHandler;
-import helpers.MainOverviewAdapter;
+import helpers.MainAdapter;
 import helpers.SharedPrefHelper;
 
-import static android.R.attr.name;
 
-
-public class MainOverviewActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     private Toast currentToast;
 
@@ -39,12 +34,12 @@ public class MainOverviewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_overview);
+        setContentView(R.layout.main_activity);
 
 
         try {
             // Todo: Save function in configuration
-            new HttpHandler(this.getApplicationContext()).execute("http://print.nepali.mobi/printer/api.php?function=getcategories").get();
+            new HttpHandler(this.getApplicationContext()).execute("http://print.nepali.mobi/printer/api.php").get();
 
 
             // Load data from http request
@@ -86,14 +81,10 @@ public class MainOverviewActivity extends AppCompatActivity {
                 }
             }
 
-            // Get the grid view and bind array
+            // Get the grid view and bind array adapter
             ExpandableListView view = (ExpandableListView) findViewById(R.id.overview_main);
-
-            MainOverviewAdapter adapter = new MainOverviewAdapter(this, catlist, prodlist);
-
-            // Bind arrayAdapter to view
+            MainAdapter adapter = new MainAdapter(this, catlist, prodlist);
             view.setAdapter(adapter);
-
 
             final HashMap<String, List<Product>> prodlist2 = prodlist;
 
@@ -103,7 +94,6 @@ public class MainOverviewActivity extends AppCompatActivity {
                 @Override
                 public boolean onChildClick(ExpandableListView parent, View v,
                                             int groupPosition, int childPosition, long id) {
-
                 try {
                     // Fetch properties of tapped item
                     String cat = catlist.get(groupPosition);
@@ -112,16 +102,12 @@ public class MainOverviewActivity extends AppCompatActivity {
                     List<Product> products = SharedPrefHelper.getPrintItems(getApplicationContext());
                     if(products == null) products = new ArrayList<>();
 
-                    Log.d("Product", prod.toString());
-                    Log.d("Products array helper", products.toString());
-
-
                     // If item is already in the list, just increase the count
                     if(products.contains(prod)) {
+                        // Todo: check if this is bugging the main refresh count
                         products.remove(prod);
                         prod.increaseCount();
                         products.add(prod);
-
                     }
                     // Otherwise add the product to print overview list
                     else {
@@ -176,8 +162,26 @@ public class MainOverviewActivity extends AppCompatActivity {
         String val = e.getText().toString();
 
         SharedPrefHelper.putString(getApplicationContext(), "tableNr", val);
-        Intent intent = new Intent(this, PrintOverviewActivity.class);
+        Intent intent = new Intent(this, PrintActivity.class);
         startActivity(intent);
     }
+
+    public void setFocusToTableNumber(View view) {
+        EditText e = (EditText) findViewById(R.id.table_number);
+        e.requestFocus();
+        // Show keyboard
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(e, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    public void hideSoftKeyboard(View view) {
+
+        InputMethodManager imm =  (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+
+    }
+
+
 
 }
