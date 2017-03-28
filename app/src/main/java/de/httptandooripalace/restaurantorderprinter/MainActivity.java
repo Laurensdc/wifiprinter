@@ -158,6 +158,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void gotoOverview(View view) {
+//        if(SharedPrefHelper.getPrintItems(getApplicationContext()) == null) { // No Products added
+//            Toast.makeText(getApplicationContext(), "Please add products to bill",
+//                    Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+
         EditText e = (EditText) findViewById(R.id.table_number);
         String val = e.getText().toString();
 

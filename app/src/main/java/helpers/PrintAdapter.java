@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.httptandooripalace.restaurantorderprinter.R;
@@ -24,11 +25,13 @@ public class PrintAdapter extends BaseAdapter {
 
     public PrintAdapter(Context c, List<Product> products) {
         context = c;
+        this.products = new ArrayList<>();
         this.products = products;
     }
 
     @Override
     public int getCount() {
+        if(products == null) return 0;
         return products.size();
     }
 
@@ -53,8 +56,8 @@ public class PrintAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.print_list_item, null);
         }
 
-        TextView tv = (TextView) convertView.findViewById(R.id.product_description);
-        tv.setText(product.getName());
+        final TextView tv = (TextView) convertView.findViewById(R.id.product_description);
+        tv.setText(productText(product));
 
         final int pos = position;
         Button btnplus = (Button) convertView.findViewById(R.id.btnplus);
@@ -64,6 +67,7 @@ public class PrintAdapter extends BaseAdapter {
                 Product p = products.get(pos);
                 p.increaseCount();
                 products.set(pos, p);
+                tv.setText(productText(p));
             }
         });
 
@@ -75,9 +79,25 @@ public class PrintAdapter extends BaseAdapter {
                 if(p.getCount() < 1) return;
                 p.decreaseCount();
                 products.set(pos, p);
+                tv.setText(productText(p));
             }
         });
 
         return convertView;
+    }
+
+    private String productText(Product p) {
+        return (p.getName() + " x " + p.getCount()
+                + "\nPrice incl: €" + Rounder.round(p.getPrice_incl() * p.getCount())
+                + "\nRef: " + p.getReference()
+                + "\n\n");
+    }
+
+    private float totalPrice(List<Product> prodlist) {
+        float total = 0;
+        for(int i = 0; i < prodlist.size(); i++) {
+            total += prodlist.get(i).getPrice_incl();
+        }
+        return total;
     }
 }

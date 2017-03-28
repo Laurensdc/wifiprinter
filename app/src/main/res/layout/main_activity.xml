@@ -53,7 +53,8 @@
                 android:layout_height="wrap_content"
                 android:text="Table number:"
                 android:paddingLeft="12dp"
-                android:textAppearance="@android:style/TextAppearance.Holo.Medium" />
+                android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+                android:textStyle="bold"/>
 
             <EditText
                 android:layout_width="wrap_content"
@@ -61,6 +62,7 @@
                 android:inputType="number"
                 android:layout_marginLeft="12dp"
                 android:background="@android:color/transparent"
+                android:textStyle="bold"
                 android:maxLines="1"
                 android:imeOptions="actionDone"
                 android:minWidth="62dp"
@@ -89,7 +91,7 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:clickable="true"
-               
+
                 />
 
 

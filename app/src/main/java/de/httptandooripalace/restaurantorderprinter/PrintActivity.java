@@ -39,17 +39,19 @@ public class PrintActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.print_activity);
 
-        // Get the layout
-        ListView view = (ListView) findViewById(R.id.listingLayout);
+        // Get products
         products = SharedPrefHelper.getPrintItems(getApplicationContext());
 
+        // Bind products to print overview
+        ListView view = (ListView) findViewById(R.id.listingLayout);
         PrintAdapter adapter = new PrintAdapter(getApplicationContext(), products);
         view.setAdapter(adapter);
 
-//        totalPriceTextView = new TextView(this);
-//        totalPriceTextView.setText("Total: €" + Rounder.round(totalPrice));
-//        totalPriceTextView.setTextSize(20f);
-//        view.addView(totalPriceTextView);
+
+        totalPriceTextView = (TextView) findViewById(R.id.print_table_number);
+        totalPriceTextView.setText("Total: €" + Rounder.round(totalPrice));
+        totalPriceTextView.setTextSize(20f);
+
     }
 
     private void oldCode(LinearLayout theLayout) {
