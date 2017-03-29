@@ -172,7 +172,7 @@ public class PrintActivity extends AppCompatActivity {
 
         // Tax
         String tax = Rounder.round(totalPriceIncl - totalPriceExcl);
-        strb.append("Mwst." + alignRight((EURO + tax), ("Mwst.").length()));
+        strb.append("MwSt." + alignRight((EURO + tax), ("Mwst.").length()));
         strb.append("$intro$");
 
 
@@ -184,6 +184,8 @@ public class PrintActivity extends AppCompatActivity {
         strb.append("$intro$$intro$$intro$$intro$$intro$$intro$$intro$$intro$$intro$$cut$");
 
         Print(strb.toString());
+
+        deletePrintOverview(view);
 
     }
 
@@ -197,6 +199,8 @@ public class PrintActivity extends AppCompatActivity {
         intentPrint.putExtra("printer_port", "9100");
         intentPrint.setType("text/plain");
         this.startActivity(intentPrint);
+
+
     }
 
 

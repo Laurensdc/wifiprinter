@@ -1,12 +1,20 @@
 <resources>
     <string name="app_name">Order &amp; Print</string>
     <string name="table_number">Table number</string>
+
+    <!-- Settings menu -->
     <string name="added_products">Added product</string>
     <string name="restaurant_name">Restaurant name</string>
     <string name="address">Address</string>
     <string name="telephone_nr">Tel. number</string>
     <string name="tax_nr">Tax number</string>
     <string name="extra_line">Extra line</string>
+
+    <!-- Print overview -->
+    <string name="prince_incl">Price incl. tax</string>
+    <string name="ref">Ref.</string>
+
+    <!-- Print bill -->
 
 
 </resources>

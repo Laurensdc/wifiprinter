@@ -2,11 +2,20 @@
 <resources>
     <string name="app_name">Bestellen &amp; Drücken</string>
     <string name="table_number">Tischnummer</string>
+
+    <!-- Settings menu -->
     <string name="added_products">Produkt hinzugefügt</string>
     <string name="restaurant_name">Restaurant Name</string>
     <string name="address">Adresse</string>
     <string name="telephone_nr">Telefonnummer</string>
     <string name="tax_nr">Steuernummer</string>
     <string name="extra_line">Extra Zeile</string>
+
+    <!-- Print overview -->
+    <string name="prince_incl">Preis inkl. Steuern</string>
+    <string name="ref">Ref.</string>
+
+    <!-- Print bill -->
+
 
 </resources>
