@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Restaurant Order Printer</string>
+    <string name="table_number">Tafelnummer</string>
+
+</resources>
