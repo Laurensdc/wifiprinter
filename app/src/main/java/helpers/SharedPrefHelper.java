@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import entities.Product;
+import entities.Settings;
 
 /**
  * Created by uizen on 3/6/2017.
@@ -22,7 +23,7 @@ public class SharedPrefHelper {
         SharedPreferences prefs = context.getSharedPreferences("cart", 0);
         SharedPreferences.Editor editor = prefs.edit();
         editor.remove("printItems");
-        editor.commit();
+        editor.apply();
     }
 
 
@@ -57,5 +58,23 @@ public class SharedPrefHelper {
         SharedPreferences prefs = context.getSharedPreferences("cart", 0);
         return prefs.getString(name, null);
 
+    }
+
+    public static void saveSettings(Context context, Settings settings) {
+        SharedPreferences prefs = context.getSharedPreferences("cart", 0);
+        SharedPreferences.Editor editor = prefs.edit();
+        Gson gson = new Gson();
+        String prodsstr = gson.toJson(settings);
+        editor.putString("settings", prodsstr);
+        editor.apply();
+    }
+
+    public static Settings loadSettings(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("cart", 0);
+        String settingStr = prefs.getString("settings", null);
+        Gson gson = new Gson();
+        Settings settings = gson.fromJson(settingStr, Settings.class);
+
+        return settings;
     }
 }

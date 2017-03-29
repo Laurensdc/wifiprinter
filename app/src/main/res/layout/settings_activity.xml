@@ -25,6 +25,7 @@
                 android:text="Printer IP"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:width="150dp"
                 android:textSize="16sp" />
 
             <EditText
@@ -32,6 +33,11 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/printer_ip"
                 android:textSize="16sp" />
+
+        </TableRow>
+
+        <TableRow android:background="@color/colorAccent"
+            android:minHeight="1dp">
 
         </TableRow>
 
@@ -43,13 +49,13 @@
                 android:text="Name line 1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:width="150dp"
                 android:textSize="16sp" />
 
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:ems="10"
                 android:id="@+id/name_line_1"
                 android:textSize="16sp" />
         </TableRow>
@@ -62,6 +68,7 @@
                 android:text="Name line 2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:width="150dp"
                 android:textSize="16sp" />
 
             <EditText
@@ -81,13 +88,13 @@
                 android:text="Addr. line 1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:width="150dp"
                 android:textSize="16sp" />
 
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:ems="10"
                 android:id="@+id/addr_line_1"
                 android:textSize="16sp" />
 
@@ -101,6 +108,7 @@
                 android:text="Addr. line 2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:width="150dp"
                 android:textSize="16sp" />
 
             <EditText
@@ -120,6 +128,7 @@
                 android:text="Tel. line"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:width="150dp"
                 android:textSize="16sp" />
 
             <EditText
@@ -140,6 +149,7 @@
                 android:text="Steuer. Nr."
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:width="150dp"
                 android:textSize="16sp" />
 
             <EditText
@@ -159,6 +169,7 @@
                 android:text="Extra line"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:width="150dp"
                 android:textSize="16sp" />
 
             <EditText
