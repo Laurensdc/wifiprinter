@@ -1,9 +1,11 @@
 package de.httptandooripalace.restaurantorderprinter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -15,6 +17,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -25,10 +29,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import entities.Product;
+import entities.Settings;
 import helpers.HttpHandler;
 import helpers.MainAdapter;
 import helpers.SharedPrefHelper;
 
+import static android.R.attr.data;
 import static android.R.attr.x;
 
 
@@ -46,95 +52,113 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             // Todo: Save function in configuration
+
             new HttpHandler(this.getApplicationContext()).execute("http://print.nepali.mobi/printer/api.php").get();
-
-
             // Load data from http request
             final SharedPreferences sharedprefs = getSharedPreferences("cart", 0);
-
             String apiData = sharedprefs.getString("apiData", "");
-            final JSONArray data = new JSONArray(apiData); // Array of JSONObjects from API
 
-            // Convert json data to arrayList to pass it to gridView
-            final ArrayList<String> catlist = new ArrayList<>();
-            HashMap<String, List<Product>> prodlist = new HashMap<>();
 
-            if (data != null) {
-                int len = data.length();
-                for (int i=0;i<len;i++){
-                    JSONObject obj = data.getJSONObject(i);
+            if(apiData.equals("ERROR")) { // No internet or other connection problem with db
+                // Todo: OMG THIS IS SO UGLY REPLACE THIS ASAP
+                ArrayList<String> err = new ArrayList<>();
+                err.add("Error");
+                HashMap<String, List<Product>> msg = new HashMap<>();
+                List<Product> durrr = new ArrayList<Product>();
+                durrr.add(new Product("Could not get information from database.\n" +
+                        "Is your wifi or data activated?", 0, 0, null, null));
+                msg.put("Error", durrr);
+                ExpandableListView view = (ExpandableListView) findViewById(R.id.overview_main);
+                MainAdapter adapter = new MainAdapter(this, err, msg);
+                view.setAdapter(adapter);
 
-                    String catname = obj.getString("name_cat");
-                    // Actual list view data
-                    if(!catlist.contains(catname)) {
-                        catlist.add(catname);
-                    }
-
-                    List<Product> prods = prodlist.get(catname);
-                    if(prods == null) {
-                        prods = new ArrayList<>();
-                    }
-
-                    prods.add(new Product(
-                            obj.getString("name_prod"),
-                            Float.parseFloat(obj.getString("price_prod_excl")),
-                            Float.parseFloat(obj.getString("price_prod_incl")),
-                            stripCommaAtEnd(obj.getString("reference_prod")),
-                            catname
-                    ));
-
-                    prodlist.put(catname, prods);
-
-                }
             }
+            else {
 
-            // Get the grid view and bind array adapter
-            ExpandableListView view = (ExpandableListView) findViewById(R.id.overview_main);
-            MainAdapter adapter = new MainAdapter(this, catlist, prodlist);
-            view.setAdapter(adapter);
+                final JSONArray data = new JSONArray(apiData); // Array of JSONObjects from API
 
-            final HashMap<String, List<Product>> prodlist2 = prodlist;
+                // Convert json data to arrayList to pass it to gridView
+                final ArrayList<String> catlist = new ArrayList<>();
+                HashMap<String, List<Product>> prodlist = new HashMap<>();
 
-            // Listview on child click listener
-            view.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+                if (data != null) {
+                    int len = data.length();
+                    for (int i = 0; i < len; i++) {
+                        JSONObject obj = data.getJSONObject(i);
 
-                @Override
-                public boolean onChildClick(ExpandableListView parent, View v,
-                                            int groupPosition, int childPosition, long id) {
-                try {
-                    // Fetch properties of tapped item
-                    String cat = catlist.get(groupPosition);
-                    Product prod = prodlist2.get(catlist.get(groupPosition)).get(childPosition);
+                        String catname = obj.getString("name_cat");
+                        // Actual list view data
+                        if (!catlist.contains(catname)) {
+                            catlist.add(catname);
+                        }
 
-                    List<Product> products = SharedPrefHelper.getPrintItems(getApplicationContext());
-                    if(products == null) products = new ArrayList<>();
+                        List<Product> prods = prodlist.get(catname);
+                        if (prods == null) {
+                            prods = new ArrayList<>();
+                        }
 
-                    // If item is already in the list, just increase the count
-                    if(products.contains(prod)) {
-                        // Todo: check if this is bugging the main refresh count
-                        products.remove(prod);
-                        prod.increaseCount();
-                        products.add(prod);
+                        prods.add(new Product(
+                                obj.getString("name_prod"),
+                                Float.parseFloat(obj.getString("price_prod_excl")),
+                                Float.parseFloat(obj.getString("price_prod_incl")),
+                                stripCommaAtEnd(obj.getString("reference_prod")),
+                                catname
+                        ));
+
+                        prodlist.put(catname, prods);
+
                     }
-                    // Otherwise add the product to print overview list
-                    else {
-                        products.add(prod);
-                    }
-                    SharedPrefHelper.setPrintItems(getApplicationContext(), products);
-
-                    // Toast it
-                    if(currentToast != null) currentToast.cancel();
-                    currentToast = Toast.makeText(getApplicationContext(), "Added product " + prod.getName(),
-                            Toast.LENGTH_SHORT);
-                    currentToast.show();
-
-                } catch(Exception ex) {
-                    throw new IllegalArgumentException(ex.getMessage());
                 }
 
-                return true;
-                }
-            });
+                // Get the grid view and bind array adapter
+                ExpandableListView view = (ExpandableListView) findViewById(R.id.overview_main);
+                MainAdapter adapter = new MainAdapter(this, catlist, prodlist);
+                view.setAdapter(adapter);
+
+                final HashMap<String, List<Product>> prodlist2 = prodlist;
+
+                // Listview on child click listener
+                view.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+                    @Override
+                    public boolean onChildClick(ExpandableListView parent, View v,
+                                                int groupPosition, int childPosition, long id) {
+                        try {
+                            // Fetch properties of tapped item
+                            String cat = catlist.get(groupPosition);
+                            Product prod = prodlist2.get(catlist.get(groupPosition)).get(childPosition);
+
+                            List<Product> products = SharedPrefHelper.getPrintItems(getApplicationContext());
+                            if (products == null) products = new ArrayList<>();
+
+                            // If item is already in the list, just increase the count
+                            if (products.contains(prod)) {
+                                // Todo: check if this is bugging the main refresh count
+                                products.remove(prod);
+                                prod.increaseCount();
+                                products.add(prod);
+                            }
+                            // Otherwise add the product to print overview list
+                            else {
+                                products.add(prod);
+                            }
+                            SharedPrefHelper.setPrintItems(getApplicationContext(), products);
+
+                            // Toast it
+                            if (currentToast != null) currentToast.cancel();
+                            currentToast = Toast.makeText(getApplicationContext(), "Added product " + prod.getName(),
+                                    Toast.LENGTH_SHORT);
+                            currentToast.show();
+
+                        } catch (Exception ex) {
+                            throw new IllegalArgumentException(ex.getMessage());
+                        }
+
+                        return true;
+                    }
+                });
+
+            }
         }
         catch(Exception ex) {
             throw new IllegalArgumentException(ex.getMessage());

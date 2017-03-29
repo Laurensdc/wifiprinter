@@ -37,6 +37,8 @@ public class PrintActivity extends AppCompatActivity {
 
     private TextView totalPriceTextView;
 
+    private entities.Settings settings;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +46,7 @@ public class PrintActivity extends AppCompatActivity {
 
         // Get products
         products = SharedPrefHelper.getPrintItems(getApplicationContext());
+        settings = SharedPrefHelper.loadSettings(getApplicationContext());
 
         // Bind products to print overview
         ListView view = (ListView) findViewById(R.id.listingLayout);
@@ -68,6 +71,7 @@ public class PrintActivity extends AppCompatActivity {
     }
 
     @Override
+    // Add settings menu icon to toolbar
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
@@ -76,6 +80,7 @@ public class PrintActivity extends AppCompatActivity {
     }
 
     @Override
+    // Open settings menu
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.action_settings:
@@ -96,38 +101,37 @@ public class PrintActivity extends AppCompatActivity {
 
     }
 
-    private String alignRight(String s) {
-        int length = s.length();
-        int paddingLeft = CHARCOUNT_BIG - length;
-        String newstr = "";
-        for(int i = 0; i < paddingLeft; i++) {
-            newstr += " ";
-        }
-        newstr += s;
-        return newstr;
-    }
-
-    private String alignRight(String s, int offsetLeft) {
-        int length = s.length();
-        int paddingLeft = CHARCOUNT_BIG - length;
-        String newstr = "";
-        for(int i = 0; i < paddingLeft - offsetLeft; i++) {
-            newstr += " ";
-        }
-        newstr += s;
-        return newstr;
-    }
 
     public void printWithPOSPrinterDriverEsc(View view) {
         String tableNr = SharedPrefHelper.getString(getApplicationContext(), "tableNr");
-        StringBuilder strb = new StringBuilder(" $intro$");
+        StringBuilder strb = new StringBuilder("$intro$");
 
         strb.append(INITIATE);
         strb.append(CHAR_TABLE_EURO);
 
-        // Todo: save heading in server settings on load it in dynamically
-        strb.append("$bighw$Restaurant Tandoori$intro$$intro$$intro$"); // Todo: table number and other info
-        strb.append("$big$Table nr: " + tableNr + "$intro$$intro$$intro$");
+        strb.append("$bigw$");
+        if(!settings.getNameLine1().equals(""))
+            strb.append(alignCenter(settings.getNameLine1()) + "$intro$");
+        if(!settings.getNameLine2().equals(""))
+            strb.append(alignCenter(settings.getNameLine2()) + "$intro$");
+        if(!settings.getAddrLine1().equals(""))
+            strb.append(alignCenter(settings.getAddrLine1()) + "$intro$");
+        if(!settings.getAddrLine2().equals(""))
+            strb.append(alignCenter(settings.getAddrLine2()) + "$intro$");
+        if(!settings.getTelLine().equals(""))
+            strb.append(alignCenter(settings.getTelLine()) + "$intro$");
+        if(!settings.getExtraLine().equals(""))
+            strb.append(alignCenter(settings.getExtraLine()) + "$intro$");
+
+
+        if(!tableNr.equals("")) {
+            strb.append("$bighw$");
+            strb.append("$intro$");
+            strb.append(alignCenter("Rechnung") + "$intro$" + alignCenter("TISH NR.: " + tableNr) + "$intro$$intro$$intro$");
+        }
+
+        strb.append("$intro$$big$$intro$");
+
 
         double totalPriceExcl = 0;
         double totalPriceIncl = 0;
@@ -188,10 +192,50 @@ public class PrintActivity extends AppCompatActivity {
         intentPrint.setAction(Intent.ACTION_SEND);
         intentPrint.putExtra(Intent.EXTRA_TEXT, dataToPrint);
         intentPrint.putExtra("printer_type_id", "1");// For IP
-        intentPrint.putExtra("printer_ip", "192.168.178.105"); // Todo: dynamic IP from settings
+        intentPrint.putExtra("printer_ip", settings.getPrinterIp());
+//        intentPrint.putExtra("printer_ip", "192.168.178.105");
         intentPrint.putExtra("printer_port", "9100");
         intentPrint.setType("text/plain");
         this.startActivity(intentPrint);
+    }
+
+
+    private String alignRight(String s) {
+        int length = s.length();
+        int paddingLeft = CHARCOUNT_BIG - length;
+        String newstr = "";
+        for(int i = 0; i < paddingLeft; i++) {
+            newstr += " ";
+        }
+        newstr += s;
+        return newstr;
+    }
+
+    private String alignRight(String s, int offsetLeft) {
+        int length = s.length();
+        int paddingLeft = CHARCOUNT_BIG - length;
+        String newstr = "";
+        for(int i = 0; i < paddingLeft - offsetLeft; i++) {
+            newstr += " ";
+        }
+        newstr += s;
+        return newstr;
+    }
+
+    private String alignCenter(String s) {
+        int length = s.length();
+        int totalSpaceLeft = CHARCOUNT_BIG - length;
+        int spaceOnBothSides = totalSpaceLeft / 2;
+        String newstr = "";
+        for(int i = 0; i < spaceOnBothSides; i++) {
+            newstr += " ";
+        }
+        newstr += s;
+        for(int i = 0; i < spaceOnBothSides; i++) {
+            newstr += " ";
+        }
+
+        return newstr;
     }
 
     // Do print job button clicked
@@ -199,8 +243,8 @@ public class PrintActivity extends AppCompatActivity {
     public void printWithQuickPrinter(View view) {
         StringBuilder strb = new StringBuilder();
 
-        // Todo: save heading in server settings on load it in dynamically
-        strb.append("<BIG>Bill<BR><BR>"); // Todo: table number and other info
+
+        strb.append("<BIG>Bill<BR><BR>");
 
         for(int i = 0; i < products.size(); i++) {
             strb.append(products.get(i).getName() + "<BR>" + products.get(i).getPrice_incl() + "<BR><BR>");

@@ -5,8 +5,10 @@ package helpers;
  */
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -65,7 +67,15 @@ public class HttpHandler extends AsyncTask<String, JSONArray, JSONArray> {
 
         } catch (Exception e) {
             Log.d("JSON ERROR", e.getMessage());
-            throw new IllegalArgumentException(e.getMessage());
+
+            SharedPreferences settings = context.getSharedPreferences("cart", 0);
+            // We need an Editor object to make preference changes.
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("apiData", "ERROR");
+            editor.commit();
+
+            return null;
+
         } finally {
             if (inStream != null) {
                 try {
