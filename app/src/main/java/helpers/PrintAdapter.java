@@ -27,6 +27,7 @@ public class PrintAdapter extends BaseAdapter {
         context = c;
         this.products = new ArrayList<>();
         this.products = products;
+
     }
 
     @Override
@@ -60,19 +61,20 @@ public class PrintAdapter extends BaseAdapter {
         tv.setText(productText(product));
 
         final int pos = position;
-        Button btnplus = (Button) convertView.findViewById(R.id.btnplus);
-        btnplus.setOnClickListener(new View.OnClickListener() {
+        Button btnPlus = (Button) convertView.findViewById(R.id.btnplus);
+        btnPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Product p = products.get(pos);
                 p.increaseCount();
                 products.set(pos, p);
                 tv.setText(productText(p));
+
             }
         });
 
-        Button btnminus = (Button) convertView.findViewById(R.id.btnminus);
-        btnminus.setOnClickListener(new View.OnClickListener() {
+        Button btnMinus = (Button) convertView.findViewById(R.id.btnminus);
+        btnMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Product p = products.get(pos);
@@ -80,6 +82,7 @@ public class PrintAdapter extends BaseAdapter {
                 p.decreaseCount();
                 products.set(pos, p);
                 tv.setText(productText(p));
+
             }
         });
 
@@ -93,11 +96,14 @@ public class PrintAdapter extends BaseAdapter {
                 + "\n\n");
     }
 
-    private float totalPrice(List<Product> prodlist) {
+    private float getTotalPrice(List<Product> prodlist) {
         float total = 0;
         for(int i = 0; i < prodlist.size(); i++) {
             total += prodlist.get(i).getPrice_incl();
         }
         return total;
     }
+
+
+
 }

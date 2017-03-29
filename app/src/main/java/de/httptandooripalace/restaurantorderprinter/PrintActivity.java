@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -31,7 +34,7 @@ public class PrintActivity extends AppCompatActivity {
     private final String CHAR_TABLE_EURO = "·27··116··19·"; // ESC t 19 -- 19 for euro table
     private final String EURO = "·213·";
 
-    private float totalPrice;
+
     private TextView totalPriceTextView;
 
     @Override
@@ -47,136 +50,11 @@ public class PrintActivity extends AppCompatActivity {
         PrintAdapter adapter = new PrintAdapter(getApplicationContext(), products);
         view.setAdapter(adapter);
 
-
         totalPriceTextView = (TextView) findViewById(R.id.print_table_number);
-        totalPriceTextView.setText("Total: €" + Rounder.round(totalPrice));
-        totalPriceTextView.setTextSize(20f);
+
 
     }
 
-    private void oldCode(LinearLayout theLayout) {
-        if(products == null) products = new ArrayList<>();
-
-        // Adding all dynamically created textviews to an arrayList, so we can edit the text later
-        // When pressing + or - buttons
-        final ArrayList<TextView> textviews = new ArrayList<>();
-        totalPrice = 0;
-
-        // Dynamically add textviews
-        for(int i = 0; i < products.size(); i++) {
-            totalPrice += products.get(i).getPrice_incl();
-
-            /* Programmatic layout structure */
-            // Horizontal linear layout: row
-            // Relative layout relativeRow
-            // Textview
-            // LinearLayout buttonLayout
-            // Button +
-            // Button -
-
-            // Create new horizontal linear layout
-            LinearLayout row = new LinearLayout(this);
-            row.setOrientation(LinearLayout.HORIZONTAL);
-
-            RelativeLayout relativeRow = new RelativeLayout(this);
-            relativeRow.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            row.addView(relativeRow);
-
-            TextView t = new TextView(this);
-            t.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            t.setText(printOverviewItemText(products.get(i)));
-            t.setTextSize(16f);
-            t.setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
-
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-            t.setLayoutParams(params);
-
-            relativeRow.addView(t);
-            textviews.add(t);
-
-
-//            // Add spacer to align buttons to the right
-//            View spacingView = new View(this);
-//            LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
-//                    LinearLayout.LayoutParams.MATCH_PARENT,
-//                    LinearLayout.LayoutParams.MATCH_PARENT,
-//                    2.0f
-//            );
-//            spacingView.setLayoutParams(p);
-//            row.addView(spacingView);
-
-            // Buttons
-            LinearLayout buttonLayout = new LinearLayout(this);
-            buttonLayout.setOrientation(LinearLayout.VERTICAL);
-
-
-            RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            // params.addRule(RelativeLayout.RIGHT_OF, t.getId());
-            buttonLayout.setLayoutParams(params2);
-
-            final int i2 = i;
-
-            Button buttonPlus = new Button(this);
-            buttonPlus.setText("+");
-            buttonPlus.setMinimumWidth(0);
-            buttonPlus.setMinimumHeight(0);
-            buttonPlus.setWidth(100);
-            buttonPlus.setHeight(100);
-
-            buttonPlus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Product p = products.get(i2);
-
-                    // Todo: Find a better way to do this
-                    p.increaseCount();
-                    products.set(i2, p);
-                    Log.d("Button plus", textviews.get(i2).getText().toString());
-                    textviews.get(i2).setText(printOverviewItemText(p));
-
-                    totalPrice += p.getPrice_incl();
-                    totalPriceTextView.setText("Total: €" + Rounder.round(totalPrice));
-
-
-
-                }
-            });
-            buttonLayout.addView(buttonPlus);
-
-            Button buttonMinus = new Button(this);
-            buttonMinus.setText("-");
-
-            buttonMinus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Product p = products.get(i2);
-
-                    if(p.getCount() < 1) return;
-
-                    p.decreaseCount();
-                    products.set(i2, p);
-                    textviews.get(i2).setText(printOverviewItemText(p));
-
-                    totalPrice -= p.getPrice_incl();
-                    totalPriceTextView.setText("Total: €" + Rounder.round(totalPrice));
-
-                }
-            });
-            buttonLayout.addView(buttonMinus);
-            relativeRow.addView(buttonLayout);
-            theLayout.addView(row);
-        }
-
-    }
-
-    private String printOverviewItemText(Product p) {
-        return (p.getName() + " x " + p.getCount()
-                + "\nPrice incl: €" + Rounder.round(p.getPrice_incl() * p.getCount())
-                + "\nRef: " + p.getReference()
-                + "\n\n");
-    }
 
     @Override
     protected void onResume() {
@@ -187,6 +65,27 @@ public class PrintActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return true;
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_settings:
+                Intent i = new Intent(this, SettingsActivity.class);
+                startActivity(i);
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     // Delete the print overview and refresh activity
@@ -289,7 +188,7 @@ public class PrintActivity extends AppCompatActivity {
         intentPrint.setAction(Intent.ACTION_SEND);
         intentPrint.putExtra(Intent.EXTRA_TEXT, dataToPrint);
         intentPrint.putExtra("printer_type_id", "1");// For IP
-        intentPrint.putExtra("printer_ip", "192.168.178.105");
+        intentPrint.putExtra("printer_ip", "192.168.178.105"); // Todo: dynamic IP from settings
         intentPrint.putExtra("printer_port", "9100");
         intentPrint.setType("text/plain");
         this.startActivity(intentPrint);
