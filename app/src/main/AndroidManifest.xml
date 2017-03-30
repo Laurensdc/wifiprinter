@@ -22,14 +22,14 @@
         </activity>
         <activity
             android:name=".PrintActivity"
-            android:label="Printing overview">
+            android:label="@string/printing_overview">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".SettingsActivity"
-            android:label="Settings"
+            android:label="@string/settings"
             >
 
         </activity>

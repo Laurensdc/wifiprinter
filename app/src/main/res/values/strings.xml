@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Order &amp; Print</string>
     <string name="table_number">Table number</string>
+    <string name="printing_overview">Printing overview</string>
+    <string name="settings">Settings</string>
 
     <!-- Settings menu -->
     <string name="added_products">Added product</string>
@@ -24,5 +26,14 @@
     <string name="served_by">You have been served by</string>
     <string name="tyvm">Thank you very much!</string>
     <string name="visit_again">We\'d like to welcome you again soon.</string>
+
+    <!-- Save settings dialog menu -->
+    <string name="save_settings">Save settings?</string>
+    <string name="want_to_save">Do you want to save these settings?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="cancel">Cancel</string>
+
+
 
 </resources>

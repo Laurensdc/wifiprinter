@@ -2,6 +2,8 @@
 <resources>
     <string name="app_name">Bestellen &amp; Drücken</string>
     <string name="table_number">Tischnummer</string>
+    <string name="printing_overview">Druckübersicht</string>
+    <string name="settings">Einstellungen</string>
 
     <!-- Settings menu -->
     <string name="added_products">Produkt hinzugefügt</string>
@@ -25,5 +27,12 @@
     <string name="served_by">Es bediente Sie</string>
     <string name="tyvm">Vielen Dank!</string>
     <string name="visit_again">Beehren Sie uns bald wieder.</string>
+
+    <!-- Save settings dialog menu -->
+    <string name="save_settings">Einstellungen speichern?</string>
+    <string name="want_to_save">Möchten Sie diese Einstellungen speichern?</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="cancel">Beenden</string>
 
 </resources>

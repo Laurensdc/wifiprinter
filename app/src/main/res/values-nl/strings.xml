@@ -1,7 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">Restaurant Order Printer</string>
+    <string name="app_name">Bestellen &amp; printen</string>
     <string name="table_number">Tafelnummer</string>
+    <string name="printing_overview">Printoverzicht</string>
+    <string name="settings">Instellingen</string>
+
+    <!-- Settings menu -->
+    <string name="added_products">Product toegevoegd</string>
+    <string name="restaurant_name">Naam restaurant</string>
+    <string name="address">Adres</string>
+    <string name="telephone_nr">Telefoonnummer</string>
+    <string name="tax_nr">BTW-nummer</string>
+    <string name="extra_line">Extra lijn</string>
+    <string name="waiter_name">Naam ober</string>
+
+    <!-- Print overview -->
+    <string name="prince_incl">Prijs incl. BTW</string>
+    <string name="ref">Ref.</string>
+
+    <!-- Print bill -->
+    <string name="bill">Rekening</string>
+    <string name="table_nr">TAFELNR.</string>
+    <string name="price_excl">Prijs excl.</string>
+    <string name="tax">BTW 19%</string>
+    <string name="total">Totaal</string>
+    <string name="served_by">U werd bediend door</string>
+    <string name="tyvm">Hartelijk bedankt!</string>
+    <string name="visit_again">Wij zien u graag terug.</string>
+
+    <!-- Save settings dialog menu -->
+    <string name="save_settings">Instellingen opslaan?</string>
+    <string name="want_to_save">Wilt u deze instellingen opslaan?</string>
+    <string name="yes">Ja</string>
+    <string name="no">Neen</string>
+    <string name="cancel">Annuleren</string>
 
 </resources>

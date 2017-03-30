@@ -15,7 +15,11 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import entities.Product;
@@ -130,11 +134,11 @@ public class PrintActivity extends AppCompatActivity {
             strb.append(alignCenterBigw(settings.getExtraLine()) + "$intro$");
 
 
+        strb.append("$bighw$$intro$" + alignCenterBigw(getString(R.string.bill)) + "$intro$");
+
         if(!tableNr.equals("")) {
             strb.append("$bighw$");
-            strb.append("$intro$");
-            strb.append(  alignCenterBigw(getString(R.string.bill)) + "$intro$"
-                        + alignCenterBigw(getString(R.string.table_nr) + tableNr) + "$intro$");
+            strb.append(alignCenterBigw(getString(R.string.table_nr) + tableNr) + "$intro$");
         }
 
         strb.append("$intro$$big$$intro$");
@@ -192,7 +196,13 @@ public class PrintActivity extends AppCompatActivity {
         strb.append(getString(R.string.total) +
                     alignRightBigw((EURO + totalPriceInc), (getString(R.string.total)).length()));
 
-        strb.append("$big$$intro$$intro$$intro$$big$");
+
+        // Date
+        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+
+        strb.append("$big$$intro$$intro$");
+        strb.append(currentDateTimeString);
+        strb.append("$intro$$intro$");
 
         // Served by waiter
         if(!settings.getWaiter().equals(""))

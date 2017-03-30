@@ -21,7 +21,8 @@
             android:id="@+id/print_table_number"
             android:padding="16dp"
             android:textSize="20sp"
-            android:text="Total"/>
+            android:text="Total"
+            android:visibility="gone"/>
 
         <ListView
             android:layout_width="match_parent"
