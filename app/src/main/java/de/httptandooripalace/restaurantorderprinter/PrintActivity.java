@@ -24,6 +24,7 @@ import helpers.Rounder;
 import helpers.SharedPrefHelper;
 
 import static android.media.CamcorderProfile.get;
+import static de.httptandooripalace.restaurantorderprinter.R.string.total;
 
 public class PrintActivity extends AppCompatActivity {
 
@@ -34,6 +35,8 @@ public class PrintActivity extends AppCompatActivity {
     private final String INITIATE = "·27··64·"; // ESC @
     private final String CHAR_TABLE_EURO = "·27··116··19·"; // ESC t 19 -- 19 for euro table
     private final String EURO = "·213·";
+    private final String CLEAR_BUFFERS = "··"; // DLE DC4 (=fn8)
+
 
 
     private TextView totalPriceTextView;
@@ -102,12 +105,15 @@ public class PrintActivity extends AppCompatActivity {
 
     }
 
+    // Print bill layout
     public void printWithPOSPrinterDriverEsc(View view) {
         String tableNr = SharedPrefHelper.getString(getApplicationContext(), "tableNr");
-        StringBuilder strb = new StringBuilder("$intro$");
+        StringBuilder strb = new StringBuilder("");
 
         strb.append(INITIATE);
         strb.append(CHAR_TABLE_EURO);
+
+        strb.append("$intro$");
 
         strb.append("$bigw$");
         if(!settings.getNameLine1().equals(""))
@@ -127,12 +133,11 @@ public class PrintActivity extends AppCompatActivity {
         if(!tableNr.equals("")) {
             strb.append("$bighw$");
             strb.append("$intro$");
-            strb.append(  alignCenterBigw("Rechnung") + "$intro$"
-                        + alignCenterBigw("TISH NR.: " + tableNr) + "$intro$$intro$$intro$");
+            strb.append(  alignCenterBigw(getString(R.string.bill)) + "$intro$"
+                        + alignCenterBigw(getString(R.string.table_nr) + tableNr) + "$intro$");
         }
 
         strb.append("$intro$$big$$intro$");
-
 
         double totalPriceExcl = 0;
         double totalPriceIncl = 0;
@@ -168,19 +173,33 @@ public class PrintActivity extends AppCompatActivity {
         strb.append("$intro$");
 
         // Total excl
-        strb.append("Nettoumsatz" + alignRight((EURO + Rounder.round(totalPriceExcl)), ("Nettoumsatz").length()));
+        strb.append(getString(R.string.price_excl) +
+                    alignRight((EURO + Rounder.round(totalPriceExcl)), (getString(R.string.price_excl)).length()));
         strb.append("$intro$");
 
         // Tax
         String tax = Rounder.round(totalPriceIncl - totalPriceExcl);
-        strb.append("MwSt." + alignRight((EURO + tax), ("Mwst.").length()));
-        strb.append("$intro$");
+        strb.append(getString(R.string.tax) +
+                    alignRight((EURO + tax), (getString(R.string.tax)).length()));
 
 
         // Total incl
-        strb.append("Total" + alignRight((EURO + Rounder.round(totalPriceIncl)), ("Total").length()));
-        strb.append("$intro$");
+        strb.append("$intro$$bigw$");
 
+        String totalPriceInc = Rounder.round(totalPriceIncl);
+
+
+        strb.append(getString(R.string.total) +
+                    alignRightBigw((EURO + totalPriceInc), (getString(R.string.total)).length()));
+
+        strb.append("$big$$intro$$intro$$intro$$big$");
+
+        // Served by waiter
+        if(!settings.getWaiter().equals(""))
+            strb.append(alignCenter(getString(R.string.served_by) + " " + settings.getWaiter())  + "$intro$");
+
+        strb.append(alignCenter(getString(R.string.tyvm)) + "$intro$");
+        strb.append(alignCenter(getString(R.string.visit_again)));
 
         strb.append("$intro$$intro$$intro$$intro$$intro$$intro$$intro$$intro$$intro$$cut$");
 
@@ -195,7 +214,6 @@ public class PrintActivity extends AppCompatActivity {
         intentPrint.putExtra(Intent.EXTRA_TEXT, dataToPrint);
         intentPrint.putExtra("printer_type_id", "1");// For IP
         intentPrint.putExtra("printer_ip", settings.getPrinterIp());
-//        intentPrint.putExtra("printer_ip", "192.168.178.105");
         intentPrint.putExtra("printer_port", "9100");
         intentPrint.setType("text/plain");
         this.startActivity(intentPrint);
@@ -218,8 +236,27 @@ public class PrintActivity extends AppCompatActivity {
     private String alignRight(String s, int offsetLeft) {
         int length = s.length();
         int paddingLeft = CHARCOUNT_BIG - length;
+        // EURO length counts as more than 1 character and bugs alignment
+        if(s.contains(EURO)) {
+            paddingLeft += EURO.length() - 1;
+        }
         String newstr = "";
         for(int i = 0; i < paddingLeft - offsetLeft; i++) {
+            newstr += " ";
+        }
+        newstr += s;
+        return newstr;
+    }
+
+    private String alignRightBigw(String s, int offsetLeft) {
+        int length = s.length();
+        int paddingLeft = CHARCOUNT_BIGW - length;
+        // EURO length counts as more than 1 character and bugs alignment
+        if(s.contains(EURO)) {
+            paddingLeft += EURO.length() - 1;
+        }
+        String newstr = "";
+        for(int i = 0; i < (paddingLeft - offsetLeft); i++) {
             newstr += " ";
         }
         newstr += s;

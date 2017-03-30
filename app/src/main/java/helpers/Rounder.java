@@ -17,7 +17,7 @@ public class Rounder {
 //        return bd.doubleValue();
 
         DecimalFormat df = new DecimalFormat("0.00");
-        return df.format(value);
+        return df.format(value).trim();
 
     }
 }

@@ -9,12 +9,20 @@
     <string name="telephone_nr">Tel. number</string>
     <string name="tax_nr">Tax number</string>
     <string name="extra_line">Extra line</string>
+    <string name="waiter_name">Waiter name</string>
 
     <!-- Print overview -->
     <string name="prince_incl">Price incl. tax</string>
     <string name="ref">Ref.</string>
 
     <!-- Print bill -->
-
+    <string name="bill">Bill</string>
+    <string name="table_nr">Table nr.</string>
+    <string name="price_excl">Price excl.</string>
+    <string name="tax">Tax</string>
+    <string name="total">Total</string>
+    <string name="served_by">You have been served by</string>
+    <string name="tyvm">Thank you very much!</string>
+    <string name="visit_again">We\'d like to welcome you again soon.</string>
 
 </resources>

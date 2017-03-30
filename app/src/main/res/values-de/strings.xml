@@ -10,12 +10,20 @@
     <string name="telephone_nr">Telefonnummer</string>
     <string name="tax_nr">Steuernummer</string>
     <string name="extra_line">Extra Zeile</string>
+    <string name="waiter_name">Kellner Name</string>
 
     <!-- Print overview -->
     <string name="prince_incl">Preis inkl. Steuern</string>
     <string name="ref">Ref.</string>
 
     <!-- Print bill -->
-
+    <string name="bill">Rechnung</string>
+    <string name="table_nr">TISCH NR.</string>
+    <string name="price_excl">Nettoumsatz</string>
+    <string name="tax">MwSt 19%</string>
+    <string name="total">Bar</string>
+    <string name="served_by">Es bediente Sie</string>
+    <string name="tyvm">Vielen Dank!</string>
+    <string name="visit_again">Beehren Sie uns bald wieder.</string>
 
 </resources>

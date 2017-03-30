@@ -34,6 +34,7 @@ public class SettingsActivity extends AppCompatActivity {
             ((TextView) findViewById(R.id.tel_line)).setText(settings.getTelLine());
             ((TextView) findViewById(R.id.tax_nr)).setText(settings.getTaxLine());
             ((TextView) findViewById(R.id.extra_line)).setText(settings.getExtraLine());
+            ((TextView) findViewById(R.id.waitername)).setText(settings.getWaiter());
         }
 
     }
@@ -55,7 +56,8 @@ public class SettingsActivity extends AppCompatActivity {
                         ((TextView) findViewById(R.id.addr_line_2)).getText().toString(),
                         ((TextView) findViewById(R.id.tel_line)).getText().toString(),
                         ((TextView) findViewById(R.id.tax_nr)).getText().toString(),
-                        ((TextView) findViewById(R.id.extra_line)).getText().toString()
+                        ((TextView) findViewById(R.id.extra_line)).getText().toString(),
+                        ((TextView) findViewById(R.id.waitername)).getText().toString()
                 );
 
                 SharedPrefHelper.saveSettings(getApplicationContext(), settings);
@@ -64,19 +66,18 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.setNeutralButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 onBackPressed();
-
-            }
-        });
-
-        builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
             }
         });
 

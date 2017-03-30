@@ -196,8 +196,32 @@
                 android:maxLines="1"/>
 
         </TableRow>
+
         <TableRow android:background="@android:color/darker_gray"
-            android:minHeight="1dp" />
+            android:minHeight="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:text="@string/waiter_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="150dp"
+                android:textSize="16sp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:id="@+id/waitername"
+                android:textSize="16sp"
+                android:maxLines="1" />
+
+        </TableRow>
 
     </TableLayout>
 
