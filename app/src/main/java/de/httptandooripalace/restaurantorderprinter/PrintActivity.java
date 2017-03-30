@@ -29,6 +29,7 @@ public class PrintActivity extends AppCompatActivity {
 
     private List<Product> products;
     private final int CHARCOUNT_BIG = 48; // Amount of characters fit on one printed line, using $big$ format
+    private final int CHARCOUNT_BIGW = 24; // Amount of characters fit on one printed line, using $bigw$ format
 
     private final String INITIATE = "·27··64·"; // ESC @
     private final String CHAR_TABLE_EURO = "·27··116··19·"; // ESC t 19 -- 19 for euro table
@@ -101,7 +102,6 @@ public class PrintActivity extends AppCompatActivity {
 
     }
 
-
     public void printWithPOSPrinterDriverEsc(View view) {
         String tableNr = SharedPrefHelper.getString(getApplicationContext(), "tableNr");
         StringBuilder strb = new StringBuilder("$intro$");
@@ -111,23 +111,24 @@ public class PrintActivity extends AppCompatActivity {
 
         strb.append("$bigw$");
         if(!settings.getNameLine1().equals(""))
-            strb.append(alignCenter(settings.getNameLine1()) + "$intro$");
+            strb.append(alignCenterBigw(settings.getNameLine1()) + "$intro$");
         if(!settings.getNameLine2().equals(""))
-            strb.append(alignCenter(settings.getNameLine2()) + "$intro$");
+            strb.append(alignCenterBigw(settings.getNameLine2()) + "$intro$");
         if(!settings.getAddrLine1().equals(""))
-            strb.append(alignCenter(settings.getAddrLine1()) + "$intro$");
+            strb.append(alignCenterBigw(settings.getAddrLine1()) + "$intro$");
         if(!settings.getAddrLine2().equals(""))
-            strb.append(alignCenter(settings.getAddrLine2()) + "$intro$");
+            strb.append(alignCenterBigw(settings.getAddrLine2()) + "$intro$");
         if(!settings.getTelLine().equals(""))
-            strb.append(alignCenter(settings.getTelLine()) + "$intro$");
+            strb.append(alignCenterBigw(settings.getTelLine()) + "$intro$");
         if(!settings.getExtraLine().equals(""))
-            strb.append(alignCenter(settings.getExtraLine()) + "$intro$");
+            strb.append(alignCenterBigw(settings.getExtraLine()) + "$intro$");
 
 
         if(!tableNr.equals("")) {
             strb.append("$bighw$");
             strb.append("$intro$");
-            strb.append(alignCenter("Rechnung") + "$intro$" + alignCenter("TISH NR.: " + tableNr) + "$intro$$intro$$intro$");
+            strb.append(  alignCenterBigw("Rechnung") + "$intro$"
+                        + alignCenterBigw("TISH NR.: " + tableNr) + "$intro$$intro$$intro$");
         }
 
         strb.append("$intro$$big$$intro$");
@@ -185,7 +186,6 @@ public class PrintActivity extends AppCompatActivity {
 
         Print(strb.toString());
 
-        deletePrintOverview(view);
 
     }
 
@@ -229,6 +229,22 @@ public class PrintActivity extends AppCompatActivity {
     private String alignCenter(String s) {
         int length = s.length();
         int totalSpaceLeft = CHARCOUNT_BIG - length;
+        int spaceOnBothSides = totalSpaceLeft / 2;
+        String newstr = "";
+        for(int i = 0; i < spaceOnBothSides; i++) {
+            newstr += " ";
+        }
+        newstr += s;
+        for(int i = 0; i < spaceOnBothSides; i++) {
+            newstr += " ";
+        }
+
+        return newstr;
+    }
+
+    private String alignCenterBigw(String s) {
+        int length = s.length();
+        int totalSpaceLeft = CHARCOUNT_BIGW - length;
         int spaceOnBothSides = totalSpaceLeft / 2;
         String newstr = "";
         for(int i = 0; i < spaceOnBothSides; i++) {
