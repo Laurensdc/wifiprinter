@@ -27,6 +27,7 @@
     <string name="served_by">Es bediente Sie</string>
     <string name="tyvm">Vielen Dank!</string>
     <string name="visit_again">Beehren Sie uns bald wieder.</string>
+    <string name="waiter">BED</string>
 
     <!-- Save settings dialog menu -->
     <string name="save_settings">Einstellungen speichern?</string>

@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
 
                             // Toast it
                             if (currentToast != null) currentToast.cancel();
-                            currentToast = Toast.makeText(getApplicationContext(), "Added product " + prod.getName(),
+                            currentToast = Toast.makeText(getApplicationContext(), getString(R.string.added_products) + " " + prod.getName(),
                                     Toast.LENGTH_SHORT);
                             currentToast.show();
 
@@ -164,13 +164,13 @@ public class MainActivity extends AppCompatActivity {
             throw new IllegalArgumentException(ex.getMessage());
         }
 
-        SwipeRefreshLayout swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
-        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refreshContent();
-            }
-        });
+//        SwipeRefreshLayout swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+//        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                refreshContent();
+//            }
+//        });
 
     }
 
