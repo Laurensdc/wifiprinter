@@ -68,14 +68,14 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        builder.setNegativeButton(getText(R.string.cancel), new DialogInterface.OnClickListener() {
+        builder.setNeutralButton(getText(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
 
-        builder.setNeutralButton(getText(R.string.no), new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getText(R.string.no), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();

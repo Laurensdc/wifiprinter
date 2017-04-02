@@ -1,6 +1,8 @@
 package de.httptandooripalace.restaurantorderprinter;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 import entities.Product;
+import entities.Settings;
 import helpers.PrintAdapter;
 import helpers.Rounder;
 import helpers.SharedPrefHelper;
@@ -96,9 +99,31 @@ public class PrintActivity extends AppCompatActivity {
 
     // Delete the print overview and refresh activity
     public void deletePrintOverview(View view) {
-        SharedPrefHelper.deleteSharedPrefs(getApplicationContext());
-        finish();
-        startActivity(getIntent());
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Delete overview");
+        builder.setMessage("Overview will be cleared.\nAre you sure?");
+
+        builder.setPositiveButton(getText(R.string.yes), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                SharedPrefHelper.deleteSharedPrefs(getApplicationContext());
+                finish();
+                startActivity(getIntent());
+                dialog.dismiss();
+
+            }
+        });
+
+        builder.setNegativeButton(getText(R.string.no), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
 
     }
 
