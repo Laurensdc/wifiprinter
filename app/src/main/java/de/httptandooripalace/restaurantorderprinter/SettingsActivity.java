@@ -39,6 +39,20 @@ public class SettingsActivity extends AppCompatActivity {
             ((TextView) findViewById(R.id.waitername)).setText(settings.getWaiter());
         }
 
+        TextView restn = (TextView) findViewById(R.id.name_line_1);
+        restn.requestFocus();
+
+        TextView iptv = (TextView) findViewById(R.id.printer_ip);
+        iptv.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus) {
+                    Toast.makeText(getApplicationContext(), getText(R.string.changing_ip),
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
     }
 
     @Override

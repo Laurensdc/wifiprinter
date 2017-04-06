@@ -27,6 +27,8 @@
     <string name="served_by">U werd bediend door</string>
     <string name="tyvm">Hartelijk bedankt!</string>
     <string name="visit_again">Wij zien u graag terug.</string>
+    <string name="waiter">Ober</string>
+
 
     <!-- Save settings dialog menu -->
     <string name="save_settings">Instellingen opslaan?</string>
@@ -34,5 +36,10 @@
     <string name="yes">Ja</string>
     <string name="no">Neen</string>
     <string name="cancel">Annuleren</string>
+
+    <!-- Error -->
+    <string name="could_not_get_db_info">Kon geen informatie van de databank afhalen.\nControleer verbinding met het internet.</string>
+    <string name="changing_ip">OPGEPAST\nU staat op het punt het IP-adres van de printer aan te passen.\nDe functionaliteit van de app kan hieronder lijden.</string>
+
 
 </resources>

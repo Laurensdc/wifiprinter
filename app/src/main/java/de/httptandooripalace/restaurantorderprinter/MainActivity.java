@@ -65,8 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 err.add("Error");
                 HashMap<String, List<Product>> msg = new HashMap<>();
                 List<Product> durrr = new ArrayList<Product>();
-                durrr.add(new Product("Could not get information from database.\n" +
-                        "Is your wifi or data activated?", 0, 0, null, null));
+                durrr.add(new Product(getString(R.string.could_not_get_db_info), 0, 0, null, null));
                 msg.put("Error", durrr);
                 ExpandableListView view = (ExpandableListView) findViewById(R.id.overview_main);
                 MainAdapter adapter = new MainAdapter(this, err, msg);

@@ -27,6 +27,7 @@
     <string name="served_by">Le atendió:</string>
     <string name="tyvm">Muchas gracias!</string>
     <string name="visit_again">Esperemos verle pronto de nuevo.</string>
+    <string name="waiter">Camarero</string>
 
     <!-- Save settings dialog menu -->
     <string name="save_settings">Guardar ajustes?</string>
@@ -34,5 +35,10 @@
     <string name="yes">Sí</string>
     <string name="no">No</string>
     <string name="cancel">Cancelar</string>
+
+    <!-- Error -->
+    <string name="could_not_get_db_info">No se puede recibir información.</string>
+    <string name="changing_ip">PELIGRO\nEstás cambiendo la IP de la impresora.\nLa app puede dejar de funcionar.</string>
+
 
 </resources>

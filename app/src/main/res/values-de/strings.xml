@@ -36,4 +36,9 @@
     <string name="no">Nein</string>
     <string name="cancel">Beenden</string>
 
+    <!-- Error -->
+    <string name="could_not_get_db_info">Könnte keine Informationen aus der Datenbank erhalten.\nIst Ihr Wifi oder Daten aktiviert?</string>
+    <string name="changing_ip">WARNUNG\nSie ändern die IP-Adresse des WiFi-Druckers.\nDas kann App-Funktionalität brechen.</string>
+
+
 </resources>

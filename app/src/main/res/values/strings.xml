@@ -28,7 +28,6 @@
     <string name="visit_again">We\'d like to welcome you again soon.</string>
     <string name="waiter">Waiter</string>
 
-
     <!-- Save settings dialog menu -->
     <string name="save_settings">Save settings?</string>
     <string name="want_to_save">Do you want to save these settings?</string>
@@ -36,6 +35,9 @@
     <string name="no">No</string>
     <string name="cancel">Cancel</string>
 
+    <!-- Error -->
+    <string name="could_not_get_db_info">Could not get information from database.\nIs your wifi or data activated?</string>
+    <string name="changing_ip">WARNING\nYou are changing the IP address of the WiFi printer.\nThis can break app functionality.</string>
 
 
 </resources>

@@ -57,7 +57,8 @@
                 android:inputType="textPersonName"
                 android:id="@+id/name_line_1"
                 android:textSize="16sp"
-                android:maxLines="1"/>
+                android:maxLines="1"
+                />
         </TableRow>
 
         <TableRow
