@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,47 +15,93 @@ import helpers.HttpHandler;
 import helpers.SharedPrefHelper;
 
 public class SettingsActivity extends AppCompatActivity {
+    private boolean somethingChanged;
+
+    private TextView printer_ip, name_line_1, name_line_2, addr_line_1, addr_line_2, tel_line,
+        tax_nr, extra_line, waiter_name;
+
+    private TextWatcher textwatcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
 
+        somethingChanged = false;
+
         // Add back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        printer_ip = (TextView) findViewById(R.id.printer_ip);
+        name_line_1 = (TextView) findViewById(R.id.name_line_1);
+        name_line_2 = (TextView) findViewById(R.id.name_line_2);
+        addr_line_1 = (TextView) findViewById(R.id.addr_line_1);
+        addr_line_2 = (TextView) findViewById(R.id.addr_line_2);
+        tel_line = (TextView) findViewById(R.id.tel_line);
+        tax_nr = (TextView) findViewById(R.id.tax_nr);
+        extra_line = (TextView) findViewById(R.id.extra_line);
+        waiter_name = (TextView) findViewById(R.id.waitername);
+
         Settings settings = SharedPrefHelper.loadSettings(getApplicationContext());
         if(settings != null) {
-            ((TextView) findViewById(R.id.printer_ip)).setText(settings.getPrinterIp());
-            ((TextView) findViewById(R.id.name_line_1)).setText(settings.getNameLine1());
-            ((TextView) findViewById(R.id.name_line_2)).setText(settings.getNameLine2());
-            ((TextView) findViewById(R.id.addr_line_1)).setText(settings.getAddrLine1());
-            ((TextView) findViewById(R.id.addr_line_2)).setText(settings.getAddrLine2());
-            ((TextView) findViewById(R.id.tel_line)).setText(settings.getTelLine());
-            ((TextView) findViewById(R.id.tax_nr)).setText(settings.getTaxLine());
-            ((TextView) findViewById(R.id.extra_line)).setText(settings.getExtraLine());
-            ((TextView) findViewById(R.id.waitername)).setText(settings.getWaiter());
+            printer_ip.setText(settings.getPrinterIp());
+            name_line_1.setText(settings.getNameLine1());
+            name_line_2.setText(settings.getNameLine2());
+            addr_line_1.setText(settings.getAddrLine1());
+            addr_line_2.setText(settings.getAddrLine2());
+            tel_line.setText(settings.getTelLine());
+            tax_nr.setText(settings.getTaxLine());
+            extra_line.setText(settings.getExtraLine());
+            waiter_name.setText(settings.getWaiter());
         }
 
-        TextView restn = (TextView) findViewById(R.id.name_line_1);
-        restn.requestFocus();
+        name_line_1.requestFocus();
 
-        TextView iptv = (TextView) findViewById(R.id.printer_ip);
-        iptv.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        printer_ip.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus) {
+                    // Warn user not to change IP address of printer
                     Toast.makeText(getApplicationContext(), getText(R.string.changing_ip),
                             Toast.LENGTH_LONG).show();
                 }
             }
         });
 
+        textwatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                somethingChanged = true;
+            }
+        };
+
+        printer_ip.addTextChangedListener(textwatcher);
+        name_line_1.addTextChangedListener(textwatcher);
+        name_line_2.addTextChangedListener(textwatcher);
+        addr_line_1.addTextChangedListener(textwatcher);
+        addr_line_2.addTextChangedListener(textwatcher);
+        tel_line.addTextChangedListener(textwatcher);
+        tax_nr.addTextChangedListener(textwatcher);
+        extra_line.addTextChangedListener(textwatcher);
+        waiter_name.addTextChangedListener(textwatcher);
+
     }
 
     @Override
     public boolean onSupportNavigateUp() {
+        if(!somethingChanged) {
+            onBackPressed();
+            return true;
+        }
+
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle(getText(R.string.save_settings));
@@ -62,15 +110,15 @@ public class SettingsActivity extends AppCompatActivity {
         builder.setPositiveButton(getText(R.string.yes), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 entities.Settings settings = new Settings(
-                        ((TextView) findViewById(R.id.printer_ip)).getText().toString(),
-                        ((TextView) findViewById(R.id.name_line_1)).getText().toString(),
-                        ((TextView) findViewById(R.id.name_line_2)).getText().toString(),
-                        ((TextView) findViewById(R.id.addr_line_1)).getText().toString(),
-                        ((TextView) findViewById(R.id.addr_line_2)).getText().toString(),
-                        ((TextView) findViewById(R.id.tel_line)).getText().toString(),
-                        ((TextView) findViewById(R.id.tax_nr)).getText().toString(),
-                        ((TextView) findViewById(R.id.extra_line)).getText().toString(),
-                        ((TextView) findViewById(R.id.waitername)).getText().toString()
+                        printer_ip.getText().toString(),
+                        name_line_1.getText().toString(),
+                        name_line_2.getText().toString(),
+                        addr_line_1.getText().toString(),
+                        addr_line_2.getText().toString(),
+                        tel_line.getText().toString(),
+                        tax_nr.getText().toString(),
+                        extra_line.getText().toString(),
+                        waiter_name.getText().toString()
                 );
 
                 SharedPrefHelper.saveSettings(getApplicationContext(), settings);

@@ -4,270 +4,286 @@
     android:id="@+id/settings_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+
     tools:context="de.httptandooripalace.restaurantorderprinter.SettingsActivity">
 
-    <TableLayout
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         >
 
-        <TableRow
+
+
+        <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/application_settings"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                android:layout_marginBottom="4dp"/>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <TextView
-                android:text="Printer IP"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:width="150dp"
-                android:textSize="16sp" />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/printer_ip"
-                android:textSize="16sp"
-                android:maxLines="1"/>
-
-        </TableRow>
-
-        <TableRow>
-
-            <!-- Spacer -->
-            <TextView
-                android:width="150dp"
-                android:id="@+id/load_items_status"
-                android:textColor="@color/colorPrimary"/>
-
-            <Button
-                android:text="@string/load_items"
-                android:onClick="loadItemsFromDb"
-                />
-
-        </TableRow>
-
-        <TableRow android:background="@color/colorAccent"
-            android:minHeight="1dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"/>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/bill_settings"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                android:layout_marginBottom="4dp"/>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:text="@string/waiter_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:width="150dp"
-                android:textSize="16sp" />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:id="@+id/waitername"
-                android:textSize="16sp"
-                android:maxLines="1" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:text="@string/restaurant_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:width="150dp"
-                android:textSize="16sp" />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:id="@+id/name_line_1"
-                android:textSize="16sp"
-                android:maxLines="1"
-                />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:width="150dp"
-                android:textSize="16sp" />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:id="@+id/name_line_2"
-                android:textSize="16sp"
-                android:maxLines="1"/>
-
-        </TableRow>
-
-        <TableRow android:background="@android:color/darker_gray"
-            android:minHeight="1dp" />
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:text="@string/address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:width="150dp"
-                android:textSize="16sp" />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:id="@+id/addr_line_1"
-                android:textSize="16sp"
-                android:maxLines="1"/>
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:width="150dp"
-                android:textSize="16sp" />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:id="@+id/addr_line_2"
-                android:textSize="16sp"
-                android:maxLines="1"/>
-
-        </TableRow>
-
-        <TableRow android:background="@android:color/darker_gray"
-            android:minHeight="1dp" />
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:text="@string/telephone_nr"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:width="150dp"
-                android:textSize="16sp" />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:ems="10"
-                android:id="@+id/tel_line"
-                android:textSize="16sp"
-                android:maxLines="1"/>
-
-        </TableRow>
-
-        <TableRow android:background="@android:color/darker_gray"
-            android:minHeight="1dp" />
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <TextView
-                android:text="@string/tax_nr"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:width="150dp"
-                android:textSize="16sp" />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:id="@+id/tax_nr"
-                android:textSize="16sp"
-                android:maxLines="1"/>
-
-        </TableRow>
-
-        <TableRow android:background="@android:color/darker_gray"
-            android:minHeight="1dp" />
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <TextView
-                android:text="@string/extra_line"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:width="150dp"
-                android:textSize="16sp" />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:id="@+id/extra_line"
-                android:textSize="16sp"
-                android:maxLines="1"/>
-
-        </TableRow>
-
-        <TableRow android:background="@android:color/darker_gray"
-            android:minHeight="1dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            >
 
 
-    </TableLayout>
 
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/application_settings"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:layout_marginBottom="4dp"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:text="Printer IP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:width="150dp"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/printer_ip"
+                    android:textSize="16sp"
+                    android:maxLines="1"/>
+
+            </TableRow>
+
+            <TableRow
+                android:baselineAligned="false">
+
+                <!-- Spacer -->
+                <TextView
+                    android:width="150dp"
+                    android:id="@+id/load_items_status"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginTop="8dp"
+               />
+
+                <Button
+                    android:text="@string/load_items"
+                    android:onClick="loadItemsFromDb"
+                    />
+
+            </TableRow>
+
+            <TableRow android:background="@color/colorAccent"
+                android:minHeight="1dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"/>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bill_settings"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:layout_marginBottom="4dp"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:text="@string/waiter_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:width="150dp"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:id="@+id/waitername"
+                    android:textSize="16sp"
+                    android:maxLines="1" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:text="@string/restaurant_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:width="150dp"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:id="@+id/name_line_1"
+                    android:textSize="16sp"
+                    android:maxLines="1"
+                    />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:width="150dp"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:id="@+id/name_line_2"
+                    android:textSize="16sp"
+                    android:maxLines="1"/>
+
+            </TableRow>
+
+            <TableRow android:background="@android:color/darker_gray"
+                android:minHeight="1dp" />
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:text="@string/address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:width="150dp"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:id="@+id/addr_line_1"
+                    android:textSize="16sp"
+                    android:maxLines="1"/>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:width="150dp"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:id="@+id/addr_line_2"
+                    android:textSize="16sp"
+                    android:maxLines="1"/>
+
+            </TableRow>
+
+            <TableRow android:background="@android:color/darker_gray"
+                android:minHeight="1dp" />
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:text="@string/telephone_nr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:width="150dp"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:ems="10"
+                    android:id="@+id/tel_line"
+                    android:textSize="16sp"
+                    android:maxLines="1"/>
+
+            </TableRow>
+
+            <TableRow android:background="@android:color/darker_gray"
+                android:minHeight="1dp" />
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:text="@string/tax_nr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:width="150dp"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:id="@+id/tax_nr"
+                    android:textSize="16sp"
+                    android:maxLines="1"/>
+
+            </TableRow>
+
+            <TableRow android:background="@android:color/darker_gray"
+                android:minHeight="1dp" />
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:text="@string/extra_line"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:width="150dp"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:id="@+id/extra_line"
+                    android:textSize="16sp"
+                    android:maxLines="1"/>
+
+            </TableRow>
+
+            <TableRow android:background="@android:color/darker_gray"
+                android:minHeight="1dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+
+        </TableLayout>
+
+
+        </ScrollView>
 
 
 </RelativeLayout>
