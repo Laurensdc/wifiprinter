@@ -19,6 +19,18 @@
 
         <TableRow
             android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/application_settings"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:layout_marginBottom="4dp"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
             <TextView
@@ -37,8 +49,58 @@
 
         </TableRow>
 
+        <TableRow>
+
+            <!-- Spacer -->
+            <TextView
+                android:width="150dp"
+                android:id="@+id/load_items_status"
+                android:textColor="@color/colorPrimary"/>
+
+            <Button
+                android:text="@string/load_items"
+                android:onClick="loadItemsFromDb"
+                />
+
+        </TableRow>
+
         <TableRow android:background="@color/colorAccent"
-            android:minHeight="1dp"/>
+            android:minHeight="1dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"/>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bill_settings"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:layout_marginBottom="4dp"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:text="@string/waiter_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="150dp"
+                android:textSize="16sp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:id="@+id/waitername"
+                android:textSize="16sp"
+                android:maxLines="1" />
+        </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
@@ -203,27 +265,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:text="@string/waiter_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:width="150dp"
-                android:textSize="16sp" />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:id="@+id/waitername"
-                android:textSize="16sp"
-                android:maxLines="1" />
-
-        </TableRow>
 
     </TableLayout>
+
+
 
 </RelativeLayout>

@@ -5,6 +5,10 @@
     <string name="settings">Settings</string>
 
     <!-- Settings menu -->
+    <string name="application_settings">Application setings</string>
+    <string name="bill_settings">Bill setings</string>
+    <string name="load_items">Load items</string>
+    <string name="got_items_from_db">Success! Loaded items from database</string>
     <string name="added_products">Added product</string>
     <string name="restaurant_name">Restaurant name</string>
     <string name="address">Address</string>
@@ -12,6 +16,7 @@
     <string name="tax_nr">Tax number</string>
     <string name="extra_line">Extra line</string>
     <string name="waiter_name">Waiter name</string>
+
 
     <!-- Print overview -->
     <string name="prince_incl">Price incl. tax</string>

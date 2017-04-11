@@ -1,19 +1,16 @@
 package de.httptandooripalace.restaurantorderprinter;
 
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import entities.Settings;
+import helpers.HttpHandler;
 import helpers.SharedPrefHelper;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.V;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -101,6 +98,11 @@ public class SettingsActivity extends AppCompatActivity {
         alert.show();
 
         return true;
+    }
+
+    // Todo: Save api address in configuration
+    public void loadItemsFromDb(View view) {
+        new HttpHandler(this.getApplicationContext(), (TextView) findViewById(R.id.load_items_status)).execute("http://print.nepali.mobi/printer/api.php");
     }
 
 

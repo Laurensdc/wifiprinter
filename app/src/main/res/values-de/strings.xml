@@ -6,6 +6,10 @@
     <string name="settings">Einstellungen</string>
 
     <!-- Settings menu -->
+    <string name="application_settings">Anwendungseinstellungen</string>
+    <string name="bill_settings">Rechnungseinstellungen</string>
+    <string name="load_items">Artikel laden</string>
+    <string name="got_items_from_db">Geschafft! Geladene Elemente aus der Datenbank</string>
     <string name="added_products">Produkt hinzugefügt</string>
     <string name="restaurant_name">Restaurant Name</string>
     <string name="address">Adresse</string>
