@@ -25,7 +25,6 @@ import helpers.SharedPrefHelper;
 import static android.media.CamcorderProfile.get;
 
 public class PrintActivity extends AppCompatActivity {
-
     private List<Product> products;
     private final int CHARCOUNT_BIG = 48; // Amount of characters fit on one printed line, using $big$ format
     private final int CHARCOUNT_BIGW = 24; // Amount of characters fit on one printed line, using $bigw$ format
@@ -35,11 +34,6 @@ public class PrintActivity extends AppCompatActivity {
     private final String EURO = "·213·";
     private final String DOT = "·46·";
     private final String BR = "$intro$"; // Line break
-    private final String CLEAR_BUFFERS = "··"; // DLE DC4 (=fn8)
-
-
-
-    private TextView totalPriceTextView;
 
     private entities.Settings settings;
 
@@ -57,11 +51,7 @@ public class PrintActivity extends AppCompatActivity {
         PrintAdapter adapter = new PrintAdapter(getApplicationContext(), products);
         view.setAdapter(adapter);
 
-        totalPriceTextView = (TextView) findViewById(R.id.print_table_number);
-
-
     }
-
 
     @Override
     protected void onResume() {
@@ -71,7 +61,6 @@ public class PrintActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
     }
 
     @Override
@@ -80,7 +69,6 @@ public class PrintActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
         return true;
-
     }
 
     @Override
@@ -106,7 +94,6 @@ public class PrintActivity extends AppCompatActivity {
 
         builder.setPositiveButton(getText(R.string.yes), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-
                 SharedPrefHelper.deleteSharedPrefs(getApplicationContext());
                 finish();
                 startActivity(getIntent());
@@ -133,8 +120,6 @@ public class PrintActivity extends AppCompatActivity {
 
         sendPrintJob(getBillContent() + getTaxFooter());
     }
-
-
 
     public void printBill(View view) {
         if(products == null) return;
@@ -243,7 +228,6 @@ public class PrintActivity extends AppCompatActivity {
                 alignRight((EURO + tax), (getString(R.string.tax)).length());
         strb.append(s);
 
-
         // Total incl
         strb.append(BR);
         strb.append("$bigw$");
@@ -252,7 +236,6 @@ public class PrintActivity extends AppCompatActivity {
         s = getString(R.string.total) +
                 alignRightBigw((EURO + totalPriceInc), (getString(R.string.total)).length());
         strb.append(s);
-
 
         // Date
         String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
@@ -264,8 +247,6 @@ public class PrintActivity extends AppCompatActivity {
         strb.append(BR + BR);
 
         return strb.toString();
-
-
     }
 
     private String getBillFooter() {

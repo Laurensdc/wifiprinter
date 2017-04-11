@@ -39,20 +39,15 @@ import static android.R.attr.x;
 
 
 public class MainActivity extends AppCompatActivity {
-
     private Toast currentToast;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-
-
         try {
             // Todo: Save function in configuration
-
             new HttpHandler(this.getApplicationContext()).execute("http://print.nepali.mobi/printer/api.php").get();
             // Load data from http request
             final SharedPreferences sharedprefs = getSharedPreferences("cart", 0);
@@ -60,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             if(apiData.equals("ERROR")) { // No internet or other connection problem with db
-                // Todo: OMG THIS IS SO UGLY REPLACE THIS ASAP
+                // Todo: This code is so ugly, replace asap
                 ArrayList<String> err = new ArrayList<>();
                 err.add("Error");
                 HashMap<String, List<Product>> msg = new HashMap<>();
@@ -189,7 +184,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
 
                 return true;
-
         }
 
         return super.onOptionsItemSelected(item);
@@ -198,7 +192,6 @@ public class MainActivity extends AppCompatActivity {
     private void refreshContent() {
         finish();
         startActivity(getIntent());
-
     }
 
     public String stripCommaAtEnd(String s) {
@@ -210,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void gotoOverview(View view) {
+        // Going to overview without products added
 //        if(SharedPrefHelper.getPrintItems(getApplicationContext()) == null) { // No Products added
 //            Toast.makeText(getApplicationContext(), "Please add products to bill",
 //                    Toast.LENGTH_SHORT).show();
