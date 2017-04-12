@@ -2,27 +2,23 @@ package de.httptandooripalace.restaurantorderprinter;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 
 import entities.Product;
-import entities.Settings;
 import helpers.PrintAdapter;
 import helpers.Rounder;
 import helpers.SharedPrefHelper;
-
-import static android.media.CamcorderProfile.get;
 
 public class PrintActivity extends AppCompatActivity {
     private List<Product> products;
@@ -140,37 +136,37 @@ public class PrintActivity extends AppCompatActivity {
 
         strb.append("$bigw$");
         if(!settings.getNameLine1().equals("")) {
-            strb.append(alignCenterBigw(settings.getNameLine1()));
+            strb.append(alignCenterBigw(settings.getNameLine1().toUpperCase()));
             strb.append(BR);
         }
 
         if(!settings.getNameLine2().equals("")) {
-            strb.append(alignCenterBigw(settings.getNameLine2()));
+            strb.append(alignCenterBigw(settings.getNameLine2().toUpperCase()));
             strb.append(BR);
         }
 
         if(!settings.getAddrLine1().equals("")) {
-            strb.append(alignCenterBigw(settings.getAddrLine1()));
+            strb.append(alignCenterBigw(settings.getAddrLine1().toUpperCase()));
             strb.append(BR);
         }
 
         if(!settings.getAddrLine2().equals("")) {
-            strb.append(alignCenterBigw(settings.getAddrLine2()));
+            strb.append(alignCenterBigw(settings.getAddrLine2().toUpperCase()));
             strb.append(BR);
         }
 
         if(!settings.getTelLine().equals("")) {
-            strb.append(alignCenterBigw(settings.getTelLine()));
+            strb.append(alignCenterBigw(settings.getTelLine().toUpperCase()));
             strb.append(BR);
         }
 
         if(!settings.getTaxLine().equals("")) {
-            strb.append(alignCenterBigw(settings.getTaxLine()));
+            strb.append(alignCenterBigw(settings.getTaxLine().toUpperCase()));
             strb.append(BR);
         }
 
         if(!settings.getExtraLine().equals("")) {
-            strb.append(alignCenterBigw(settings.getExtraLine()));
+            strb.append(alignCenterBigw(settings.getExtraLine().toUpperCase()));
             strb.append(BR);
         }
 
@@ -179,11 +175,12 @@ public class PrintActivity extends AppCompatActivity {
 
         if(!tableNr.equals("")) {
             strb.append("$bighw$");
-            strb.append(alignCenterBigw(getString(R.string.table_nr) + tableNr));
+            strb.append(alignCenterBigw(getString(R.string.table_nr).toUpperCase() + tableNr));
             strb.append(BR);
         }
 
         strb.append(BR + "$big$" + BR);
+        strb.append(getLineOf('=', CHARCOUNT_BIG));
 
         double totalPriceExcl = 0;
         double totalPriceIncl = 0;
@@ -194,7 +191,6 @@ public class PrintActivity extends AppCompatActivity {
             double priceEx = products.get(i).getPrice_excl();
             double priceInc = products.get(i).getPrice_incl();
 
-            strb.append(getLineOf('-', CHARCOUNT_BIG));
             strb.append(BR);
 
             // 2 x 2.15
@@ -204,16 +200,21 @@ public class PrintActivity extends AppCompatActivity {
 
             // All Star Product                 4.30
             String totalPriceForThisProduct = Rounder.round(products.get(i).getCount() * products.get(i).getPrice_excl());
-            s = products.get(i).getName() + alignRight((EURO + totalPriceForThisProduct), products.get(i).getName().length());
+            s = products.get(i).getName().toUpperCase()
+                    + alignRight((EURO + totalPriceForThisProduct), products.get(i).getName().length());
             strb.append(s);
             strb.append(BR);
+
+            // Not on last line
+            if(i != products.size() - 1)
+                strb.append(getLineOf('-', CHARCOUNT_BIG));
 
             totalPriceExcl += (priceEx * products.get(i).getCount());
             totalPriceIncl += (priceInc * products.get(i).getCount());
 
         }
 
-        strb.append(getLineOf('-', CHARCOUNT_BIG));
+        strb.append(getLineOf('=', CHARCOUNT_BIG));
         strb.append(BR);
 
         // Total excl

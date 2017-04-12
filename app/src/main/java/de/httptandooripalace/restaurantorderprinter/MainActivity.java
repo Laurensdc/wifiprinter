@@ -26,7 +26,6 @@ import entities.Product;
 import helpers.MainAdapter;
 import helpers.SharedPrefHelper;
 
-
 public class MainActivity extends AppCompatActivity {
     private Toast currentToast;
 
@@ -48,10 +47,8 @@ public class MainActivity extends AppCompatActivity {
             ExpandableListView view = (ExpandableListView) findViewById(R.id.overview_main);
             MainAdapter adapter = new MainAdapter(this, err, msg);
             view.setAdapter(adapter);
-
         }
         else {
-
             JSONArray data = new JSONArray();
 
             try {
@@ -73,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
                 } catch(JSONException ex) {
                     Log.d("JSONEX", ex.getMessage());
                 }
-
 
                 String catname = "";
 
@@ -141,6 +137,8 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     products.add(prod);
                 }
+
+                // Save to DB in open bill now
                 SharedPrefHelper.setPrintItems(getApplicationContext(), products);
 
                 // Toast it
@@ -152,18 +150,13 @@ public class MainActivity extends AppCompatActivity {
                 return true;
                 }
             });
-
         }
-
-
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-
-
 
 //        SwipeRefreshLayout swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
 //        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -180,7 +173,6 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
         return true;
-
     }
 
     @Override
@@ -189,7 +181,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_settings:
                 Intent i = new Intent(this, SettingsActivity.class);
                 startActivity(i);
-
                 return true;
         }
 
@@ -238,7 +229,5 @@ public class MainActivity extends AppCompatActivity {
         InputMethodManager imm =  (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
-
-
 
 }
