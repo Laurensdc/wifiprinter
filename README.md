@@ -7,7 +7,7 @@ Restaurant menu is read from a Prestashop database, and waiters can add items to
 Bill is sent to a WiFi printer.
 
 
-## Installing / Getting started
+## Installing / Running the app
 
 * Install [ESC/POS printer driver](https://play.google.com/store/apps/details?id=com.fidelier.posprinterdriver&hl=en)
 * Install Order & Print app
