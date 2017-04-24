@@ -47,6 +47,8 @@ public class PrintActivity extends AppCompatActivity {
         PrintAdapter adapter = new PrintAdapter(getApplicationContext(), products);
         view.setAdapter(adapter);
 
+
+
     }
 
     @Override
@@ -67,7 +69,7 @@ public class PrintActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
+    //@Override
     // Open settings menu
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
@@ -76,16 +78,21 @@ public class PrintActivity extends AppCompatActivity {
                 startActivity(i);
                 onBackPressed();
                 return true;
-            case R.id.print_choice:
-                return true;
-            /*case R.id.print_bill:
+           /* case R.id.print_choice:
+                test(item);
+                return true;*/
+            case R.id.print_bill:
+                printBill(item);
                 return true;
             case R.id.print_tax:
+                printTaxBill(item);
                 return true;
             case R.id.print_drink:
+                printTaxBill(item);
                 return true;
             case R.id.print_kitchen:
-                return true;*/
+                printTaxBill(item);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -120,7 +127,7 @@ public class PrintActivity extends AppCompatActivity {
 
     }
 
-    public void test(View view){
+    public void test(MenuItem item){
         // Do print job button clicked
 
             //doWebViewPrint(ids, names, prices);
@@ -143,13 +150,9 @@ public class PrintActivity extends AppCompatActivity {
 //        this.startActivity(intentPrint);
 //
 
-
             StringBuilder strb = new StringBuilder();
 
-
-
             strb.append("<BIG>Bill<BR><BR>"); // Todo table number and other info
-
 
 
             strb.append("testestestestestestse");
@@ -164,14 +167,14 @@ public class PrintActivity extends AppCompatActivity {
 
     }
 
-    public void printTaxBill(View view) {
+    public void printTaxBill(MenuItem item) {
         if(products == null) return;
         if(products.size() <= 0) return;
 
         sendPrintJob(getBillContent() + getTaxFooter());
     }
 
-    public void printBill(View view) {
+    public void printBill(MenuItem item) {
         if(products == null) return;
         if(products.size() <= 0) return;
 
@@ -184,7 +187,7 @@ public class PrintActivity extends AppCompatActivity {
         String s;
         StringBuilder strb = new StringBuilder("");
 
-        strb.append(INITIATE);
+        sendPrintJob(INITIATE);
         strb.append(CHAR_TABLE_EURO);
         strb.append(BR);
 
@@ -418,11 +421,11 @@ public class PrintActivity extends AppCompatActivity {
         Intent intentPrint = new Intent();
         intentPrint.setAction(Intent.ACTION_SEND);
         intentPrint.putExtra(Intent.EXTRA_TEXT, dataToPrint);
-        intentPrint.putExtra("printer_type_id", "1");// For IP
-        intentPrint.putExtra("printer_ip", settings.getPrinterIp());
-        intentPrint.putExtra("printer_port", "9100");
+//        intentPrint.putExtra("printer_type_id", "1");// For IP
+//        intentPrint.putExtra("printer_ip", settings.getPrinterIp());
+//        intentPrint.putExtra("printer_port", "9100");
         intentPrint.setType("text/plain");
-        this.startActivity(intentPrint);
+        /*this.*/startActivity(intentPrint);
     }
 
 
