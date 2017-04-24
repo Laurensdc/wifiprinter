@@ -2,10 +2,33 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item
+        android:id="@+id/print_choice"
+        android:icon="@drawable/printer"
+        android:title="print"
+        app:fabSize="auto"
+        app:showAsAction="ifRoom">
+
+        <item
+            android:id="@+id/print_bill"
+            android:onClick="test"
+            android:title="bill" />
+        <item
+            android:id="@+id/print_drink"
+            android:onClick="test"
+            android:title="drink" />
+        <item
+            android:id="@+id/print_tax"
+            android:onClick="test"
+            android:title="tax" />
+        <item
+            android:id="@+id/print_kitchen"
+            android:onClick="test"
+            android:title="kitchen" />
+    </item>
     <item android:title="Settings"
         android:id="@+id/action_settings"
         android:icon="@drawable/cog"
         app:showAsAction="ifRoom"
-
         />
 </menu>

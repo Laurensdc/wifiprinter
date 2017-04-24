@@ -76,6 +76,16 @@ public class PrintActivity extends AppCompatActivity {
                 startActivity(i);
                 onBackPressed();
                 return true;
+            case R.id.print_choice:
+                return true;
+            /*case R.id.print_bill:
+                return true;
+            case R.id.print_tax:
+                return true;
+            case R.id.print_drink:
+                return true;
+            case R.id.print_kitchen:
+                return true;*/
         }
 
         return super.onOptionsItemSelected(item);
@@ -107,6 +117,50 @@ public class PrintActivity extends AppCompatActivity {
 
         AlertDialog alert = builder.create();
         alert.show();
+
+    }
+
+    public void test(View view){
+        // Do print job button clicked
+
+            //doWebViewPrint(ids, names, prices);
+            //String dataToPrint="$big$This is a printer test$intro$posprinterdriver.com$intro$$intro$$cut$$intro$";
+
+//
+//
+//        //String textToSend="$intro$$big$Test test 123 test$intro$$intro$$intro$";
+//        String textToSend="$intro$$intro$$intro$$big$AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA$intro$$intro$$intro$$intro$$intro$$small$BBBBBBBBBBBBBBBBBBBB$intro$$intro$$intro$";
+//        Intent intentPrint = new Intent();
+//        intentPrint.setAction(Intent.ACTION_SEND);
+//        intentPrint.putExtra(Intent.EXTRA_TEXT, textToSend);
+//        intentPrint.putExtra("printer_type_id", "1");// For IP
+//        intentPrint.putExtra("printer_ip", "192.168.178.105");
+//        intentPrint.putExtra("printer_port", "9100");
+//
+//        intentPrint.setType("text/plain");
+//        Log.i("Print job log: ", "sendDataToIPPrinter Start Intent");
+//
+//        this.startActivity(intentPrint);
+//
+
+
+            StringBuilder strb = new StringBuilder();
+
+
+
+            strb.append("<BIG>Bill<BR><BR>"); // Todo table number and other info
+
+
+
+            strb.append("testestestestestestse");
+            strb.append("<BR><BR>");
+
+            Intent intent = new Intent("pe.diegoveloper.printing");
+            //intent.setAction(android.content.Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            intent.putExtra(android.content.Intent.EXTRA_TEXT,strb.toString());
+            startActivity(intent);
+
 
     }
 

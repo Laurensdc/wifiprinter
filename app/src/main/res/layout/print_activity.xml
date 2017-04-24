@@ -73,7 +73,7 @@
             app:fabSize="mini"
             android:layout_margin="12dp"
             android:id="@+id/btn_bill"
-            android:onClick="printBill"
+            android:onClick="test"
             android:text="Bill"
             />
 
