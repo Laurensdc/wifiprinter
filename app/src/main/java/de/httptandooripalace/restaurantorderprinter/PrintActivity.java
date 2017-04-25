@@ -78,9 +78,6 @@ public class PrintActivity extends AppCompatActivity {
                 startActivity(i);
                 onBackPressed();
                 return true;
-           /* case R.id.print_choice:
-                test(item);
-                return true;*/
             case R.id.print_bill:
                 printBill(item);
                 return true;
@@ -88,10 +85,10 @@ public class PrintActivity extends AppCompatActivity {
                 printTaxBill(item);
                 return true;
             case R.id.print_drink:
-                printTaxBill(item);
+                printDrinkBill(item);
                 return true;
             case R.id.print_kitchen:
-                printTaxBill(item);
+                printKitchenBill(item);
                 return true;
         }
 
@@ -179,6 +176,111 @@ public class PrintActivity extends AppCompatActivity {
         if(products.size() <= 0) return;
 
         sendPrintJob(getBillContent() + getBillFooter());
+    }
+
+    public void printDrinkBill(MenuItem item){
+        if(products == null) return;
+        if(products.size() <= 0) return;
+
+        sendPrintJob(getBillModel(false));
+    }
+
+    public void printKitchenBill(MenuItem item){
+        if(products == null) return;
+        if(products.size() <= 0) return;
+
+        sendPrintJob(getBillModel(true));
+    }
+
+    public String getBillModel(Boolean kitchen){
+        Boolean filter = null;
+
+        String tableNr = SharedPrefHelper.getString(getApplicationContext(), "tableNr");
+        String s;
+        StringBuilder strb = new StringBuilder("");
+
+        sendPrintJob(INITIATE);
+        strb.append(CHAR_TABLE_EURO);
+        strb.append(BR);
+
+        if(!tableNr.equals("")) {
+            strb.append("$bighw$");
+            strb.append(getString(R.string.table_nr).toUpperCase() + tableNr);
+            strb.append(BR);
+        }
+
+        strb.append("$big$");
+        strb.append(BR);
+        if (kitchen) {
+            strb.append(alignCenter(getString(R.string.kitchen).toUpperCase()));
+        }else{
+            strb.append(alignCenter(getString(R.string.drink).toUpperCase()));
+        }
+
+        strb.append(BR + "$big$" + BR);
+        strb.append(getLineOf('=', CHARCOUNT_BIG));
+
+        double totalPriceExcl = 0;
+        double totalPriceIncl = 0;
+
+        for(int i = 0; i < products.size(); i++) {
+            if (kitchen) {
+                filter = !products.get(i).getDrink();
+            }else{
+                filter = products.get(i).getDrink();
+            }
+            if (products.get(i).getCount() < 1) continue;
+            if (filter){
+                double priceEx = products.get(i).getPrice_excl();
+                double priceInc = products.get(i).getPrice_incl();
+
+                strb.append(BR);
+
+                // 2 x 2.15
+                strb.append("$bighw$");
+                s = products.get(i).getCount() + " x " ;
+                strb.append(s);
+                strb.append("$big$");
+                s = EURO + Rounder.round(products.get(i).getPrice_excl());
+                strb.append(s);
+                strb.append(BR);
+
+                // All Star Product                 4.30
+                strb.append("$bighw$");
+                strb.append("   ");
+                s = products.get(i).getName().toUpperCase();
+                strb.append(s);
+                strb.append("$big$");
+                String totalPriceForThisProduct = Rounder.round(products.get(i).getCount() * products.get(i).getPrice_excl());
+                s = alignRightSpecial((EURO + totalPriceForThisProduct), products.get(i).getName().length());
+                strb.append(s);
+                strb.append(BR);
+
+                // Not on last line
+                if (i != products.size() - 1 )
+                    strb.append(getLineOf('-', CHARCOUNT_BIG));
+
+                totalPriceExcl += (priceEx * products.get(i).getCount());
+                totalPriceIncl += (priceInc * products.get(i).getCount());
+            }
+        }
+        strb.append(getLineOf('=', CHARCOUNT_BIG));
+        strb.append(BR);
+
+        // Date
+        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+
+        strb.append("$big$" + BR + BR);
+        strb.append(currentDateTimeString);
+        strb.append(" " + getString(R.string.waiter) + " " + settings.getWaiter());
+        strb.append(BR);
+        //strb.append("Bondrucker1"); //Don't need that :O
+
+        for(int i = 0; i < 8; i++) {
+            strb.append(BR);
+        }
+        strb.append("$cut$");
+        return strb.toString();
     }
 
     // sendPrintJob bill layout
@@ -425,7 +527,7 @@ public class PrintActivity extends AppCompatActivity {
 //        intentPrint.putExtra("printer_ip", settings.getPrinterIp());
 //        intentPrint.putExtra("printer_port", "9100");
         intentPrint.setType("text/plain");
-        /*this.*/startActivity(intentPrint);
+        this.startActivity(intentPrint);
     }
 
 
@@ -465,6 +567,27 @@ public class PrintActivity extends AppCompatActivity {
         String newstr = "";
         for(int i = 0; i < (paddingLeft - offsetLeft); i++) {
             newstr += " ";
+        }
+        newstr += s;
+        return newstr;
+    }
+
+    private String alignRightSpecial(String s, int offsetLeft) {// because there is 2 different size of text on the line
+        int length = s.length();
+        int paddingLeft = CHARCOUNT_BIG - length;
+        // EURO length counts as more than 1 character and bugs alignment
+        if(s.contains(EURO)) {
+            paddingLeft += EURO.length() - 1;
+        }
+        String newstr = "";
+        if((offsetLeft*2 + 6+s.length())< CHARCOUNT_BIG){
+            for(int i = 0; i < (paddingLeft - offsetLeft*2 - 6 ); i++) {
+                newstr += " ";
+            }
+        }else{
+            for(int i = 0; i < (paddingLeft - offsetLeft*2 - 6 + CHARCOUNT_BIG ); i++) {// to alignRight the price when the product take two lines long
+                newstr += " ";
+            }
         }
         newstr += s;
         return newstr;

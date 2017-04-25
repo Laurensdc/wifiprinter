@@ -32,6 +32,8 @@
     <string name="tyvm">Thank you very much!</string>
     <string name="visit_again">We\'d like to welcome you again soon.</string>
     <string name="waiter">Waiter</string>
+    <string name="drink">drink</string>
+    <string name="kitchen">kitchen</string>
 
     <!-- Save settings dialog menu -->
     <string name="save_settings">Save settings?</string>

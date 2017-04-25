@@ -10,6 +10,7 @@ public class Product {
     private double price_incl;
     private String category;
     private int count;
+    private boolean drink;
 
 
     private String reference;
@@ -21,12 +22,20 @@ public class Product {
         this.name = name;
         this.reference = reference;
         this.count = 1;
+        if(this.getName().endsWith("cl") || this.getName().endsWith(" l") || this.getName().endsWith("L)") || this.getName().endsWith("cl)") || this.getCategory().contains("Getränke")){
+            this.drink = true;
+        }else{
+            this.drink = false;
+        }
     }
 
 //    public Product(String name, String category) {
 //        this.name = name;
 //        this.category = category;
 //    }
+
+    public boolean getDrink() { return this.drink; }
+    public void setDrink(Boolean d) { this.drink= d; }
 
     public void increaseCount() { count++; }
     public void decreaseCount() { count--; }
@@ -90,4 +99,5 @@ public class Product {
 
 
     }
+
 }

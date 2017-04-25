@@ -32,6 +32,8 @@
     <string name="tyvm">Vielen Dank!</string>
     <string name="visit_again">Beehren Sie uns bald wieder.</string>
     <string name="waiter">BED</string>
+    <string name="drink">teche</string>
+    <string name="kitchen">kuche</string>
 
     <!-- Save settings dialog menu -->
     <string name="save_settings">Einstellungen speichern?</string>

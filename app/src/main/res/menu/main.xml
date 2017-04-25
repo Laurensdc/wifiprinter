@@ -12,7 +12,7 @@
             <item
                 android:id="@+id/print_bill"
                 android:title="bill"
-                
+
                 />
             <item
                 android:id="@+id/print_drink"
