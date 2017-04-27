@@ -47,14 +47,6 @@ public class SharedPrefHelper {
 
     }
 
-    public static List<Bill> getOpenBills(Context context){
-
-    }
-
-    public static void setOpenBills(Context context, List<Bill> bills){
-
-    }
-
     public static void putString(Context context, String name, String value) {
         SharedPreferences prefs = context.getSharedPreferences("cart", 0);
         SharedPreferences.Editor editor = prefs.edit();

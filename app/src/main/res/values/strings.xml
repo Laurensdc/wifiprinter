@@ -35,6 +35,7 @@
     <string name="drink">drink</string>
     <string name="kitchen">kitchen</string>
 
+
     <!-- Save settings dialog menu -->
     <string name="save_settings">Save settings?</string>
     <string name="want_to_save">Do you want to save these settings?</string>
