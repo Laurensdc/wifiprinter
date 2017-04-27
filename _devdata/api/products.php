@@ -8,57 +8,62 @@ $password = DB_PASSWORD;
 $dbname = DB_NAME;
 
 $method = $_SERVER['REQUEST_METHOD'];
-$function = $_POST['product'];
 
-$opt = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES   => false,
-];
-
-if($method == 'GET') {
-    try {
-        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password, $opt);
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // set the PDO error mode to exception
-
-        $stmt = $conn->prepare("SELECT DISTINCT
-            cat.id_category AS 'id_cat',
-            catl.name AS 'name_cat',
-            p.id_product AS 'id_prod',
-            pl.name AS 'name_prod',
-            p.reference AS 'reference_prod',
-            ROUND(p.price, 2) AS 'price_prod_excl',
-            ROUND(p.price * (COALESCE(ptx.rate, 0) / 100 + 1), 2) AS 'price_prod_incl',
-            pl.description_short AS 'description_prod'
-
-            FROM        ps_product p
-            INNER JOIN  ps_product_lang pl ON p.id_product = pl.id_product
-            INNER JOIN  ps_category_product cat ON p.id_product = cat.id_product
-            INNER JOIN  ps_category_lang catl ON cat.id_category = catl.id_category
-            INNER JOIN  ps_tax_rule ptxgrp ON ptxgrp.id_tax_rules_group = p.id_tax_rules_group
-            INNER JOIN  ps_tax ptx ON ptx.id_tax = ptxgrp.id_tax
-
-            ORDER BY    name_cat ASC,
-                        name_prod ASC
-
-            ;
-
-        ");
-
-        $stmt->execute();
-        $result = $stmt->fetchAll();
-
-        header('Content-Type: application/json');
-        echo json_encode(utf8ize($result));
-
-        die();
-    }
-    catch(PDOException $e) {
-        echo "Error api: " . $e->getMessage();
-    }
-    $conn = null;
-
+if($method != 'GET') {
+    echo 'This route accepts GET requests only';
+    die();
 }
+
+try {
+    $opt = [
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES   => false,
+    ];
+
+    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password, $opt);
+
+    $stmt = $conn->prepare("SELECT DISTINCT
+        cat.id_category AS 'id_cat',
+        catl.name AS 'name_cat',
+        p.id_product AS 'id_prod',
+        pl.name AS 'name_prod',
+        p.reference AS 'reference_prod',
+        ROUND(p.price, 2) AS 'price_prod_excl',
+        ROUND(p.price * (COALESCE(ptx.rate, 0) / 100 + 1), 2) AS 'price_prod_incl',
+        pl.description_short AS 'description_prod'
+
+        FROM        ps_product p
+        INNER JOIN  ps_product_lang pl ON p.id_product = pl.id_product
+        INNER JOIN  ps_category_product cat ON p.id_product = cat.id_product
+        INNER JOIN  ps_category_lang catl ON cat.id_category = catl.id_category
+        INNER JOIN  ps_tax_rule ptxgrp ON ptxgrp.id_tax_rules_group = p.id_tax_rules_group
+        INNER JOIN  ps_tax ptx ON ptx.id_tax = ptxgrp.id_tax
+
+        ORDER BY    name_cat ASC,
+                    name_prod ASC
+
+        ;
+
+    ");
+
+    $stmt->execute();
+    $result = $stmt->fetchAll();
+
+    var_dump($result);
+
+    die();
+
+    header('Content-Type: application/json');
+    echo json_encode(utf8ize($result));
+
+    die();
+}
+catch(PDOException $e) {
+    echo "Error api: " . $e->getMessage();
+}
+$conn = null;
+
 
 function utf8ize($d) {
     if (is_array($d)) {
