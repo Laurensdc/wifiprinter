@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import entities.Bill;
 import entities.Product;
 import entities.Settings;
 
@@ -43,6 +44,14 @@ public class SharedPrefHelper {
         String prodsstr = gson.toJson(products);
         editor.putString("printItems", prodsstr);
         editor.commit();
+
+    }
+
+    public static List<Bill> getOpenBills(Context context){
+
+    }
+
+    public static void setOpenBills(Context context, List<Bill> bills){
 
     }
 

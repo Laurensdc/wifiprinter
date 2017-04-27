@@ -13,8 +13,7 @@ public class Bill {
     private Date date;
     private String tableNr;
     private String waiter;
-    private
-    int id;
+    private int id;
 
     public Bill(List<Product> products, boolean isOpen, Date date, String tableNr, String waiter, int id) {
         this.products = products;

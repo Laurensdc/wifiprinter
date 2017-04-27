@@ -90,6 +90,10 @@ public class PrintActivity extends AppCompatActivity {
             case R.id.print_kitchen:
                 printKitchenBill(item);
                 return true;
+            case R.id.bills_overview:
+                Intent i2 = new Intent(this, OverviewActivity.class);
+                startActivity(i2);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -236,18 +240,18 @@ public class PrintActivity extends AppCompatActivity {
 
                 strb.append(BR);
 
-                // 2 x 2.15
-                strb.append("$bighw$");
-                s = products.get(i).getCount() + " x " ;
-                strb.append(s);
-                strb.append("$big$");
-                s = EURO + Rounder.round(products.get(i).getPrice_excl());
-                strb.append(s);
-                strb.append(BR);
-
+                if(products.get(i).getCount()!=1) {
+                    // 2 x 2.15
+                    strb.append("$bighw$");
+                    s = products.get(i).getCount() + " x ";
+                    strb.append(s);
+                    strb.append("$big$");
+                    s = EURO + Rounder.round(products.get(i).getPrice_excl());
+                    strb.append(s);
+                    strb.append(BR);
+                }
                 // All Star Product                 4.30
                 strb.append("$bighw$");
-                strb.append("   ");
                 s = products.get(i).getName().toUpperCase();
                 strb.append(s);
                 strb.append("$big$");
@@ -352,11 +356,12 @@ public class PrintActivity extends AppCompatActivity {
 
             strb.append(BR);
 
-            // 2 x 2.15
-            s = products.get(i).getCount() + " x " + EURO + Rounder.round(products.get(i).getPrice_excl());
-            strb.append(s);
-            strb.append(BR);
-
+            if(products.get(i).getCount()!=1) {
+                // 2 x 2.15
+                s = products.get(i).getCount() + " x " + EURO + Rounder.round(products.get(i).getPrice_excl());
+                strb.append(s);
+                strb.append(BR);
+            }
             // All Star Product                 4.30
             String totalPriceForThisProduct = Rounder.round(products.get(i).getCount() * products.get(i).getPrice_excl());
             s = products.get(i).getName().toUpperCase()
@@ -527,7 +532,7 @@ public class PrintActivity extends AppCompatActivity {
 //        intentPrint.putExtra("printer_ip", settings.getPrinterIp());
 //        intentPrint.putExtra("printer_port", "9100");
         intentPrint.setType("text/plain");
-        this.startActivity(intentPrint);
+        /*this.*/startActivity(intentPrint);
     }
 
 
@@ -580,12 +585,12 @@ public class PrintActivity extends AppCompatActivity {
             paddingLeft += EURO.length() - 1;
         }
         String newstr = "";
-        if((offsetLeft*2 + 6+s.length())< CHARCOUNT_BIG){
-            for(int i = 0; i < (paddingLeft - offsetLeft*2 - 6 ); i++) {
+        if((offsetLeft*2 +s.length())< CHARCOUNT_BIG){
+            for(int i = 0; i < (paddingLeft - offsetLeft*2  ); i++) {
                 newstr += " ";
             }
         }else{
-            for(int i = 0; i < (paddingLeft - offsetLeft*2 - 6 + CHARCOUNT_BIG ); i++) {// to alignRight the price when the product take two lines long
+            for(int i = 0; i < (paddingLeft - offsetLeft*2  + CHARCOUNT_BIG ); i++) {// to alignRight the price when the product take two lines long
                 newstr += " ";
             }
         }
