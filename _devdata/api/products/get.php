@@ -1,6 +1,6 @@
 <?php
 
-require("config.php");
+require("../config.php");
 
 $servername = DB_HOST;
 $username = DB_USER;
@@ -49,10 +49,6 @@ try {
 
     $stmt->execute();
     $result = $stmt->fetchAll();
-
-    var_dump($result);
-
-    die();
 
     header('Content-Type: application/json');
     echo json_encode(utf8ize($result));

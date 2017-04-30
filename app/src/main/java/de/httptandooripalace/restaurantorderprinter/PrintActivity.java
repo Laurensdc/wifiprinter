@@ -255,6 +255,7 @@ public class PrintActivity extends AppCompatActivity {
                 s = alignRightSpecial((EURO + totalPriceForThisProduct), products.get(i).getName().length());
                 strb.append(s);
                 strb.append(BR);
+     
 
                 // Not on last line
                 if (i != products.size() - 1 )
