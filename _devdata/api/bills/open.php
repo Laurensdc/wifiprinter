@@ -41,14 +41,18 @@ try {
     $stmt = $conn->prepare("UPDATE app_bills SET is_open = 1 WHERE id = :id");
     $stmt->bindParam(':id', $id);
     $stmt->execute();
-    $success = $stmt->rowCount();
+    $rowcount = $stmt->rowCount();
 
+    $success = ($rowcount > 0) ? true : false;
+    $returnObj = array('success' => $success);
 
-    echo json_encode($success);
-
+    echo json_encode($returnObj);
+    $conn = null;
     die();
 }
 catch(PDOException $e) {
-    echo "Error api: " . $e->getMessage();
+    $returnObj = array('success' => false, 'message' => $e->getMessage());
+    echo json_encode($returnObj);
+    $conn = null;
+    die();
 }
-$conn = null;

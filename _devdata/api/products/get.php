@@ -1,5 +1,4 @@
 <?php
-
 require("../config.php");
 
 $servername = DB_HOST;
@@ -49,17 +48,19 @@ try {
 
     $stmt->execute();
     $result = $stmt->fetchAll();
+    $returnObj = array('success' => 'true', 'products' => utf8ize($result));
 
     header('Content-Type: application/json');
-    echo json_encode(utf8ize($result));
-
+    echo json_encode($returnObj);
+    $conn = null;
     die();
 }
 catch(PDOException $e) {
-    echo "Error api: " . $e->getMessage();
+    $returnObj = array('success' => false, 'message' => $e->getMessage());
+    echo json_encode($returnObj);
+    $conn = null;
+    die();
 }
-$conn = null;
-
 
 function utf8ize($d) {
     if (is_array($d)) {

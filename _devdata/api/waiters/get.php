@@ -22,11 +22,10 @@ try {
 
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password, $opt);
 
-    $stmt = $conn->prepare("SELECT * FROM app_bills");
-
+    $stmt = $conn->prepare("SELECT * FROM app_waiters");
     $stmt->execute();
     $result = $stmt->fetchAll();
-    $returnObj = array('success' => 'true', 'bills' => utf8ize($result));
+    $returnObj = array('success' => 'true', 'waiters' => utf8ize($result));
 
     header('Content-Type: application/json');
     echo json_encode($returnObj);

@@ -22,12 +22,17 @@ if(!$input) {
 $json = json_decode($input, true);
 
 // Object checks
-if(!isset($json['id'])) {
-    echo 'No id object provided';
+if(!isset($json['waiter'])) {
+    echo 'No waiter object provided';
     die();
 }
 
-$id = $json['id'];
+$waiter = $json['waiter'];
+
+if(!isset($waiter['name'])) {
+    echo 'No waiter name passed';
+    die();
+}
 
 try {
     $opt = [
@@ -38,14 +43,16 @@ try {
 
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password, $opt);
 
-    $stmt = $conn->prepare("UPDATE app_bills SET is_open = 0 WHERE id = :id");
-    $stmt->bindParam(':id', $id);
-    $stmt->execute();
-    $rowcount = $stmt->rowCount();
+    $stmt = $conn->prepare("INSERT INTO app_waiters (name) VALUES (:name)");
+    $stmt->bindParam(':name', $waiter['name']);
+    $success = $stmt->execute();
 
-    $success = ($rowcount > 0) ? true : false;
-    $returnObj = array('success' => $success);
-    
+    $stmt2 = $conn->prepare("SELECT LAST_INSERT_ID() AS id");
+    $stmt2->execute();
+    $id = $stmt2->fetchAll();
+
+    $returnObj = array('id' => $id[0]["id"], 'success' => $success);
+
     echo json_encode($returnObj);
     $conn = null;
     die();

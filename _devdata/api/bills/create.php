@@ -1,5 +1,5 @@
 <?php
-require("config.php");
+require("../config.php");
 
 $servername = DB_HOST;
 $username = DB_USER;
@@ -45,30 +45,21 @@ try {
 
     $stmt = $conn->prepare("INSERT INTO app_bills (table_nr) VALUES (:table_nr)");
     $stmt->bindParam(':table_nr', $bill['table_nr']);
-
-    $stmt->execute();
+    $success = $stmt->execute();
 
     $stmt2 = $conn->prepare("SELECT LAST_INSERT_ID() AS id");
     $stmt2->execute();
-    $result = $stmt2->fetchAll();
+    $id = $stmt2->fetchAll();
 
-    echo json_encode($result);
+    $returnObj = array('id' => $id[0]["id"], 'success' => $success);
 
+    echo json_encode($returnObj);
+    $conn = null;
     die();
 }
 catch(PDOException $e) {
-    echo "Error api: " . $e->getMessage();
-}
-$conn = null;
-
-
-function utf8ize($d) {
-    if (is_array($d)) {
-        foreach ($d as $k => $v) {
-            $d[$k] = utf8ize($v);
-        }
-    } else if (is_string ($d)) {
-        return utf8_encode($d);
-    }
-    return $d;
+    $returnObj = array('success' => false, 'message' => $e->getMessage());
+    echo json_encode($returnObj);
+    $conn = null;
+    die();
 }
