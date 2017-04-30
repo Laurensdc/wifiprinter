@@ -1,37 +1,29 @@
 <?php
 require("../config.php");
-
-$servername = DB_HOST;
-$username = DB_USER;
-$password = DB_PASSWORD;
-$dbname = DB_NAME;
+require("../functions.php");
 
 $method = $_SERVER['REQUEST_METHOD']; // HTTP Request method
 $input = file_get_contents("php://input"); // HTTP Request body (raw)
 
 if($method != 'POST') {
-    echo 'This route accepts POST requests only';
-    die();
+    error('This route accepts POST requests only');
 }
 
 if(!$input) {
-    echo 'No data provided';
-    die();
+    error('No data provided')
 }
 
 $json = json_decode($input, true);
 
 // Object checks
 if(!isset($json['waiter'])) {
-    echo 'No waiter object provided';
-    die();
+    error('No waiter object provided');
 }
 
 $waiter = $json['waiter'];
 
 if(!isset($waiter['name'])) {
-    echo 'No waiter name passed';
-    die();
+    error('No waiter name passed');
 }
 
 try {
@@ -41,7 +33,7 @@ try {
         PDO::ATTR_EMULATE_PREPARES   => false,
     ];
 
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password, $opt);
+    $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD, $opt);
 
     $stmt = $conn->prepare("INSERT INTO app_waiters (name) VALUES (:name)");
     $stmt->bindParam(':name', $waiter['name']);
@@ -58,8 +50,5 @@ try {
     die();
 }
 catch(PDOException $e) {
-    $returnObj = array('success' => false, 'message' => $e->getMessage());
-    echo json_encode($returnObj);
-    $conn = null;
-    die();
+    error($e->getMessage());
 }

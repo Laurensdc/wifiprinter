@@ -2,6 +2,8 @@
 require("../config.php");
 require("../functions.php");
 
+header('Content-Type: application/json');
+
 $method = $_SERVER['REQUEST_METHOD']; // HTTP Request method
 $input = file_get_contents("php://input"); // HTTP Request body (raw)
 
@@ -10,17 +12,22 @@ if($method != 'POST') {
 }
 
 if(!$input) {
-    error('No input provided');
+    error('No data provided');
 }
 
 $json = json_decode($input, true);
 
 // Object checks
-if(!isset($json['id'])) {
-    error('No id was passed');
+if(!isset($json['bill_id'])) {
+    error('Missing bill_id');
 }
 
-$id = $json['id'];
+if(!isset($json['waiter_id'])) {
+    error('Missing waiter_id');
+}
+
+$bill_id = $json['bill_id'];
+$waiter_id = $json['waiter_id'];
 
 try {
     $opt = [
@@ -31,8 +38,9 @@ try {
 
     $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD, $opt);
 
-    $stmt = $conn->prepare("UPDATE app_bills SET is_open = 1 WHERE id = :id");
-    $stmt->bindParam(':id', $id);
+    $stmt = $conn->prepare("INSERT INTO app_bill_has_waiter (bill_id, waiter_id) VALUES (:bill_id, :waiter_id)");
+    $stmt->bindParam(':bill_id', $bill_id);
+    $stmt->bindParam(':waiter_id', $waiter_id);
     $stmt->execute();
     $rowcount = $stmt->rowCount();
 
