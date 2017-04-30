@@ -11,13 +11,20 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTask">
+            android:name=".OverviewActivity"
+            android:label="Open bills">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".OverviewActivity" />
         </activity>
         <activity
             android:name=".PrintActivity"
@@ -29,17 +36,9 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/settings"
-            android:windowSoftInputMode="adjustResize"
-            >
+            android:windowSoftInputMode="adjustResize">
+        </activity>
 
-        </activity>
-        <activity
-            android:name=".OverviewActivity"
-            android:label="Open bills">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
     </application>
 
 </manifest>

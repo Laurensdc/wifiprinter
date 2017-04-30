@@ -65,7 +65,7 @@ public class PrintActivity extends AppCompatActivity {
     // Add settings menu icon to toolbar
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
+        inflater.inflate(R.menu.print, menu);
         return true;
     }
 
@@ -249,6 +249,10 @@ public class PrintActivity extends AppCompatActivity {
                     s = EURO + Rounder.round(products.get(i).getPrice_excl());
                     strb.append(s);
                     strb.append(BR);
+                    s = products.get(i).getReference();
+                    strb.append(s);
+                    strb.append(BR);
+
                 }
                 // All Star Product                 4.30
                 strb.append("$bighw$");
@@ -577,6 +581,7 @@ public class PrintActivity extends AppCompatActivity {
         return newstr;
     }
 
+    //TODO : rewrite it dynamically
     private String alignRightSpecial(String s, int offsetLeft) {// because there is 2 different size of text on the line
         int length = s.length();
         int paddingLeft = CHARCOUNT_BIG - length;
@@ -589,8 +594,16 @@ public class PrintActivity extends AppCompatActivity {
             for(int i = 0; i < (paddingLeft - offsetLeft*2  ); i++) {
                 newstr += " ";
             }
-        }else{
-            for(int i = 0; i < (paddingLeft - offsetLeft*2  + CHARCOUNT_BIG ); i++) {// to alignRight the price when the product take two lines long
+        }else if((offsetLeft*2 +s.length())< CHARCOUNT_BIG*2) {
+            for (int i = 0; i < (paddingLeft - offsetLeft * 2 + CHARCOUNT_BIG); i++) {// to alignRight the price when the product take two lines long
+                newstr += " ";
+            }
+        }else if((offsetLeft*2 +s.length())< CHARCOUNT_BIG*3){
+            for(int i = 0; i < (paddingLeft - offsetLeft*2  + CHARCOUNT_BIG ); i++) {
+                newstr += " ";
+            }
+        }else if((offsetLeft*2 +s.length())< CHARCOUNT_BIG*4) {
+            for (int i = 0; i < (paddingLeft - offsetLeft * 2 + CHARCOUNT_BIG); i++) {
                 newstr += " ";
             }
         }

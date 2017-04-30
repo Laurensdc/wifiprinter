@@ -34,24 +34,24 @@ public class OverviewAdapter extends BaseAdapter{
 
     @Override
     public int getCount() {
-        return 0;
+        if(bills==null){return 0;}
+        return bills.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return bills.get(position);
     }
 
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
 
         final Bill bill = bills.get(position);
-
 
         if(convertView==null){
             LayoutInflater inflater = (LayoutInflater) this.context
@@ -59,15 +59,11 @@ public class OverviewAdapter extends BaseAdapter{
             convertView = inflater.inflate(R.layout.overview_list_item, null);
         }
 
-            TextView t1 = (TextView) convertView.findViewById(R.id.table_number);
-            t1.setText(bills.get(position).getTableNr());
+        TextView t1 = (TextView) convertView.findViewById(R.id.table_number);
+        t1.setText(bill.getTableNr());
 
-            TextView t2 = (TextView) convertView.findViewById(R.id.waiter_name);
-            t2.setText(bills.get(position).getWaiter());
-
-
-
-
+        TextView t2 = (TextView) convertView.findViewById(R.id.waiter_name);
+        t2.setText(bill.getWaiter());
         return convertView;
     }
 

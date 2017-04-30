@@ -31,8 +31,10 @@ import helpers.SharedPrefHelper;
 public class OverviewActivity extends AppCompatActivity {
 
     private entities.Settings settings;
-    private List<Bill> bills;
-    private static List<Product> products;
+    private static  List<Bill> bills = new ArrayList<>();;
+    private static  List<Product> products = new ArrayList<>();;
+
+
 
 
     @Override
@@ -57,6 +59,7 @@ public class OverviewActivity extends AppCompatActivity {
 //        view.setAdapter(adapter);
 
         //creating 3 bills manually, to test the layout
+        System.out.print("start of the manual phase !!!!!!!!!!!!!!!!!!!!!");
         Product p1 = new Product("tandori salad", 10, 13, "15", "salads");
         Product p2 = new Product("other salad", 10, 13, "16", "salads");
         Product p3 = new Product("thing salad", 10, 13, "17", "salads");
@@ -79,9 +82,8 @@ public class OverviewActivity extends AppCompatActivity {
         bills.add(b3);
 
         ListView view = (ListView) findViewById(R.id.list_open_bills);
-        OverviewAdapter adapter = new OverviewAdapter(getApplicationContext(), bills);
+        OverviewAdapter adapter = new OverviewAdapter(this, bills);
         view.setAdapter(adapter);
-
     }
 
     // something
