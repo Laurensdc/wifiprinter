@@ -2,6 +2,8 @@
 require("../config.php");
 require("../functions.php");
 
+header('Content-Type: application/json');
+
 $method = $_SERVER['REQUEST_METHOD']; // HTTP Request method
 $input = file_get_contents("php://input"); // HTTP Request body (raw)
 
@@ -16,15 +18,16 @@ if(!$input) {
 $json = json_decode($input, true);
 
 // Object checks
-if(!isset($json['waiter'])) {
-    error('No waiter object provided');
+if(!isset($json['bill_id'])) {
+    error('Missing bill_id');
 }
 
-$waiter = $json['waiter'];
-
-if(!isset($waiter['name'])) {
-    error('No waiter name passed');
+if(!isset($json['product_id'])) {
+    error('Missing product_id');
 }
+
+$bill_id = $json['bill_id'];
+$product_id = $json['product_id'];
 
 try {
     $opt = [
@@ -35,15 +38,13 @@ try {
 
     $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD, $opt);
 
-    $stmt = $conn->prepare("INSERT INTO app_waiters (name) VALUES (:name)");
-    $stmt->bindParam(':name', $waiter['name']);
-    $success = $stmt->execute();
-
-    $stmt2 = $conn->prepare("SELECT LAST_INSERT_ID() AS id");
-    $stmt2->execute();
-    $id = $stmt2->fetchAll();
-
-    $returnObj = array('id' => $id[0]["id"], 'success' => $success);
+    $stmt = $conn->prepare("INSERT INTO app_bill_has_products (bill_id, product_id) VALUES (:bill_id, :product_id)");
+    $stmt->bindParam(':bill_id', $bill_id);
+    $stmt->bindParam(':product_id', $product_id);
+    $stmt->execute();
+    $rowcount = $stmt->rowCount();
+    $success = ($rowcount > 0) ? true : false;
+    $returnObj = array('success' => $success);
 
     echo json_encode($returnObj);
     $conn = null;

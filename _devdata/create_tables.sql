@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS app_bills (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS app_bill_has_product(
+CREATE TABLE IF NOT EXISTS app_bill_has_products(
     bill_id INT NOT NULL,
     product_id INT NOT NULL,
 
@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS app_waiters (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS app_bill_has_waiter (
+CREATE TABLE IF NOT EXISTS app_bill_has_waiters (
     bill_id INT NOT NULL,
     waiter_id INT NOT NULL,
 
