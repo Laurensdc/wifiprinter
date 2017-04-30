@@ -90,10 +90,6 @@ public class PrintActivity extends AppCompatActivity {
             case R.id.print_kitchen:
                 printKitchenBill(item);
                 return true;
-            case R.id.bills_overview:
-                Intent i2 = new Intent(this, OverviewActivity.class);
-                startActivity(i2);
-                return true;
         }
 
         return super.onOptionsItemSelected(item);

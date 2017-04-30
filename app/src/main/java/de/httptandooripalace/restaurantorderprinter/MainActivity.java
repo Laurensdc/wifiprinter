@@ -183,10 +183,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent i = new Intent(this, SettingsActivity.class);
                 startActivity(i);
                 return true;
-            case R.id.bills_overview:
-                Intent i2 = new Intent(this, OverviewActivity.class);
-                startActivity(i2);
-                return true;
         }
 
         return super.onOptionsItemSelected(item);
