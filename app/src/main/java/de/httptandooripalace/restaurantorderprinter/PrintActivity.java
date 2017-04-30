@@ -199,7 +199,7 @@ public class PrintActivity extends AppCompatActivity {
         String s;
         StringBuilder strb = new StringBuilder("");
 
-        sendPrintJob(INITIATE);
+        strb.append(INITIATE);
         strb.append(CHAR_TABLE_EURO);
         strb.append(BR);
 
