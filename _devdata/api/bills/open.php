@@ -38,7 +38,7 @@ try {
 
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password, $opt);
 
-    $stmt = $conn->prepare("UPDATE app_bills SET is_open = 0 WHERE id = :id");
+    $stmt = $conn->prepare("UPDATE app_bills SET is_open = 1 WHERE id = :id");
     $stmt->bindParam(':id', $id);
     $stmt->execute();
     $success = $stmt->rowCount();
