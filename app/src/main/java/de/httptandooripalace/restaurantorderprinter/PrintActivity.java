@@ -257,7 +257,7 @@ public class PrintActivity extends AppCompatActivity {
                 strb.append(BR);
                 // All Star Product                 4.30
                 strb.append("$bighw$");
-                s = products.get(i).getName().toUpperCase();
+                s = StringHelper.swapU(products.get(i).getName().toUpperCase());
                 strb.append(s);
                 strb.append("$big$");
                 String totalPriceForThisProduct = Rounder.round(products.get(i).getCount() * products.get(i).getPrice_excl());
@@ -312,7 +312,7 @@ public class PrintActivity extends AppCompatActivity {
 
         strb.append("$big$");
         strb.append(BR);
-        strb.append(alignCenter(getString(R.string.kitchen).toUpperCase()));
+        strb.append(alignCenter(StringHelper.swapU(getString(R.string.kitchen).toUpperCase())));
 
 
         strb.append(BR + "$big$" + BR);
@@ -350,7 +350,7 @@ public class PrintActivity extends AppCompatActivity {
                 strb.append(BR);
                 // All Star Product                 4.30
                 strb.append("$bighw$");
-                s = products.get(i).getName().toUpperCase();
+                s = StringHelper.swapU(products.get(i).getName().toUpperCase());
                 strb.append(s);
                 strb.append("$big$");
                 String totalPriceForThisProduct = Rounder.round(products.get(i).getCount() * products.get(i).getPrice_excl());
@@ -554,7 +554,7 @@ public class PrintActivity extends AppCompatActivity {
             }
             // All Star Product                 4.30
             String totalPriceForThisProduct = Rounder.round(products.get(i).getCount() * products.get(i).getPrice_excl());
-            s = products.get(i).getName().toUpperCase()
+            s = StringHelper.swapU(products.get(i).getName().toUpperCase())
                     + alignRight((EURO + totalPriceForThisProduct), products.get(i).getName().length());
             strb.append(s);
             strb.append(BR);
@@ -745,10 +745,10 @@ public class PrintActivity extends AppCompatActivity {
             paddingLeft += EURO.length() -1;
         }
         for (int i = 0; i< StringHelper.checkCount(s,u); i++){
-            paddingLeft += EURO.length() -1;
+            paddingLeft += u.length() -1;
         }
         for (int i = 0; i< StringHelper.checkCount(s,U); i++){
-            paddingLeft += EURO.length() -1;
+            paddingLeft += U.length() -1;
         }
         String newstr = "";
         for(int i = 0; i < paddingLeft - offsetLeft; i++) {
@@ -766,10 +766,10 @@ public class PrintActivity extends AppCompatActivity {
             paddingLeft += EURO.length() -1;
         }
         for (int i = 0; i< StringHelper.checkCount(s,u); i++){
-            paddingLeft += EURO.length() -1;
+            paddingLeft += u.length() -1;
         }
         for (int i = 0; i< StringHelper.checkCount(s,U); i++){
-            paddingLeft += EURO.length() -1;
+            paddingLeft += U.length() -1;
         }
         String newstr = "";
         for(int i = 0; i < (paddingLeft - offsetLeft); i++) {
@@ -789,10 +789,10 @@ public class PrintActivity extends AppCompatActivity {
             paddingLeft += EURO.length() -1;
         }
         for (int i = 0; i< StringHelper.checkCount(s,u); i++){
-            paddingLeft += EURO.length() -1;
+            paddingLeft += u.length() -1;
         }
         for (int i = 0; i< StringHelper.checkCount(s,U); i++){
-            paddingLeft += EURO.length() -1;
+            paddingLeft += U.length() -1;
         }
         String newstr = "";
         if((offsetLeft*2 +s.length())< CHARCOUNT_BIG){
@@ -821,6 +821,22 @@ public class PrintActivity extends AppCompatActivity {
         int totalSpaceLeft = CHARCOUNT_BIG - length;
         int spaceOnBothSides = totalSpaceLeft / 2;
         String newstr = "";
+        // EURO length counts as more than 1 character and bugs alignment
+        for (int i = 0; i< StringHelper.checkCount(s,EURO); i++){
+            for(int j=0; j < EURO.length() -1; j++ ){
+                newstr += " ";
+            }
+        }
+        for (int i = 0; i< StringHelper.checkCount(s,u); i++){
+            for(int j=0; j < u.length() -1; j++ ){
+                newstr += " ";
+            }
+        }
+        for (int i = 0; i< StringHelper.checkCount(s,U); i++){
+            for(int j=0; j < U.length() -1; j++ ){
+                newstr += " ";
+            }
+        }
         for(int i = 0; i < spaceOnBothSides; i++) {
             newstr += " ";
         }

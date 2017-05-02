@@ -19,7 +19,7 @@
                 android:title="@string/tax2" />
             <item
                 android:id="@+id/print_kitchen"
-                android:title="@string/kitchen" />
+                android:title="@string/kitchen2" />
         </menu>
     </item>
     <item android:title="Settings"
