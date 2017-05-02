@@ -36,26 +36,6 @@
             </TableRow>
 
             <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-
-                <TextView
-                    android:text="Printer IP"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:width="150dp"
-                    android:textSize="16sp" />
-
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/printer_ip"
-                    android:textSize="16sp"
-                    android:maxLines="1"/>
-
-            </TableRow>
-
-            <TableRow
                 android:baselineAligned="false">
 
                 <!-- Spacer -->
