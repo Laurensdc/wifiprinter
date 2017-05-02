@@ -2,9 +2,11 @@ package de.httptandooripalace.restaurantorderprinter;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.SettingInjectorService;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 import entities.Product;
+import entities.Settings;
 import helpers.PrintAdapter;
 import helpers.Rounder;
 import helpers.SharedPrefHelper;
@@ -42,12 +45,15 @@ public class PrintActivity extends AppCompatActivity {
         products = SharedPrefHelper.getPrintItems(getApplicationContext());
         settings = SharedPrefHelper.loadSettings(getApplicationContext());
 
+        if(settings == null) {
+            settings = new Settings();
+            SharedPrefHelper.saveSettings(getApplicationContext(), settings);
+        }
+
         // Bind products to print overview
         ListView view = (ListView) findViewById(R.id.listingLayout);
         PrintAdapter adapter = new PrintAdapter(getApplicationContext(), products);
         view.setAdapter(adapter);
-
-
 
     }
 
