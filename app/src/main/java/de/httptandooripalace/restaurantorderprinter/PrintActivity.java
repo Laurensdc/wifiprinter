@@ -99,9 +99,9 @@ public class PrintActivity extends AppCompatActivity {
 //                printKitchenBill(item);
 //                return true;
             case R.id.print_kitchen:
-                Log.d("EURO TEST SHOULD BE ONE", checkEuroCount("One time euro " + EURO) + "");
-                Log.d("EURO TEST SHOULD BE TWO", checkEuroCount("One time " + EURO + "euro " + EURO) + "");
-                Log.d("SHOULD BE FIVE", checkEuroCount(EURO + EURO + "One t " + EURO + "ime euro " + EURO + EURO) + "");
+                Log.d("DOT TEST SHOULD BE ONE", checkEuroCount("One time euro " + DOT) + "");
+                Log.d("DOT TEST SHOULD BE TWO", checkEuroCount("One time " + DOT + "euro " + DOT) + "");
+                Log.d("SHOULD BE FIVE", checkEuroCount(DOT + DOT + "One t " + DOT + "ime euro " + DOT + DOT) + "");
                 return true;
         }
 
@@ -768,16 +768,24 @@ public class PrintActivity extends AppCompatActivity {
     private int checkEuroCount(String s){
 //        int newPadding=paddingLeft;
 
-
-        String checkString = EURO;
+        String checkString = DOT;
 
         int count = 0;
-        for(int i = 0; i < s.length() - checkString.length() + 1; i++) {
+        int flag = 0;
 
-            if(s.charAt(i) == checkString.charAt(0) && s.charAt(i + 1) == checkString.charAt(1) &&
-            s.charAt(i + 2) == checkString.charAt(2) && s.charAt(i + 3) == checkString.charAt(3) && s.charAt(i + 4) == checkString.charAt(4)) {
+        for(int i = 0; i < s.length() - checkString.length() + 1; i++) {
+            if (s.charAt(i) == checkString.charAt(0)) {
+                flag++;
+                for (int j = 1; j < checkString.length(); j++) {
+                    if (s.charAt(i + j) == checkString.charAt(j)){
+                        flag++;
+                    }
+                }
+            }
+            if(flag == checkString.length()){
                 count += 1;
             }
+            flag=0;
         }
 
         return count;
