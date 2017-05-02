@@ -33,6 +33,8 @@ public class PrintActivity extends AppCompatActivity {
     private final String EURO = "·213·";
     private final String DOT = "·46·";
     private final String BR = "$intro$"; // Line break
+    private final String u = "·129·";
+    private final String U = "·154·";
 
     private entities.Settings settings;
 
@@ -93,8 +95,13 @@ public class PrintActivity extends AppCompatActivity {
             case R.id.print_drink:
                 printDrinkBill(item);
                 return true;
+//            case R.id.print_kitchen:
+//                printKitchenBill(item);
+//                return true;
             case R.id.print_kitchen:
-                printKitchenBill(item);
+                Log.d("EURO TEST SHOULD BE ONE", checkEuroCount("One time euro " + EURO) + "");
+                Log.d("EURO TEST SHOULD BE TWO", checkEuroCount("One time " + EURO + "euro " + EURO) + "");
+                Log.d("SHOULD BE FIVE", checkEuroCount(EURO + EURO + "One t " + EURO + "ime euro " + EURO + EURO) + "");
                 return true;
         }
 
@@ -748,15 +755,33 @@ public class PrintActivity extends AppCompatActivity {
         int length = s.length();
         int paddingLeft = CHARCOUNT_BIGW - length;
         // EURO length counts as more than 1 character and bugs alignment
-        if(s.contains(EURO)) {
-            paddingLeft += EURO.length() - 1;
-        }
+
         String newstr = "";
         for(int i = 0; i < (paddingLeft - offsetLeft); i++) {
             newstr += " ";
         }
         newstr += s;
         return newstr;
+    }
+
+
+    private int checkEuroCount(String s){
+//        int newPadding=paddingLeft;
+
+
+        String checkString = EURO;
+
+        int count = 0;
+        for(int i = 0; i < s.length() - checkString.length() + 1; i++) {
+
+            if(s.charAt(i) == checkString.charAt(0) && s.charAt(i + 1) == checkString.charAt(1) &&
+            s.charAt(i + 2) == checkString.charAt(2) && s.charAt(i + 3) == checkString.charAt(3) && s.charAt(i + 4) == checkString.charAt(4)) {
+                count += 1;
+            }
+        }
+
+        return count;
+
     }
 
     //TODO : rewrite it dynamically
