@@ -22,6 +22,7 @@ import entities.Settings;
 import helpers.PrintAdapter;
 import helpers.Rounder;
 import helpers.SharedPrefHelper;
+import helpers.StringHelper;
 
 public class PrintActivity extends AppCompatActivity {
     private List<Product> products;
@@ -95,14 +96,14 @@ public class PrintActivity extends AppCompatActivity {
             case R.id.print_drink:
                 printDrinkBill(item);
                 return true;
-//            case R.id.print_kitchen:
-//                printKitchenBill(item);
-//                return true;
             case R.id.print_kitchen:
-                Log.d("DOT TEST SHOULD BE ONE", checkEuroCount("One time euro " + DOT) + "");
-                Log.d("DOT TEST SHOULD BE TWO", checkEuroCount("One time " + DOT + "euro " + DOT) + "");
-                Log.d("SHOULD BE FIVE", checkEuroCount(DOT + DOT + "One t " + DOT + "ime euro " + DOT + DOT) + "");
+                printKitchenBill(item);
                 return true;
+//            case R.id.print_kitchen:
+//                Log.d("DOT TEST SHOULD BE ONE", checkCount("One time euro " + DOT, DOT) + "");
+//                Log.d("DOT TEST SHOULD BE TWO", checkCount("One time " + DOT + "euro " + DOT, DOT) + "");
+//                Log.d("SHOULD BE FIVE", checkCount(DOT + DOT + "One t " + DOT + "ime euro " + DOT + DOT, DOT) + "");
+//                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -740,8 +741,14 @@ public class PrintActivity extends AppCompatActivity {
         int length = s.length();
         int paddingLeft = CHARCOUNT_BIG - length;
         // EURO length counts as more than 1 character and bugs alignment
-        if(s.contains(EURO)) {
-            paddingLeft += EURO.length() - 1;
+        for (int i = 0; i< StringHelper.checkCount(s,EURO); i++){
+            paddingLeft += EURO.length() -1;
+        }
+        for (int i = 0; i< StringHelper.checkCount(s,u); i++){
+            paddingLeft += EURO.length() -1;
+        }
+        for (int i = 0; i< StringHelper.checkCount(s,U); i++){
+            paddingLeft += EURO.length() -1;
         }
         String newstr = "";
         for(int i = 0; i < paddingLeft - offsetLeft; i++) {
@@ -755,7 +762,15 @@ public class PrintActivity extends AppCompatActivity {
         int length = s.length();
         int paddingLeft = CHARCOUNT_BIGW - length;
         // EURO length counts as more than 1 character and bugs alignment
-
+        for (int i = 0; i< StringHelper.checkCount(s,EURO); i++){
+            paddingLeft += EURO.length() -1;
+        }
+        for (int i = 0; i< StringHelper.checkCount(s,u); i++){
+            paddingLeft += EURO.length() -1;
+        }
+        for (int i = 0; i< StringHelper.checkCount(s,U); i++){
+            paddingLeft += EURO.length() -1;
+        }
         String newstr = "";
         for(int i = 0; i < (paddingLeft - offsetLeft); i++) {
             newstr += " ";
@@ -765,40 +780,19 @@ public class PrintActivity extends AppCompatActivity {
     }
 
 
-    private int checkEuroCount(String s){
-//        int newPadding=paddingLeft;
-
-        String checkString = DOT;
-
-        int count = 0;
-        int flag = 0;
-
-        for(int i = 0; i < s.length() - checkString.length() + 1; i++) {
-            if (s.charAt(i) == checkString.charAt(0)) {
-                flag++;
-                for (int j = 1; j < checkString.length(); j++) {
-                    if (s.charAt(i + j) == checkString.charAt(j)){
-                        flag++;
-                    }
-                }
-            }
-            if(flag == checkString.length()){
-                count += 1;
-            }
-            flag=0;
-        }
-
-        return count;
-
-    }
-
     //TODO : rewrite it dynamically
     private String alignRightSpecial(String s, int offsetLeft) {// because there is 2 different size of text on the line
         int length = s.length();
         int paddingLeft = CHARCOUNT_BIG - length;
         // EURO length counts as more than 1 character and bugs alignment
-        if(s.contains(EURO)) {
-            paddingLeft += EURO.length() - 1;
+        for (int i = 0; i< StringHelper.checkCount(s,EURO); i++){
+            paddingLeft += EURO.length() -1;
+        }
+        for (int i = 0; i< StringHelper.checkCount(s,u); i++){
+            paddingLeft += EURO.length() -1;
+        }
+        for (int i = 0; i< StringHelper.checkCount(s,U); i++){
+            paddingLeft += EURO.length() -1;
         }
         String newstr = "";
         if((offsetLeft*2 +s.length())< CHARCOUNT_BIG){

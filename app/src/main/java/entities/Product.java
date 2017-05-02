@@ -13,6 +13,8 @@ public class Product {
     private boolean drink;
     private String reference;
 
+
+
     public Product(String name, double price_excl, double price_incl, String reference, String category) {
         this.category = category;
         this.price_excl = price_excl;
@@ -47,7 +49,7 @@ public class Product {
     }
 
     public String getName() {
-        return name;
+         return name;
     }
 
     public void setName(String name) {
@@ -97,5 +99,7 @@ public class Product {
 
 
     }
+
+
 
 }
