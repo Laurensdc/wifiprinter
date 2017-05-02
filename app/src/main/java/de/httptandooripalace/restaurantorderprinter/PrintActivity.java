@@ -245,11 +245,10 @@ public class PrintActivity extends AppCompatActivity {
                     s = EURO + Rounder.round(products.get(i).getPrice_excl());
                     strb.append(s);
                     strb.append(BR);
-                    s = products.get(i).getReference();
-                    strb.append(s);
-                    strb.append(BR);
-
                 }
+                s = "#"+products.get(i).getReference()+" ";
+                strb.append(s);
+                strb.append(BR);
                 // All Star Product                 4.30
                 strb.append("$bighw$");
                 s = products.get(i).getName().toUpperCase();
@@ -293,7 +292,7 @@ public class PrintActivity extends AppCompatActivity {
         String s;
         StringBuilder strb = new StringBuilder("");
 
-        sendPrintJob(INITIATE);
+        strb.append(INITIATE);
         strb.append(CHAR_TABLE_EURO);
         strb.append(BR);
 
