@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/print_choice"
+        android:icon="@drawable/printer"
+        android:title="print"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/print_bill"
+                android:title="@string/bill2"/>
+            <item
+                android:id="@+id/print_drink"
+                android:title="@string/drink" />
+            <item
+                android:id="@+id/print_tax"
+                android:title="@string/tax2" />
+            <item
+                android:id="@+id/print_kitchen"
+                android:title="@string/kitchen2" />
+        </menu>
+    </item>
+    <item android:title="Settings"
+        android:id="@+id/action_settings"
+        android:icon="@drawable/cog"
+        app:showAsAction="always"
+        />
+
+</menu>

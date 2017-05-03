@@ -2,9 +2,11 @@ package de.httptandooripalace.restaurantorderprinter;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.SettingInjectorService;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,9 +18,11 @@ import java.util.Date;
 import java.util.List;
 
 import entities.Product;
+import entities.Settings;
 import helpers.PrintAdapter;
 import helpers.Rounder;
 import helpers.SharedPrefHelper;
+import helpers.StringHelper;
 
 public class PrintActivity extends AppCompatActivity {
     private List<Product> products;
@@ -30,6 +34,8 @@ public class PrintActivity extends AppCompatActivity {
     private final String EURO = "·213·";
     private final String DOT = "·46·";
     private final String BR = "$intro$"; // Line break
+    private final String u = "·129·";
+    private final String U = "·154·";
 
     private entities.Settings settings;
 
@@ -42,12 +48,15 @@ public class PrintActivity extends AppCompatActivity {
         products = SharedPrefHelper.getPrintItems(getApplicationContext());
         settings = SharedPrefHelper.loadSettings(getApplicationContext());
 
+        if(settings == null) {
+            settings = new Settings();
+            SharedPrefHelper.saveSettings(getApplicationContext(), settings);
+        }
+
         // Bind products to print overview
         ListView view = (ListView) findViewById(R.id.listingLayout);
         PrintAdapter adapter = new PrintAdapter(getApplicationContext(), products);
         view.setAdapter(adapter);
-
-
 
     }
 
@@ -65,7 +74,7 @@ public class PrintActivity extends AppCompatActivity {
     // Add settings menu icon to toolbar
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
+        inflater.inflate(R.menu.print, menu);
         return true;
     }
 
@@ -90,6 +99,11 @@ public class PrintActivity extends AppCompatActivity {
             case R.id.print_kitchen:
                 printKitchenBill(item);
                 return true;
+//            case R.id.print_kitchen:
+//                Log.d("DOT TEST SHOULD BE ONE", checkCount("One time euro " + DOT, DOT) + "");
+//                Log.d("DOT TEST SHOULD BE TWO", checkCount("One time " + DOT + "euro " + DOT, DOT) + "");
+//                Log.d("SHOULD BE FIVE", checkCount(DOT + DOT + "One t " + DOT + "ime euro " + DOT + DOT, DOT) + "");
+//                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -182,24 +196,12 @@ public class PrintActivity extends AppCompatActivity {
         if(products == null) return;
         if(products.size() <= 0) return;
 
-        sendPrintJob(getBillModel(false));
-    }
-
-    public void printKitchenBill(MenuItem item){
-        if(products == null) return;
-        if(products.size() <= 0) return;
-
-        sendPrintJob(getBillModel(true));
-    }
-
-    public String getBillModel(Boolean kitchen){
-        Boolean filter = null;
-
         String tableNr = SharedPrefHelper.getString(getApplicationContext(), "tableNr");
         String s;
         StringBuilder strb = new StringBuilder("");
+        int number_drinks = 0;
 
-        sendPrintJob(INITIATE);
+        strb.append(INITIATE);
         strb.append(CHAR_TABLE_EURO);
         strb.append(BR);
 
@@ -211,11 +213,8 @@ public class PrintActivity extends AppCompatActivity {
 
         strb.append("$big$");
         strb.append(BR);
-        if (kitchen) {
-            strb.append(alignCenter(getString(R.string.kitchen).toUpperCase()));
-        }else{
-            strb.append(alignCenter(getString(R.string.drink).toUpperCase()));
-        }
+        strb.append(alignCenter(getString(R.string.drink).toUpperCase()));
+
 
         strb.append(BR + "$big$" + BR);
         strb.append(getLineOf('=', CHARCOUNT_BIG));
@@ -224,42 +223,49 @@ public class PrintActivity extends AppCompatActivity {
         double totalPriceIncl = 0;
 
         for(int i = 0; i < products.size(); i++) {
-            if (kitchen) {
-                filter = !products.get(i).getDrink();
-            }else{
-                filter = products.get(i).getDrink();
+            if (products.get(i).getDrink()){
+
             }
+        }
+
+        for(int i = 0; i < products.size(); i++) {
             if (products.get(i).getCount() < 1) continue;
-            if (filter){
+
+            if (products.get(i).getDrink()){
+                // Don't print it when it is the first time and number_drinks == 0
+                if (!(number_drinks == 0))
+                    strb.append(getLineOf('-', CHARCOUNT_BIG));
+
+                number_drinks++;
                 double priceEx = products.get(i).getPrice_excl();
                 double priceInc = products.get(i).getPrice_incl();
 
                 strb.append(BR);
 
-                // 2 x 2.15
-                strb.append("$bighw$");
-                s = products.get(i).getCount() + " x " ;
-                strb.append(s);
-                strb.append("$big$");
-                s = EURO + Rounder.round(products.get(i).getPrice_excl());
+                if(products.get(i).getCount()!=1) {
+                    // 2 x 2.15
+                    strb.append("$bighw$");
+                    s = products.get(i).getCount() + " x ";
+                    strb.append(s);
+                    strb.append("$big$");
+                    s = EURO + Rounder.round(products.get(i).getPrice_excl());
+                    strb.append(s);
+                    strb.append(BR);
+                }
+                s = "#"+products.get(i).getReference()+" ";
                 strb.append(s);
                 strb.append(BR);
-
                 // All Star Product                 4.30
                 strb.append("$bighw$");
-                strb.append("   ");
-                s = products.get(i).getName().toUpperCase();
+                s = StringHelper.swapU(products.get(i).getName().toUpperCase());
                 strb.append(s);
                 strb.append("$big$");
                 String totalPriceForThisProduct = Rounder.round(products.get(i).getCount() * products.get(i).getPrice_excl());
                 s = alignRightSpecial((EURO + totalPriceForThisProduct), products.get(i).getName().length());
                 strb.append(s);
                 strb.append(BR);
-     
 
-                // Not on last line
-                if (i != products.size() - 1 )
-                    strb.append(getLineOf('-', CHARCOUNT_BIG));
+
 
                 totalPriceExcl += (priceEx * products.get(i).getCount());
                 totalPriceIncl += (priceInc * products.get(i).getCount());
@@ -281,8 +287,196 @@ public class PrintActivity extends AppCompatActivity {
             strb.append(BR);
         }
         strb.append("$cut$");
-        return strb.toString();
+
+        sendPrintJob(strb.toString());
     }
+
+    public void printKitchenBill(MenuItem item){
+        if(products == null) return;
+        if(products.size() <= 0) return;
+
+        String tableNr = SharedPrefHelper.getString(getApplicationContext(), "tableNr");
+        String s;
+        StringBuilder strb = new StringBuilder("");
+        int number_kitchen = 0;
+
+        strb.append(INITIATE);
+        strb.append(CHAR_TABLE_EURO);
+        strb.append(BR);
+
+        if(!tableNr.equals("")) {
+            strb.append("$bighw$");
+            strb.append(getString(R.string.table_nr).toUpperCase() + tableNr);
+            strb.append(BR);
+        }
+
+        strb.append("$big$");
+        strb.append(BR);
+        strb.append(alignCenter(StringHelper.swapU(getString(R.string.kitchen).toUpperCase())));
+
+
+        strb.append(BR + "$big$" + BR);
+        strb.append(getLineOf('=', CHARCOUNT_BIG));
+
+        double totalPriceExcl = 0;
+        double totalPriceIncl = 0;
+
+        for(int i = 0; i < products.size(); i++) {
+            if (products.get(i).getCount() < 1) continue;
+
+            if (!products.get(i).getDrink()){
+                if (!(number_kitchen == 0))
+                    strb.append(getLineOf('-', CHARCOUNT_BIG));
+
+                number_kitchen++;
+
+                double priceEx = products.get(i).getPrice_excl();
+                double priceInc = products.get(i).getPrice_incl();
+
+                strb.append(BR);
+
+                if(products.get(i).getCount()!=1) {
+                    // 2 x 2.15
+                    strb.append("$bighw$");
+                    s = products.get(i).getCount() + " x ";
+                    strb.append(s);
+                    strb.append("$big$");
+                    s = EURO + Rounder.round(products.get(i).getPrice_excl());
+                    strb.append(s);
+                    strb.append(BR);
+                }
+                s = "#"+products.get(i).getReference()+" ";
+                strb.append(s);
+                strb.append(BR);
+                // All Star Product                 4.30
+                strb.append("$bighw$");
+                s = StringHelper.swapU(products.get(i).getName().toUpperCase());
+                strb.append(s);
+                strb.append("$big$");
+                String totalPriceForThisProduct = Rounder.round(products.get(i).getCount() * products.get(i).getPrice_excl());
+                s = alignRightSpecial((EURO + totalPriceForThisProduct), products.get(i).getName().length());
+                strb.append(s);
+                strb.append(BR);
+     
+
+
+                totalPriceExcl += (priceEx * products.get(i).getCount());
+                totalPriceIncl += (priceInc * products.get(i).getCount());
+            }
+        }
+        strb.append(getLineOf('=', CHARCOUNT_BIG));
+        strb.append(BR);
+
+        // Date
+        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+
+        strb.append("$big$" + BR + BR);
+        strb.append(currentDateTimeString);
+        strb.append(" " + getString(R.string.waiter) + " " + settings.getWaiter());
+        strb.append(BR);
+        //strb.append("Bondrucker1"); //Don't need that :O
+
+        for(int i = 0; i < 8; i++) {
+            strb.append(BR);
+        }
+        strb.append("$cut$");
+
+        sendPrintJob(strb.toString());
+    }
+
+//    public String getBillModel(Boolean kitchen){
+//        Boolean filter = null;
+//
+//        String tableNr = SharedPrefHelper.getString(getApplicationContext(), "tableNr");
+//        String s;
+//        StringBuilder strb = new StringBuilder("");
+//
+//        strb.append(INITIATE);
+//        strb.append(CHAR_TABLE_EURO);
+//        strb.append(BR);
+//
+//        if(!tableNr.equals("")) {
+//            strb.append("$bighw$");
+//            strb.append(getString(R.string.table_nr).toUpperCase() + tableNr);
+//            strb.append(BR);
+//        }
+//
+//        strb.append("$big$");
+//        strb.append(BR);
+//        if (kitchen) {
+//            strb.append(alignCenter(getString(R.string.kitchen).toUpperCase()));
+//        }else{
+//            strb.append(alignCenter(getString(R.string.drink).toUpperCase()));
+//        }
+//
+//        strb.append(BR + "$big$" + BR);
+//        strb.append(getLineOf('=', CHARCOUNT_BIG));
+//
+//        double totalPriceExcl = 0;
+//        double totalPriceIncl = 0;
+//
+//        for(int i = 0; i < products.size(); i++) {
+//            if (kitchen) {
+//                filter = !products.get(i).getDrink();
+//            }else{
+//                filter = products.get(i).getDrink();
+//            }
+//            if (products.get(i).getCount() < 1) continue;
+//            if (filter){
+//                double priceEx = products.get(i).getPrice_excl();
+//                double priceInc = products.get(i).getPrice_incl();
+//
+//                strb.append(BR);
+//
+//                if(products.get(i).getCount()!=1) {
+//                    // 2 x 2.15
+//                    strb.append("$bighw$");
+//                    s = products.get(i).getCount() + " x ";
+//                    strb.append(s);
+//                    strb.append("$big$");
+//                    s = EURO + Rounder.round(products.get(i).getPrice_excl());
+//                    strb.append(s);
+//                    strb.append(BR);
+//                }
+//                s = "#"+products.get(i).getReference()+" ";
+//                strb.append(s);
+//                strb.append(BR);
+//                // All Star Product                 4.30
+//                strb.append("$bighw$");
+//                s = products.get(i).getName().toUpperCase();
+//                strb.append(s);
+//                strb.append("$big$");
+//                String totalPriceForThisProduct = Rounder.round(products.get(i).getCount() * products.get(i).getPrice_excl());
+//                s = alignRightSpecial((EURO + totalPriceForThisProduct), products.get(i).getName().length());
+//                strb.append(s);
+//                strb.append(BR);
+//
+//                // Not on last line
+//                if (i != products.size() - 1 )
+//                    strb.append(getLineOf('-', CHARCOUNT_BIG));
+//
+//                totalPriceExcl += (priceEx * products.get(i).getCount());
+//                totalPriceIncl += (priceInc * products.get(i).getCount());
+//            }
+//        }
+//        strb.append(getLineOf('=', CHARCOUNT_BIG));
+//        strb.append(BR);
+//
+//        // Date
+//        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+//
+//        strb.append("$big$" + BR + BR);
+//        strb.append(currentDateTimeString);
+//        strb.append(" " + getString(R.string.waiter) + " " + settings.getWaiter());
+//        strb.append(BR);
+//        //strb.append("Bondrucker1"); //Don't need that :O
+//
+//        for(int i = 0; i < 8; i++) {
+//            strb.append(BR);
+//        }
+//        strb.append("$cut$");
+//        return strb.toString();
+//    }
 
     // sendPrintJob bill layout
     public String getBillContent() {
@@ -290,7 +484,7 @@ public class PrintActivity extends AppCompatActivity {
         String s;
         StringBuilder strb = new StringBuilder("");
 
-        sendPrintJob(INITIATE);
+        strb.append(INITIATE);
         strb.append(CHAR_TABLE_EURO);
         strb.append(BR);
 
@@ -353,14 +547,15 @@ public class PrintActivity extends AppCompatActivity {
 
             strb.append(BR);
 
-            // 2 x 2.15
-            s = products.get(i).getCount() + " x " + EURO + Rounder.round(products.get(i).getPrice_excl());
-            strb.append(s);
-            strb.append(BR);
-
+            if(products.get(i).getCount()!=1) {
+                // 2 x 2.15
+                s = products.get(i).getCount() + " x " + EURO + Rounder.round(products.get(i).getPrice_excl());
+                strb.append(s);
+                strb.append(BR);
+            }
             // All Star Product                 4.30
             String totalPriceForThisProduct = Rounder.round(products.get(i).getCount() * products.get(i).getPrice_excl());
-            s = products.get(i).getName().toUpperCase()
+            s = StringHelper.swapU(products.get(i).getName().toUpperCase())
                     + alignRight((EURO + totalPriceForThisProduct), products.get(i).getName().length());
             strb.append(s);
             strb.append(BR);
@@ -528,7 +723,7 @@ public class PrintActivity extends AppCompatActivity {
 //        intentPrint.putExtra("printer_ip", settings.getPrinterIp());
 //        intentPrint.putExtra("printer_port", "9100");
         intentPrint.setType("text/plain");
-        this.startActivity(intentPrint);
+        /*this.*/startActivity(intentPrint);
     }
 
 
@@ -547,8 +742,14 @@ public class PrintActivity extends AppCompatActivity {
         int length = s.length();
         int paddingLeft = CHARCOUNT_BIG - length;
         // EURO length counts as more than 1 character and bugs alignment
-        if(s.contains(EURO)) {
-            paddingLeft += EURO.length() - 1;
+        for (int i = 0; i< StringHelper.checkCount(s,EURO); i++){
+            paddingLeft += EURO.length() -1;
+        }
+        for (int i = 0; i< StringHelper.checkCount(s,u); i++){
+            paddingLeft += u.length() -1;
+        }
+        for (int i = 0; i< StringHelper.checkCount(s,U); i++){
+            paddingLeft += U.length() -1;
         }
         String newstr = "";
         for(int i = 0; i < paddingLeft - offsetLeft; i++) {
@@ -562,8 +763,14 @@ public class PrintActivity extends AppCompatActivity {
         int length = s.length();
         int paddingLeft = CHARCOUNT_BIGW - length;
         // EURO length counts as more than 1 character and bugs alignment
-        if(s.contains(EURO)) {
-            paddingLeft += EURO.length() - 1;
+        for (int i = 0; i< StringHelper.checkCount(s,EURO); i++){
+            paddingLeft += EURO.length() -1;
+        }
+        for (int i = 0; i< StringHelper.checkCount(s,u); i++){
+            paddingLeft += u.length() -1;
+        }
+        for (int i = 0; i< StringHelper.checkCount(s,U); i++){
+            paddingLeft += U.length() -1;
         }
         String newstr = "";
         for(int i = 0; i < (paddingLeft - offsetLeft); i++) {
@@ -573,20 +780,36 @@ public class PrintActivity extends AppCompatActivity {
         return newstr;
     }
 
+
+    //TODO : rewrite it dynamically
     private String alignRightSpecial(String s, int offsetLeft) {// because there is 2 different size of text on the line
         int length = s.length();
         int paddingLeft = CHARCOUNT_BIG - length;
         // EURO length counts as more than 1 character and bugs alignment
-        if(s.contains(EURO)) {
-            paddingLeft += EURO.length() - 1;
+        for (int i = 0; i< StringHelper.checkCount(s,EURO); i++){
+            paddingLeft += EURO.length() -1;
+        }
+        for (int i = 0; i< StringHelper.checkCount(s,u); i++){
+            paddingLeft += u.length() -1;
+        }
+        for (int i = 0; i< StringHelper.checkCount(s,U); i++){
+            paddingLeft += U.length() -1;
         }
         String newstr = "";
-        if((offsetLeft*2 + 6+s.length())< CHARCOUNT_BIG){
-            for(int i = 0; i < (paddingLeft - offsetLeft*2 - 6 ); i++) {
+        if((offsetLeft*2 +s.length())< CHARCOUNT_BIG){
+            for(int i = 0; i < (paddingLeft - offsetLeft*2  ); i++) {
                 newstr += " ";
             }
-        }else{
-            for(int i = 0; i < (paddingLeft - offsetLeft*2 - 6 + CHARCOUNT_BIG ); i++) {// to alignRight the price when the product take two lines long
+        }else if((offsetLeft*2 +s.length())< CHARCOUNT_BIG*2) {
+            for (int i = 0; i < (paddingLeft - offsetLeft * 2 + CHARCOUNT_BIG); i++) {// to alignRight the price when the product take two lines long
+                newstr += " ";
+            }
+        }else if((offsetLeft*2 +s.length())< CHARCOUNT_BIG*3){
+            for(int i = 0; i < (paddingLeft - offsetLeft*2  + CHARCOUNT_BIG ); i++) {
+                newstr += " ";
+            }
+        }else if((offsetLeft*2 +s.length())< CHARCOUNT_BIG*4) {
+            for (int i = 0; i < (paddingLeft - offsetLeft * 2 + CHARCOUNT_BIG); i++) {
                 newstr += " ";
             }
         }
@@ -599,6 +822,22 @@ public class PrintActivity extends AppCompatActivity {
         int totalSpaceLeft = CHARCOUNT_BIG - length;
         int spaceOnBothSides = totalSpaceLeft / 2;
         String newstr = "";
+        // EURO length counts as more than 1 character and bugs alignment
+        for (int i = 0; i< StringHelper.checkCount(s,EURO); i++){
+            for(int j=0; j < EURO.length() -1; j++ ){
+                newstr += " ";
+            }
+        }
+        for (int i = 0; i< StringHelper.checkCount(s,u); i++){
+            for(int j=0; j < u.length() -1; j++ ){
+                newstr += " ";
+            }
+        }
+        for (int i = 0; i< StringHelper.checkCount(s,U); i++){
+            for(int j=0; j < U.length() -1; j++ ){
+                newstr += " ";
+            }
+        }
         for(int i = 0; i < spaceOnBothSides; i++) {
             newstr += " ";
         }

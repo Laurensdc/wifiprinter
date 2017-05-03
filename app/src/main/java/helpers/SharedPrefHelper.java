@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import entities.Bill;
 import entities.Product;
 import entities.Settings;
 

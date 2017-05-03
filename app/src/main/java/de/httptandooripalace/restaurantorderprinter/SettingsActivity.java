@@ -17,7 +17,7 @@ import helpers.SharedPrefHelper;
 public class SettingsActivity extends AppCompatActivity {
     private boolean somethingChanged;
 
-    private TextView printer_ip, name_line_1, name_line_2, addr_line_1, addr_line_2, tel_line,
+    private TextView name_line_1, name_line_2, addr_line_1, addr_line_2, tel_line,
         tax_nr, extra_line, waiter_name;
 
     private TextWatcher textwatcher;
@@ -33,7 +33,6 @@ public class SettingsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        printer_ip = (TextView) findViewById(R.id.printer_ip);
         name_line_1 = (TextView) findViewById(R.id.name_line_1);
         name_line_2 = (TextView) findViewById(R.id.name_line_2);
         addr_line_1 = (TextView) findViewById(R.id.addr_line_1);
@@ -45,7 +44,6 @@ public class SettingsActivity extends AppCompatActivity {
 
         Settings settings = SharedPrefHelper.loadSettings(getApplicationContext());
         if(settings != null) {
-            printer_ip.setText(settings.getPrinterIp());
             name_line_1.setText(settings.getNameLine1());
             name_line_2.setText(settings.getNameLine2());
             addr_line_1.setText(settings.getAddrLine1());
@@ -56,18 +54,7 @@ public class SettingsActivity extends AppCompatActivity {
             waiter_name.setText(settings.getWaiter());
         }
 
-        name_line_1.requestFocus();
-
-        printer_ip.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus) {
-                    // Warn user not to change IP address of printer
-                    Toast.makeText(getApplicationContext(), getText(R.string.changing_ip),
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+        waiter_name.requestFocus();
 
         textwatcher = new TextWatcher() {
             @Override
@@ -82,7 +69,6 @@ public class SettingsActivity extends AppCompatActivity {
             }
         };
 
-        printer_ip.addTextChangedListener(textwatcher);
         name_line_1.addTextChangedListener(textwatcher);
         name_line_2.addTextChangedListener(textwatcher);
         addr_line_1.addTextChangedListener(textwatcher);
@@ -111,7 +97,6 @@ public class SettingsActivity extends AppCompatActivity {
         builder.setPositiveButton(getText(R.string.yes), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 entities.Settings settings = new Settings(
-                        printer_ip.getText().toString(),
                         name_line_1.getText().toString(),
                         name_line_2.getText().toString(),
                         addr_line_1.getText().toString(),

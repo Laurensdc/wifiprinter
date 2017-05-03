@@ -5,10 +5,9 @@ package entities;
  */
 
 public class Settings {
-    private String printerIp, nameLine1, nameLine2, addrLine1, addrLine2, telLine, taxLine, extraLine, waiter;
+    private String nameLine1, nameLine2, addrLine1, addrLine2, telLine, taxLine, extraLine, waiter;
 
-    public Settings(String printerIp, String nameLine1, String nameLine2, String addrLine1, String addrLine2, String telLine, String taxLine, String extraLine, String waiter) {
-        this.printerIp = printerIp;
+    public Settings(String nameLine1, String nameLine2, String addrLine1, String addrLine2, String telLine, String taxLine, String extraLine, String waiter) {
         this.nameLine1 = nameLine1;
         this.nameLine2 = nameLine2;
         this.addrLine1 = addrLine1;
@@ -17,6 +16,17 @@ public class Settings {
         this.taxLine = taxLine;
         this.extraLine = extraLine;
         this.waiter = waiter;
+    }
+
+    public Settings() {
+        this.nameLine1 = "";
+        this.nameLine2 = "";
+        this.addrLine1 = "";
+        this.addrLine2 = "";
+        this.telLine = "";
+        this.taxLine = "";
+        this.extraLine = "";
+        this.waiter = "";
     }
 
     public String getWaiter() {
@@ -33,14 +43,6 @@ public class Settings {
 
     public void setNameLine2(String nameLine2) {
         this.nameLine2 = nameLine2;
-    }
-
-    public String getPrinterIp() {
-        return printerIp;
-    }
-
-    public void setPrinterIp(String printerIp) {
-        this.printerIp = printerIp;
     }
 
     public String getNameLine1() {
