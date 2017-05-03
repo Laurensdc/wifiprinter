@@ -384,100 +384,6 @@ public class PrintActivity extends AppCompatActivity {
         sendPrintJob(strb.toString());
     }
 
-//    public String getBillModel(Boolean kitchen){
-//        Boolean filter = null;
-//
-//        String tableNr = SharedPrefHelper.getString(getApplicationContext(), "tableNr");
-//        String s;
-//        StringBuilder strb = new StringBuilder("");
-//
-//        strb.append(INITIATE);
-//        strb.append(CHAR_TABLE_EURO);
-//        strb.append(BR);
-//
-//        if(!tableNr.equals("")) {
-//            strb.append("$bighw$");
-//            strb.append(getString(R.string.table_nr).toUpperCase() + tableNr);
-//            strb.append(BR);
-//        }
-//
-//        strb.append("$big$");
-//        strb.append(BR);
-//        if (kitchen) {
-//            strb.append(alignCenter(getString(R.string.kitchen).toUpperCase()));
-//        }else{
-//            strb.append(alignCenter(getString(R.string.drink).toUpperCase()));
-//        }
-//
-//        strb.append(BR + "$big$" + BR);
-//        strb.append(getLineOf('=', CHARCOUNT_BIG));
-//
-//        double totalPriceExcl = 0;
-//        double totalPriceIncl = 0;
-//
-//        for(int i = 0; i < products.size(); i++) {
-//            if (kitchen) {
-//                filter = !products.get(i).getDrink();
-//            }else{
-//                filter = products.get(i).getDrink();
-//            }
-//            if (products.get(i).getCount() < 1) continue;
-//            if (filter){
-//                double priceEx = products.get(i).getPrice_excl();
-//                double priceInc = products.get(i).getPrice_incl();
-//
-//                strb.append(BR);
-//
-//                if(products.get(i).getCount()!=1) {
-//                    // 2 x 2.15
-//                    strb.append("$bighw$");
-//                    s = products.get(i).getCount() + " x ";
-//                    strb.append(s);
-//                    strb.append("$big$");
-//                    s = EURO + Rounder.round(products.get(i).getPrice_excl());
-//                    strb.append(s);
-//                    strb.append(BR);
-//                }
-//                s = "#"+products.get(i).getReference()+" ";
-//                strb.append(s);
-//                strb.append(BR);
-//                // All Star Product                 4.30
-//                strb.append("$bighw$");
-//                s = products.get(i).getName().toUpperCase();
-//                strb.append(s);
-//                strb.append("$big$");
-//                String totalPriceForThisProduct = Rounder.round(products.get(i).getCount() * products.get(i).getPrice_excl());
-//                s = alignRightSpecial((EURO + totalPriceForThisProduct), products.get(i).getName().length());
-//                strb.append(s);
-//                strb.append(BR);
-//
-//                // Not on last line
-//                if (i != products.size() - 1 )
-//                    strb.append(getLineOf('-', CHARCOUNT_BIG));
-//
-//                totalPriceExcl += (priceEx * products.get(i).getCount());
-//                totalPriceIncl += (priceInc * products.get(i).getCount());
-//            }
-//        }
-//        strb.append(getLineOf('=', CHARCOUNT_BIG));
-//        strb.append(BR);
-//
-//        // Date
-//        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-//
-//        strb.append("$big$" + BR + BR);
-//        strb.append(currentDateTimeString);
-//        strb.append(" " + getString(R.string.waiter) + " " + settings.getWaiter());
-//        strb.append(BR);
-//        //strb.append("Bondrucker1"); //Don't need that :O
-//
-//        for(int i = 0; i < 8; i++) {
-//            strb.append(BR);
-//        }
-//        strb.append("$cut$");
-//        return strb.toString();
-//    }
-
     // sendPrintJob bill layout
     public String getBillContent() {
         String tableNr = SharedPrefHelper.getString(getApplicationContext(), "tableNr");
@@ -752,8 +658,11 @@ public class PrintActivity extends AppCompatActivity {
             paddingLeft += U.length() -1;
         }
         String newstr = "";
-        for(int i = 0; i < paddingLeft - offsetLeft; i++) {
-            newstr += " ";
+        int j = (offsetLeft +s.length())/CHARCOUNT_BIG;
+        if((offsetLeft +s.length())< CHARCOUNT_BIG*(j+1)) {
+            for (int i = 0; i < (paddingLeft - offsetLeft + CHARCOUNT_BIG * j); i++) {
+                newstr += " ";
+            }
         }
         newstr += s;
         return newstr;
@@ -773,15 +682,17 @@ public class PrintActivity extends AppCompatActivity {
             paddingLeft += U.length() -1;
         }
         String newstr = "";
-        for(int i = 0; i < (paddingLeft - offsetLeft); i++) {
-            newstr += " ";
+        int j = (offsetLeft +s.length())/CHARCOUNT_BIGW;
+        if((offsetLeft +s.length())< CHARCOUNT_BIGW*(j+1)) {
+            for (int i = 0; i < (paddingLeft - offsetLeft + CHARCOUNT_BIGW * j); i++) {
+                newstr += " ";
+            }
         }
         newstr += s;
         return newstr;
     }
 
 
-    //TODO : rewrite it dynamically
     private String alignRightSpecial(String s, int offsetLeft) {// because there is 2 different size of text on the line
         int length = s.length();
         int paddingLeft = CHARCOUNT_BIG - length;
@@ -796,28 +707,12 @@ public class PrintActivity extends AppCompatActivity {
             paddingLeft += U.length() -1;
         }
         String newstr = "";
-        int i = (offsetLeft*2 +s.length())%CHARCOUNT_BIG;//Give the rest of the division
-        int j = (offsetLeft*2 +s.length())/CHARCOUNT_BIG;//Give the result of the division
-        if (i < 0)
-            i += CHARCOUNT_BIG;
-//        if((offsetLeft*2 +s.length())< CHARCOUNT_BIG){
-//            for(int i = 0; i < (paddingLeft - offsetLeft*2  ); i++) {
-//                newstr += " ";
-//            }
-//        }else if((offsetLeft*2 +s.length())< CHARCOUNT_BIG*2) {
-//            for (int i = 0; i < (paddingLeft - offsetLeft * 2 + CHARCOUNT_BIG); i++) {// to alignRight the price when the product take two lines long
-//                newstr += " ";
-//            }
-//        }else if((offsetLeft*2 +s.length())< CHARCOUNT_BIG*3){
-//            for(int i = 0; i < (paddingLeft - offsetLeft*2  + CHARCOUNT_BIG*2 ); i++) {
-//                newstr += " ";
-//            }
-//        }else if((offsetLeft*2 +s.length())< CHARCOUNT_BIG*4) {
-//            for (int i = 0; i < (paddingLeft - offsetLeft * 2 + CHARCOUNT_BIG*3); i++) {
-//                newstr += " ";
-//            }
-//        }
-
+        int j = (offsetLeft*2 +s.length())/CHARCOUNT_BIG;
+        if((offsetLeft*2 +s.length())< CHARCOUNT_BIG*(j+1)) {
+            for (int i = 0; i < (paddingLeft - offsetLeft * 2 + CHARCOUNT_BIG * j); i++) {
+                newstr += " ";
+            }
+        }
         newstr += s;
         return newstr;
     }
