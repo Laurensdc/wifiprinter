@@ -104,6 +104,10 @@ public class PrintActivity extends AppCompatActivity {
 //                Log.d("DOT TEST SHOULD BE TWO", checkCount("One time " + DOT + "euro " + DOT, DOT) + "");
 //                Log.d("SHOULD BE FIVE", checkCount(DOT + DOT + "One t " + DOT + "ime euro " + DOT + DOT, DOT) + "");
 //                return true;
+            case R.id.bills_overview:
+                Intent i2 = new Intent(this, OverviewActivity.class);
+                startActivity(i2);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

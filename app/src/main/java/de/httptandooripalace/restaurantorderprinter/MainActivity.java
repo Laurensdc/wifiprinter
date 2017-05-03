@@ -19,9 +19,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import entities.Bill;
 import entities.Product;
 import helpers.MainAdapter;
 import helpers.SharedPrefHelper;
@@ -112,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
             final HashMap<String, List<Product>> prodlist2 = prodlist;
 
+
             // Listview on child click listener
             view.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
@@ -122,6 +125,8 @@ public class MainActivity extends AppCompatActivity {
                 // Fetch properties of tapped item
                 String cat = catlist.get(groupPosition);
                 Product prod = prodlist2.get(catlist.get(groupPosition)).get(childPosition);
+
+
 
                 List<Product> products = SharedPrefHelper.getPrintItems(getApplicationContext());
                 if (products == null) products = new ArrayList<>();
@@ -182,6 +187,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_settings:
                 Intent i = new Intent(this, SettingsActivity.class);
                 startActivity(i);
+                return true;
+            case R.id.bills_overview:
+                Intent i2 = new Intent(this, OverviewActivity.class);
+                startActivity(i2);
                 return true;
         }
 
