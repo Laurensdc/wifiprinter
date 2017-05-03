@@ -796,23 +796,28 @@ public class PrintActivity extends AppCompatActivity {
             paddingLeft += U.length() -1;
         }
         String newstr = "";
-        if((offsetLeft*2 +s.length())< CHARCOUNT_BIG){
-            for(int i = 0; i < (paddingLeft - offsetLeft*2  ); i++) {
-                newstr += " ";
-            }
-        }else if((offsetLeft*2 +s.length())< CHARCOUNT_BIG*2) {
-            for (int i = 0; i < (paddingLeft - offsetLeft * 2 + CHARCOUNT_BIG); i++) {// to alignRight the price when the product take two lines long
-                newstr += " ";
-            }
-        }else if((offsetLeft*2 +s.length())< CHARCOUNT_BIG*3){
-            for(int i = 0; i < (paddingLeft - offsetLeft*2  + CHARCOUNT_BIG ); i++) {
-                newstr += " ";
-            }
-        }else if((offsetLeft*2 +s.length())< CHARCOUNT_BIG*4) {
-            for (int i = 0; i < (paddingLeft - offsetLeft * 2 + CHARCOUNT_BIG); i++) {
-                newstr += " ";
-            }
-        }
+        int i = (offsetLeft*2 +s.length())%CHARCOUNT_BIG;//Give the rest of the division
+        int j = (offsetLeft*2 +s.length())/CHARCOUNT_BIG;//Give the result of the division
+        if (i < 0)
+            i += CHARCOUNT_BIG;
+//        if((offsetLeft*2 +s.length())< CHARCOUNT_BIG){
+//            for(int i = 0; i < (paddingLeft - offsetLeft*2  ); i++) {
+//                newstr += " ";
+//            }
+//        }else if((offsetLeft*2 +s.length())< CHARCOUNT_BIG*2) {
+//            for (int i = 0; i < (paddingLeft - offsetLeft * 2 + CHARCOUNT_BIG); i++) {// to alignRight the price when the product take two lines long
+//                newstr += " ";
+//            }
+//        }else if((offsetLeft*2 +s.length())< CHARCOUNT_BIG*3){
+//            for(int i = 0; i < (paddingLeft - offsetLeft*2  + CHARCOUNT_BIG*2 ); i++) {
+//                newstr += " ";
+//            }
+//        }else if((offsetLeft*2 +s.length())< CHARCOUNT_BIG*4) {
+//            for (int i = 0; i < (paddingLeft - offsetLeft * 2 + CHARCOUNT_BIG*3); i++) {
+//                newstr += " ";
+//            }
+//        }
+
         newstr += s;
         return newstr;
     }

@@ -36,6 +36,7 @@
     <!-- Menu items -->
     <string name="drink">Drinks</string>
     <string name="kitchen">Kitchen</string>
+    <string name="kitchen2">Kitchen</string>
     <string name="tax2">Tax</string>
     <string name="bill2">Bill</string>
 
