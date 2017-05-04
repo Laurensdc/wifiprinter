@@ -728,17 +728,17 @@ public class PrintActivity extends AppCompatActivity {
         String newstr = "";
         // EURO length counts as more than 1 character and bugs alignment
         for (int i = 0; i< StringHelper.checkCount(s,EURO); i++){
-            for(int j=0; j < EURO.length() -1; j++ ){
+            for(int j=0; j < (EURO.length() -1)/2; j++ ){
                 newstr += " ";
             }
         }
         for (int i = 0; i< StringHelper.checkCount(s,u); i++){
-            for(int j=0; j < u.length() -1; j++ ){
+            for(int j=0; j < (u.length() -1)/2; j++ ){
                 newstr += " ";
             }
         }
         for (int i = 0; i< StringHelper.checkCount(s,U); i++){
-            for(int j=0; j < U.length() -1; j++ ){
+            for(int j=0; j < (U.length() -1)/2; j++ ){
                 newstr += " ";
             }
         }
@@ -758,6 +758,22 @@ public class PrintActivity extends AppCompatActivity {
         int totalSpaceLeft = CHARCOUNT_BIGW - length;
         int spaceOnBothSides = totalSpaceLeft / 2;
         String newstr = "";
+        // EURO length counts as more than 1 character and bugs alignment
+        for (int i = 0; i< StringHelper.checkCount(s,EURO); i++){
+            for(int j=0; j < (EURO.length() -1)/2; j++ ){
+                newstr += " ";
+            }
+        }
+        for (int i = 0; i< StringHelper.checkCount(s,u); i++){
+            for(int j=0; j < (u.length() -1)/2; j++ ){
+                newstr += " ";
+            }
+        }
+        for (int i = 0; i< StringHelper.checkCount(s,U); i++){
+            for(int j=0; j < (U.length() -1)/2; j++ ){
+                newstr += " ";
+            }
+        }
         for(int i = 0; i < spaceOnBothSides; i++) {
             newstr += " ";
         }
