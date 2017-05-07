@@ -1,8 +1,10 @@
 package de.httptandooripalace.restaurantorderprinter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -30,6 +32,7 @@ import helpers.SharedPrefHelper;
 
 public class MainActivity extends AppCompatActivity {
     private Toast currentToast;
+    Context context;
 
     @Override
     protected void onResume() {
@@ -49,6 +52,45 @@ public class MainActivity extends AppCompatActivity {
             ExpandableListView view = (ExpandableListView) findViewById(R.id.overview_main);
             MainAdapter adapter = new MainAdapter(this, err, msg);
             view.setAdapter(adapter);
+
+//            new AlertDialog.Builder(context)
+//                    .setTitle("Error")
+//                    .setMessage("Error loading the database " + getString(R.string.could_not_get_db_info))
+//                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            // do nothing
+//                        }
+//                    })
+//                    .setNegativeButton(getString(R.string.tryAgain), new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            onResume();
+//                        }
+//                    })
+//                    .setIcon(android.R.drawable.ic_dialog_alert)
+//                    .show();
+
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+            builder1.setMessage("Error loading the database " + getString(R.string.could_not_get_db_info));
+            builder1.setCancelable(true);
+
+            builder1.setPositiveButton(
+                    "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //Do nothing
+                        }
+                    });
+
+            builder1.setNegativeButton(
+                    getString(R.string.tryAgain),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            onResume();
+                        }
+                    });
+
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
         }
         else {
             JSONArray data = new JSONArray();

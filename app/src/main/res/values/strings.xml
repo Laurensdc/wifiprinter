@@ -50,6 +50,7 @@
     <!-- Error -->
     <string name="could_not_get_db_info">Could not get information from database.\nIs your wifi or data activated?</string>
     <string name="changing_ip">WARNING\nYou are changing the IP address of the WiFi printer.\nThis can break app functionality.</string>
+    <string name="tryAgain">Try again</string>
 
 
 </resources>
