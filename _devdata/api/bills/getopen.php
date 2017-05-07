@@ -4,6 +4,8 @@ require("../functions.php");
 
 $method = $_SERVER['REQUEST_METHOD'];
 
+
+
 if($method != 'GET') {
     error('This route accepts GET requests only');
 }

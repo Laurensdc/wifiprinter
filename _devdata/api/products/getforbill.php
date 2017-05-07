@@ -22,6 +22,16 @@ if(!isset($json['bill_id'])) {
 
 $bill_id = $json['bill_id'];
 
+/*** Get all the products of the bills ***
+
+Request body format :
+
+{
+    "bill_id":int
+}
+
+*/
+
 try {
     $opt = [
         PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,

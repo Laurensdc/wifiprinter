@@ -61,6 +61,7 @@ else if($method == 'PUT') {
         error('No table_nr provided');
     }
 
+
     try {
         $opt = [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,

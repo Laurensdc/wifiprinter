@@ -26,6 +26,19 @@ if($method == 'PUT') {
     $bill_id = $json['bill_id'];
     $product_id = $json['product_id'];
 
+    /*** Add a product on a bill***
+
+Request body format:
+
+{
+    {
+        "bill_id":int,
+        "product_id":int
+    }
+}
+
+*/
+
     try {
         $opt = [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
@@ -66,6 +79,19 @@ else if($method == 'DELETE') {
 
     $bill_id = $json['bill_id'];
     $product_id = $json['product_id'];
+
+        /*** delete a product from a bill***
+
+Request body format:
+
+{
+    {
+        "bill_id":int,
+        "product_id":int
+    }
+}
+
+*/
 
     try {
         $opt = [

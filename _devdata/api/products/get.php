@@ -8,6 +8,13 @@ if($method != 'GET') {
     error('This route accepts GET requests only');
 }
 
+/*** Get products ***
+
+Request body format :
+
+    NONE, JUST SEND THE REQUEST
+*/
+
 try {
     $opt = [
         PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,

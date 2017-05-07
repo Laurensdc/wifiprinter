@@ -26,6 +26,18 @@ if(!isset($waiter['name'])) {
     error('No waiter name passed');
 }
 
+/*** Add a waiter ***
+
+Request body format:
+
+{
+    "waiter":{
+        "name":string
+    }
+}
+
+*/
+
 try {
     $opt = [
         PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
