@@ -16,18 +16,22 @@ import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import entities.Bill;
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.StringEntity;
 import entities.Product;
 import helpers.MainAdapter;
+import helpers.RequestClient;
 import helpers.SharedPrefHelper;
 
 public class MainActivity extends AppCompatActivity {
@@ -47,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
             err.add("Error");
             HashMap<String, List<Product>> msg = new HashMap<>();
             List<Product> durrr = new ArrayList<Product>();
-            durrr.add(new Product(getString(R.string.could_not_get_db_info), 0, 0, null, null));
+            durrr.add(new Product(-1, getString(R.string.could_not_get_db_info), 0, 0, null, null));
             msg.put("Error", durrr);
             ExpandableListView view = (ExpandableListView) findViewById(R.id.overview_main);
             MainAdapter adapter = new MainAdapter(this, err, msg);
@@ -135,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
                 try {
                     prods.add(new Product(
+                            Integer.parseInt(obj.getString("id_prod")),
                             obj.getString("name_prod"),
                             Float.parseFloat(obj.getString("price_prod_excl")),
                             Float.parseFloat(obj.getString("price_prod_incl")),
@@ -151,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Get the grid view and bind array adapter
             ExpandableListView view = (ExpandableListView) findViewById(R.id.overview_main);
-            MainAdapter adapter = new MainAdapter(this, catlist, prodlist);
+            final MainAdapter adapter = new MainAdapter(this, catlist, prodlist);
             view.setAdapter(adapter);
 
             final HashMap<String, List<Product>> prodlist2 = prodlist;
@@ -168,25 +173,84 @@ public class MainActivity extends AppCompatActivity {
                 String cat = catlist.get(groupPosition);
                 Product prod = prodlist2.get(catlist.get(groupPosition)).get(childPosition);
 
+                int id2 = prod.getId();
 
+                try {
+                    StringEntity entity;
 
-                List<Product> products = SharedPrefHelper.getPrintItems(getApplicationContext());
-                if (products == null) products = new ArrayList<>();
+                    JSONObject jsonParams = new JSONObject();
+                    jsonParams.put("bill_id", "1");
+                    jsonParams.put("product_id", id2);
+                    entity = new StringEntity(jsonParams.toString());
 
-                // If item is already in the list, just increase the count
-                if (products.contains(prod)) {
-                    // Todo: check if this is bugging the main refresh count
-                    products.remove(prod);
-                    prod.increaseCount();
-                    products.add(prod);
+                    RequestClient.put(getApplicationContext(), "bills/product/", entity, "application/json", new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                            // If the response is JSONObject instead of expected JSONArray
+                            try {
+                                Log.d("RESPONSE", response.toString());
+                            }
+                            catch(Exception e) {
+                                Log.d("Exception HTTP", e.getMessage());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                            try {
+                                Log.d("RESPONSE", errorResponse.toString());
+                            }
+                            catch(Exception e) {
+                                Log.d("Exception HTTP", e.getMessage());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                            try {
+                                Log.d("RESPONSE", errorResponse.toString());
+                            }
+                            catch(Exception e) {
+                                Log.d("Exception HTTP", e.getMessage());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(int c, Header[] h, String r, Throwable t) {
+                            try {
+                                Log.d("RESPONSE", r.toString());
+                            }
+                            catch(Exception e) {
+                                Log.d("Exception HTTP", e.getMessage());
+                            }
+                        }
+                    });
                 }
-                // Otherwise add the product to print overview list
-                else {
-                    products.add(prod);
+                catch(Exception e) {
+                    Log.d("Ex", e.getMessage());
+
                 }
 
-                // Save to DB in open bill now
-                SharedPrefHelper.setPrintItems(getApplicationContext(), products);
+
+
+//
+//                List<Product> products = SharedPrefHelper.getPrintItems(getApplicationContext());
+//                if (products == null) products = new ArrayList<>();
+//
+//                // If item is already in the list, just increase the count
+//                if (products.contains(prod)) {
+//                    // Todo: check if this is bugging the main refresh count
+//                    products.remove(prod);
+//                    prod.increaseCount();
+//                    products.add(prod);
+//                }
+//                // Otherwise add the product to print overview list
+//                else {
+//                    products.add(prod);
+//                }
+//
+//                // Save to DB in open bill now
+//                SharedPrefHelper.setPrintItems(getApplicationContext(), products);
 
                 // Toast it
                 if (currentToast != null) currentToast.cancel();

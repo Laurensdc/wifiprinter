@@ -12,10 +12,20 @@ public class Product {
     private int count;
     private boolean drink;
     private String reference;
+    private int id;
 
 
+    public int getId() {
+        return id;
+    }
 
-    public Product(String name, double price_excl, double price_incl, String reference, String category) {
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Product(int id, String name, double price_excl, double price_incl, String reference, String category) {
+        this.id = id;
+
         this.category = category;
         this.price_excl = price_excl;
         this.price_incl = price_incl;

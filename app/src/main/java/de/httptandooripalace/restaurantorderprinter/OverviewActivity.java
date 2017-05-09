@@ -1,28 +1,28 @@
 package de.httptandooripalace.restaurantorderprinter;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import cz.msebera.android.httpclient.Header;
 import entities.Bill;
 import entities.Product;
 import helpers.OverviewAdapter;
-import helpers.PrintAdapter;
-import helpers.SharedPrefHelper;
+import helpers.RequestClient;
 
 /**
  * Created by uiz on 26/04/2017.
@@ -60,11 +60,11 @@ public class OverviewActivity extends AppCompatActivity {
 
         //creating 3 bills manually, to test the layout
         System.out.print("start of the manual phase !!!!!!!!!!!!!!!!!!!!!");
-        Product p1 = new Product("tandori salad", 10, 13, "15", "salads");
-        Product p2 = new Product("other salad", 10, 13, "16", "salads");
-        Product p3 = new Product("thing salad", 10, 13, "17", "salads");
-        Product p4 = new Product("stuff salad", 10, 13, "18", "salads");
-        Product p5 = new Product("that salad", 10, 13, "19", "salads");
+        Product p1 = new Product(0, "tandori salad", 10, 13, "15", "salads");
+        Product p2 = new Product(0, "other salad", 10, 13, "16", "salads");
+        Product p3 = new Product(0, "thing salad", 10, 13, "17", "salads");
+        Product p4 = new Product(0, "stuff salad", 10, 13, "18", "salads");
+        Product p5 = new Product(0, "that salad", 10, 13, "19", "salads");
 
         products.add(p1);
         products.add(p2);
@@ -141,6 +141,25 @@ public class OverviewActivity extends AppCompatActivity {
     }
 
     public void edit_bill(View view){
+
+//        RequestParams params = new RequestParams();
+//        params.put("key", "value");
+//        params.put("more", "data");
+
+        RequestClient.get("products/get", null, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                // If the response is JSONObject instead of expected JSONArray
+                try {
+                    Log.d("RESPONSE", response.toString());
+                }
+                catch(Exception e) {
+                    Log.d("Exception HTTP", e.getMessage());
+                }
+            }
+
+        });
+
         // TODO : open the selected bill using its ID
     }
 
