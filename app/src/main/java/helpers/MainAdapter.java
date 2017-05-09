@@ -48,7 +48,7 @@ public class MainAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        final Product childText = (Product) getChild(groupPosition, childPosition);
+        final Product p = (Product) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
@@ -57,7 +57,7 @@ public class MainAdapter extends BaseExpandableListAdapter {
         }
 
         TextView txtListChild = (TextView) convertView.findViewById(R.id.prod_title);
-        txtListChild.setText(childText.getName());
+        txtListChild.setText(p.getReference() + " - " + p.getName());
 
         return convertView;
     }

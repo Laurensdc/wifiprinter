@@ -17,7 +17,6 @@ import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,22 +56,6 @@ public class MainActivity extends AppCompatActivity {
             MainAdapter adapter = new MainAdapter(this, err, msg);
             view.setAdapter(adapter);
 
-//            new AlertDialog.Builder(context)
-//                    .setTitle("Error")
-//                    .setMessage("Error loading the database " + getString(R.string.could_not_get_db_info))
-//                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            // do nothing
-//                        }
-//                    })
-//                    .setNegativeButton(getString(R.string.tryAgain), new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            onResume();
-//                        }
-//                    })
-//                    .setIcon(android.R.drawable.ic_dialog_alert)
-//                    .show();
-
             AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
             builder1.setMessage("Error loading the database " + getString(R.string.could_not_get_db_info));
             builder1.setCancelable(true);
@@ -110,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
             HashMap<String, List<Product>> prodlist = new HashMap<>();
 
             for (int i = 0; i < data.length(); i++) {
-
                 JSONObject obj = new JSONObject();
 
                 try {
