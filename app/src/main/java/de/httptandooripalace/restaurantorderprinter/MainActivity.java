@@ -69,28 +69,28 @@ public class MainActivity extends AppCompatActivity {
 //                    .setIcon(android.R.drawable.ic_dialog_alert)
 //                    .show();
 
-            AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
-            builder1.setMessage("Error loading the database " + getString(R.string.could_not_get_db_info));
-            builder1.setCancelable(true);
-
-            builder1.setPositiveButton(
-                    "OK",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            //Do nothing
-                        }
-                    });
-
-            builder1.setNegativeButton(
-                    getString(R.string.tryAgain),
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            onResume();
-                        }
-                    });
-
-            AlertDialog alert11 = builder1.create();
-            alert11.show();
+//            AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+//            builder1.setMessage("Error loading the database " + getString(R.string.could_not_get_db_info));
+//            builder1.setCancelable(true);
+//
+//            builder1.setPositiveButton(
+//                    "OK",
+//                    new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int id) {
+//                            //Do nothing
+//                        }
+//                    });
+//
+//            builder1.setNegativeButton(
+//                    getString(R.string.tryAgain),
+//                    new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int id) {
+//                            onResume();
+//                        }
+//                    });
+//
+//            AlertDialog alert11 = builder1.create();
+//            alert11.show();
         }
         else {
             JSONArray data = new JSONArray();
