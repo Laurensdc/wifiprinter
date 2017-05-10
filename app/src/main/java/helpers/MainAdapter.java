@@ -101,6 +101,14 @@ public class MainAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
+
+    public void filter(String f) {
+        this._listDataChild.remove("Dienstag");
+
+        notifyDataSetChanged();
+    }
+
+
     @Override
     public boolean hasStableIds() {
         return false;

@@ -48,6 +48,36 @@
             android:layout_height="50dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:paddingLeft="12dp"
+            android:onClick="setFocusToTableNumber"
+            >
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="Ref."
+                android:textSize="24dp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="number"
+                android:background="@android:color/transparent"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:imeOptions="actionDone"
+                android:id="@+id/ref_nr"
+
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:onClick="setFocusToTableNumber"
             >
             <TextView
