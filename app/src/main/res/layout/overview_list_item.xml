@@ -75,7 +75,9 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="12dp"
                     app:fabSize="mini"
-                    app:srcCompat="@android:drawable/ic_menu_edit" />
+                    app:srcCompat="@android:drawable/ic_menu_edit"
+
+                     />
 
                 <android.support.design.widget.FloatingActionButton
                     android:id="@+id/close_bill"

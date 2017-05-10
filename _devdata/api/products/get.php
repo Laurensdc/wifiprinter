@@ -27,6 +27,7 @@ try {
     $stmt = $conn->prepare("SELECT DISTINCT
         cat.id_category AS 'id_cat',
         catl.name AS 'name_cat',
+        cat.reference AS 'reference_cat',
         p.id_product AS 'id_prod',
         pl.name AS 'name_prod',
         p.reference AS 'reference_prod',
