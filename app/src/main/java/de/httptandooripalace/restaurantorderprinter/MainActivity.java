@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,7 +37,8 @@ import helpers.SharedPrefHelper;
 
 public class MainActivity extends AppCompatActivity {
     private Toast currentToast;
-    Context context;
+    private Context context;
+    private ExpandableListView view;
 
     @Override
     protected void onResume() {
@@ -52,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             List<Product> durrr = new ArrayList<Product>();
             durrr.add(new Product(-1, getString(R.string.could_not_get_db_info), 0, 0, null, null));
             msg.put("Error", durrr);
-            ExpandableListView view = (ExpandableListView) findViewById(R.id.overview_main);
+            view = (ExpandableListView) findViewById(R.id.overview_main);
             MainAdapter adapter = new MainAdapter(this, err, msg);
             view.setAdapter(adapter);
 
@@ -117,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             // Get the grid view and bind array adapter
-            ExpandableListView view = (ExpandableListView) findViewById(R.id.overview_main);
+            view = (ExpandableListView) findViewById(R.id.overview_main);
             final MainAdapter adapter = new MainAdapter(this, catlist, prodlist);
             view.setAdapter(adapter);
 
@@ -193,33 +196,34 @@ public class MainActivity extends AppCompatActivity {
 
                 }
 
-
-
-//
-//                List<Product> products = SharedPrefHelper.getPrintItems(getApplicationContext());
-//                if (products == null) products = new ArrayList<>();
-//
-//                // If item is already in the list, just increase the count
-//                if (products.contains(prod)) {
-//                    // Todo: check if this is bugging the main refresh count
-//                    products.remove(prod);
-//                    prod.increaseCount();
-//                    products.add(prod);
-//                }
-//                // Otherwise add the product to print overview list
-//                else {
-//                    products.add(prod);
-//                }
-//
-//                // Save to DB in open bill now
-//                SharedPrefHelper.setPrintItems(getApplicationContext(), products);
-
                 if (currentToast != null) currentToast.cancel();
                 currentToast = Toast.makeText(getApplicationContext(), getString(R.string.added_products) + " " + prod.getName(),
                         Toast.LENGTH_SHORT);
                 currentToast.show();
 
                 return true;
+                }
+            });
+
+            // Text change listener to filter on reference number
+            EditText refnr = (EditText) findViewById(R.id.ref_nr);
+            refnr.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    String text = s.toString();
+                    Log.d("TEXT CHANGED", "onTextChanged: " + text);
+
+                    adapter.filter(text);
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
                 }
             });
         }
@@ -229,6 +233,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+
+
 
 //        SwipeRefreshLayout swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
 //        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

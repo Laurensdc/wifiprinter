@@ -5,8 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -14,7 +12,6 @@ import java.util.List;
 
 import de.httptandooripalace.restaurantorderprinter.R;
 import entities.Bill;
-import entities.Product;
 
 /**
  * Created by uiz on 27/04/2017.
@@ -66,7 +63,6 @@ public class OverviewAdapter extends BaseAdapter{
         t2.setText(bill.getWaiter());
         return convertView;
     }
-
 
 
 

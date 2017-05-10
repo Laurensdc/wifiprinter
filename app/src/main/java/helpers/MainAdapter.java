@@ -2,6 +2,7 @@ package helpers;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,6 +101,20 @@ public class MainAdapter extends BaseExpandableListAdapter {
 
         return convertView;
     }
+
+
+    public void filter(String f) {
+
+        Log.d("TEST", _listDataChild.toString());
+
+        this._listDataChild.remove("Dienstag");
+        this._listDataChild.remove("Dessert");
+
+        Log.d("TEST", _listDataChild.toString());
+
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public boolean hasStableIds() {
