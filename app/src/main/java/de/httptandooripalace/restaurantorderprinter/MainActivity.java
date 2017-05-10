@@ -56,28 +56,8 @@ public class MainActivity extends AppCompatActivity {
             MainAdapter adapter = new MainAdapter(this, err, msg);
             view.setAdapter(adapter);
 
-//            AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
-//            builder1.setMessage("Error loading the database " + getString(R.string.could_not_get_db_info));
-//            builder1.setCancelable(true);
-//
-//            builder1.setPositiveButton(
-//                    "OK",
-//                    new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog, int id) {
-//                            //Do nothing
-//                        }
-//                    });
-//
-//            builder1.setNegativeButton(
-//                    getString(R.string.tryAgain),
-//                    new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog, int id) {
-//                            onResume();
-//                        }
-//                    });
-//
-//            AlertDialog alert11 = builder1.create();
-//            alert11.show();
+
+
         }
         else {
             JSONArray data = new JSONArray();
@@ -178,6 +158,26 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                            try {
+                                Log.d("RESPONSE", errorResponse.toString());
+                            }
+                            catch(Exception e) {
+                                Log.d("Exception HTTP", e.getMessage());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                            try {
+                                Log.d("RESPONSE", errorResponse.toString());
+                            }
+                            catch(Exception e) {
+                                Log.d("Exception HTTP", e.getMessage());
+                            }
+                        }
+
+                        @Override
                         public void onFailure(int c, Header[] h, String r, Throwable t) {
                             try {
                                 Log.d("RESPONSE", r.toString());
@@ -192,6 +192,27 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("Ex", e.getMessage());
 
                 }
+
+
+
+//
+//                List<Product> products = SharedPrefHelper.getPrintItems(getApplicationContext());
+//                if (products == null) products = new ArrayList<>();
+//
+//                // If item is already in the list, just increase the count
+//                if (products.contains(prod)) {
+//                    // Todo: check if this is bugging the main refresh count
+//                    products.remove(prod);
+//                    prod.increaseCount();
+//                    products.add(prod);
+//                }
+//                // Otherwise add the product to print overview list
+//                else {
+//                    products.add(prod);
+//                }
+//
+//                // Save to DB in open bill now
+//                SharedPrefHelper.setPrintItems(getApplicationContext(), products);
 
                 if (currentToast != null) currentToast.cancel();
                 currentToast = Toast.makeText(getApplicationContext(), getString(R.string.added_products) + " " + prod.getName(),
