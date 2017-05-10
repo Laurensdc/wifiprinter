@@ -177,26 +177,6 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
 
-//                        @Override
-//                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-//                            try {
-//                                Log.d("RESPONSE", errorResponse.toString());
-//                            }
-//                            catch(Exception e) {
-//                                Log.d("Exception HTTP", e.getMessage());
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-//                            try {
-//                                Log.d("RESPONSE", errorResponse.toString());
-//                            }
-//                            catch(Exception e) {
-//                                Log.d("Exception HTTP", e.getMessage());
-//                            }
-//                        }
-
                         @Override
                         public void onFailure(int c, Header[] h, String r, Throwable t) {
                             try {
@@ -213,28 +193,6 @@ public class MainActivity extends AppCompatActivity {
 
                 }
 
-
-
-//
-//                List<Product> products = SharedPrefHelper.getPrintItems(getApplicationContext());
-//                if (products == null) products = new ArrayList<>();
-//
-//                // If item is already in the list, just increase the count
-//                if (products.contains(prod)) {
-//                    // Todo: check if this is bugging the main refresh count
-//                    products.remove(prod);
-//                    prod.increaseCount();
-//                    products.add(prod);
-//                }
-//                // Otherwise add the product to print overview list
-//                else {
-//                    products.add(prod);
-//                }
-//
-//                // Save to DB in open bill now
-//                SharedPrefHelper.setPrintItems(getApplicationContext(), products);
-
-                // Toast it
                 if (currentToast != null) currentToast.cancel();
                 currentToast = Toast.makeText(getApplicationContext(), getString(R.string.added_products) + " " + prod.getName(),
                         Toast.LENGTH_SHORT);

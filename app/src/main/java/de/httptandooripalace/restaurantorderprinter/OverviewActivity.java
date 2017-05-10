@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.StringEntity;
 import entities.Bill;
 import entities.Product;
 import helpers.OverviewAdapter;
@@ -42,44 +43,59 @@ public class OverviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.overview_activity);
 
-//        SwipeRefreshLayout swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
-//        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                refreshContent();
-//            }
-//        });
-        //TODO : getOpenBills method
-//        bills = SharedPrefHelper.getOpenBills(getApplicationContext());
-//        settings = SharedPrefHelper.loadSettings(getApplicationContext());
+        try {
+
+            RequestClient.get("bills/getopen/", new JsonHttpResponseHandler(){
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    // If the response is JSONObject instead of expected JSONArray
+                    try {
+                        Log.d("RESPONSE", response.toString()); // RESPONSE: {"success":"true","bills":[{"id":"1","is_open":"1","date":"2017-05-09 02:59:18","table_nr":"1"}]}
+                        //TODO : inserts those data into bills arraylist
+                    }
+                    catch(Exception e) {
+                        Log.d("Exception HTTP", e.getMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(int c, Header[] h, String r, Throwable t) {
+                    try {
+                        Log.d("RESPONSE", r.toString());
+                    }
+                    catch(Exception e) {
+                        Log.d("Exception HTTP", e.getMessage());
+                    }
+                }
+            });
+        }
+        catch(Exception e) {
+            Log.d("Ex", e.getMessage());
+
+        }
+
+//        //creating 3 bills manually, to test the layout
+//        System.out.print("start of the manual phase !!!!!!!!!!!!!!!!!!!!!");
+//        Product p1 = new Product(0, "tandori salad", 10, 13, "15", "salads");
+//        Product p2 = new Product(0, "other salad", 10, 13, "16", "salads");
+//        Product p3 = new Product(0, "thing salad", 10, 13, "17", "salads");
+//        Product p4 = new Product(0, "stuff salad", 10, 13, "18", "salads");
+//        Product p5 = new Product(0, "that salad", 10, 13, "19", "salads");
 //
-//        // Bind products to print overview
-//        ListView view = (ListView) findViewById(R.id.listingLayout);
-//        OverviewAdapter adapter = new OverviewAdapter(getApplicationContext(), bills);
-//        view.setAdapter(adapter);
-
-        //creating 3 bills manually, to test the layout
-        System.out.print("start of the manual phase !!!!!!!!!!!!!!!!!!!!!");
-        Product p1 = new Product(0, "tandori salad", 10, 13, "15", "salads");
-        Product p2 = new Product(0, "other salad", 10, 13, "16", "salads");
-        Product p3 = new Product(0, "thing salad", 10, 13, "17", "salads");
-        Product p4 = new Product(0, "stuff salad", 10, 13, "18", "salads");
-        Product p5 = new Product(0, "that salad", 10, 13, "19", "salads");
-
-        products.add(p1);
-        products.add(p2);
-        products.add(p3);
-        products.add(p4);
-
-        Date d = new Date();//system time
-
-        Bill b1 = new Bill(products, true, d, "5", "Bryan", 1);
-        Bill b2 = new Bill(products, true,d , "11", "Paul", 2);
-        Bill b3 = new Bill(products, true,d , "3", "Jack", 3);
-
-        bills.add(b1);
-        bills.add(b2);
-        bills.add(b3);
+//        products.add(p1);
+//        products.add(p2);
+//        products.add(p3);
+//        products.add(p4);
+//
+//        Date d = new Date();//system time
+//
+//        Bill b1 = new Bill(products, true, d, "5", "Bryan", 1);
+//        Bill b2 = new Bill(products, true,d , "11", "Paul", 2);
+//        Bill b3 = new Bill(products, true,d , "3", "Jack", 3);
+//
+//        bills.add(b1);
+//        bills.add(b2);
+//        bills.add(b3);
 
         ListView view = (ListView) findViewById(R.id.list_open_bills);
         OverviewAdapter adapter = new OverviewAdapter(this, bills);
