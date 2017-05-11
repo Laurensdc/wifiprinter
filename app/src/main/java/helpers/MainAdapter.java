@@ -133,13 +133,16 @@ public class MainAdapter extends BaseExpandableListAdapter {
 
    //     Iterator<String> itCat = _listDataChild.keySet().iterator();
         //String s = null;
+
+        List<Product> filteredList = new ArrayList<>();
+
         while (it.hasNext())
         {
             List<Product> prodList = it.next();
             //String cat = itCat.next();
             for(int i = 0; i < prodList.size(); i++) {
 
-                if(prodList.get(i).getReference().contains(f) || prodList.get(i).getName().contains(f)) {
+                if(prodList.get(i).getReference().contains(f)/* || prodList.get(i).getName().contains(f)*/) {
 
                     //Log.d("DOFIEJOFIJ", prodList.get(i).getName());
                     String searchres = "Search result";
@@ -147,7 +150,6 @@ public class MainAdapter extends BaseExpandableListAdapter {
                         _listDataHeader.add(searchres);
                     }
 
-                    List<Product> filteredList = new ArrayList<>();
                     filteredList.add(prodList.get(i));
                     _listDataChild.put(searchres, filteredList);
 
