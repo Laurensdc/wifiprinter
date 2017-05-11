@@ -31,11 +31,19 @@ public class MainAdapter extends BaseExpandableListAdapter {
     // child data in format of header title, child title
     private LinkedHashMap<String, List<Product>> _listDataChild;
 
+    private ArrayList<String> _originalListDataHeader; // header titles
+    // child data in format of header title, child title
+    private LinkedHashMap<String, List<Product>> _originalListDataChild;
+
+
+
     public MainAdapter(Context context, ArrayList<String> listDataHeader,
                        LinkedHashMap<String, List<Product>> listChildData) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
+        this._originalListDataChild = listChildData;
+        this._originalListDataHeader = listDataHeader;
     }
 
     @Override
@@ -108,24 +116,53 @@ public class MainAdapter extends BaseExpandableListAdapter {
 
 
     public void filter(String f) {
+        _listDataHeader = _originalListDataHeader;
+        _listDataChild = _originalListDataChild;
 
-//
-//        if(_listDataChild.containsValue(f)) {
-//
-//        }
 
+        if(f.equals("")) {
+            notifyDataSetChanged();
+            return;
+        }
 
         Iterator<List<Product>> it = _listDataChild.values().iterator();
+
+        _listDataHeader = new ArrayList<>();
+        _listDataChild = new LinkedHashMap<>();
+
+
+   //     Iterator<String> itCat = _listDataChild.keySet().iterator();
+        //String s = null;
         while (it.hasNext())
         {
             List<Product> prodList = it.next();
-
+            //String cat = itCat.next();
             for(int i = 0; i < prodList.size(); i++) {
+
                 if(prodList.get(i).getReference().contains(f) || prodList.get(i).getName().contains(f)) {
-                    Log.d("DOFIEJOFIJ", prodList.get(i).getName());
+
+                    //Log.d("DOFIEJOFIJ", prodList.get(i).getName());
+                    String searchres = "Search result";
+                    if(!_listDataHeader.contains(searchres)) {
+                        _listDataHeader.add(searchres);
+                    }
+
+                    List<Product> filteredList = new ArrayList<>();
+                    filteredList.add(prodList.get(i));
+                    _listDataChild.put(searchres, filteredList);
+
+                    notifyDataSetChanged();
+                }
+                else {
+//                    prodList.remove(i);
+//                    s = prodList.get(i).toString();
+
+//                    String prodname = prodList.get(i).getName();
+//                    this._listDataChild.remove(prodname);
+//
+
                 }
             }
-
         }
 
 
@@ -158,7 +195,7 @@ public class MainAdapter extends BaseExpandableListAdapter {
 //
 //        Log.d("TEST", _listDataChild.toString());
 
-        notifyDataSetChanged();
+
     }
 
 
