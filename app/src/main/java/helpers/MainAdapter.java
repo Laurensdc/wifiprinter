@@ -10,7 +10,11 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import de.httptandooripalace.restaurantorderprinter.R;
@@ -25,10 +29,10 @@ public class MainAdapter extends BaseExpandableListAdapter {
     private Context _context;
     private ArrayList<String> _listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<Product>> _listDataChild;
+    private LinkedHashMap<String, List<Product>> _listDataChild;
 
     public MainAdapter(Context context, ArrayList<String> listDataHeader,
-                       HashMap<String, List<Product>> listChildData) {
+                       LinkedHashMap<String, List<Product>> listChildData) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
@@ -105,12 +109,54 @@ public class MainAdapter extends BaseExpandableListAdapter {
 
     public void filter(String f) {
 
-        Log.d("TEST", _listDataChild.toString());
+//
+//        if(_listDataChild.containsValue(f)) {
+//
+//        }
 
-        this._listDataChild.remove("Dienstag");
-        this._listDataChild.remove("Dessert");
 
-        Log.d("TEST", _listDataChild.toString());
+        Iterator<List<Product>> it = _listDataChild.values().iterator();
+        while (it.hasNext())
+        {
+            List<Product> prodList = it.next();
+
+            for(int i = 0; i < prodList.size(); i++) {
+                if(prodList.get(i).getReference().contains(f) || prodList.get(i).getName().contains(f)) {
+                    Log.d("DOFIEJOFIJ", prodList.get(i).getName());
+                }
+            }
+
+        }
+
+
+  /*          List<List<Product>> l = new ArrayList<List<Product>>(_listDataChild.values());
+            Log.d("WHAT IS THIS: ", l.get(i).toString());
+
+    _listDataChild.*/
+
+////            _listDataChild.
+//
+//            if(_listDataChild.get("").)
+
+//
+//
+//            for (int j = 0; j <  _listDataChild..size(); j++){
+//                if(!this._listDataChild.get(j).contains(f)){
+//                    String s = this._listDataHeader.get(j);
+//                    this._listDataHeader.remove(s);
+//                }
+            //}
+
+//        }
+//        Log.d("TEST", _listDataChild.toString());
+//
+//        this._listDataChild.get("Beilagen").remove(1);// WORK !! Delete the second products of Beilagen category
+//       // this._listDataChild.get("Tandoori Platte").removeAll(Collections.singleton("155 - Tandoori Platte(2)")); // App crash
+//
+//        String s = this._listDataHeader.get(0);
+//        this._listDataHeader.remove(s); // WORK !! Delete the all category
+//
+//        Log.d("TEST", _listDataChild.toString());
 
         notifyDataSetChanged();
     }

@@ -26,6 +26,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             // Todo: This code is so ugly, replace asap
             ArrayList<String> err = new ArrayList<>();
             err.add("Error");
-            HashMap<String, List<Product>> msg = new HashMap<>();
+            LinkedHashMap<String, List<Product>> msg = new LinkedHashMap<>();
             List<Product> durrr = new ArrayList<Product>();
             durrr.add(new Product(-1, getString(R.string.could_not_get_db_info), 0, 0, null, null));
             msg.put("Error", durrr);
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Convert json data to arrayList to pass it to gridView
             final ArrayList<String> catlist = new ArrayList<>();
-            HashMap<String, List<Product>> prodlist = new HashMap<>();
+            LinkedHashMap<String, List<Product>> prodlist = new LinkedHashMap<>();
 
             for (int i = 0; i < data.length(); i++) {
                 JSONObject obj = new JSONObject();
