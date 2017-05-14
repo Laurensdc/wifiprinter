@@ -2,11 +2,13 @@ package helpers;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ public class MainAdapter extends BaseExpandableListAdapter {
     private ArrayList<String> _originalListDataHeader; // header titles
     // child data in format of header title, child title
     private LinkedHashMap<String, List<Product>> _originalListDataChild;
+    private ExpandableListView view;
 
 
 
@@ -44,6 +47,11 @@ public class MainAdapter extends BaseExpandableListAdapter {
         this._listDataChild = listChildData;
         this._originalListDataChild = listChildData;
         this._originalListDataHeader = listDataHeader;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
     }
 
     @Override
@@ -70,7 +78,9 @@ public class MainAdapter extends BaseExpandableListAdapter {
         }
 
         TextView txtListChild = (TextView) convertView.findViewById(R.id.prod_title);
-        txtListChild.setText(p.getReference() + " - " + p.getName());
+        String sourceString = "<b>" + p.getReference() + "</b> - " + p.getName();
+        txtListChild.setText(Html.fromHtml(sourceString));
+        //txtListChild.setText("<b>"+p.getReference() + "</b> - " + p.getName());
 
         return convertView;
     }
@@ -115,14 +125,14 @@ public class MainAdapter extends BaseExpandableListAdapter {
     }
 
 
-    public void filter(String f) {
+    public void/*LinkedHashMap<String, List<Product>>*/ filter(String f) {
         _listDataHeader = _originalListDataHeader;
         _listDataChild = _originalListDataChild;
 
 
         if(f.equals("")) {
             notifyDataSetChanged();
-            return;
+            return /*null*/;
         }
 
         Iterator<List<Product>> it = _listDataChild.values().iterator();
@@ -153,50 +163,16 @@ public class MainAdapter extends BaseExpandableListAdapter {
                     filteredList.add(prodList.get(i));
                     _listDataChild.put(searchres, filteredList);
 
-                    notifyDataSetChanged();
+                    this.notifyDataSetChanged();
+
                 }
                 else {
-//                    prodList.remove(i);
-//                    s = prodList.get(i).toString();
-
-//                    String prodname = prodList.get(i).getName();
-//                    this._listDataChild.remove(prodname);
-//
 
                 }
+
             }
         }
-
-
-  /*          List<List<Product>> l = new ArrayList<List<Product>>(_listDataChild.values());
-            Log.d("WHAT IS THIS: ", l.get(i).toString());
-
-    _listDataChild.*/
-
-////            _listDataChild.
-//
-//            if(_listDataChild.get("").)
-
-//
-//
-//            for (int j = 0; j <  _listDataChild..size(); j++){
-//                if(!this._listDataChild.get(j).contains(f)){
-//                    String s = this._listDataHeader.get(j);
-//                    this._listDataHeader.remove(s);
-//                }
-            //}
-
-//        }
-//        Log.d("TEST", _listDataChild.toString());
-//
-//        this._listDataChild.get("Beilagen").remove(1);// WORK !! Delete the second products of Beilagen category
-//       // this._listDataChild.get("Tandoori Platte").removeAll(Collections.singleton("155 - Tandoori Platte(2)")); // App crash
-//
-//        String s = this._listDataHeader.get(0);
-//        this._listDataHeader.remove(s); // WORK !! Delete the all category
-//
-//        Log.d("TEST", _listDataChild.toString());
-
+        //return _listDataChild;
 
     }
 

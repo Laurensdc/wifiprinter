@@ -13,14 +13,13 @@
         >
 
         <TextView
+            android:id="@+id/prod_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="12dp"
             android:paddingStart="52dp"
             android:paddingTop="12dp"
-            android:paddingBottom="12dp"
-            android:textSize="16sp"
-            android:id="@+id/prod_title"
-            />
+            android:textSize="24sp" />
 
     </LinearLayout>
 

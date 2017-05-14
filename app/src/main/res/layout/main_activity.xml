@@ -38,10 +38,9 @@
         android:orientation="vertical"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
 
-        >
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -116,15 +115,15 @@
             <!--android:layout_height="wrap_content">-->
 
 
-            <ExpandableListView
-                android:layout_width="match_parent"
-                android:layout_height="433dp"
-                android:id="@+id/overview_main"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:clickable="true"
+        <ExpandableListView
+            android:id="@+id/overview_main"
+            android:layout_width="match_parent"
+            android:layout_height="433dp"
+            android:addStatesFromChildren="false"
+            android:clickable="true"
+            android:focusable="true"
 
-                />
+            android:focusableInTouchMode="true" />
 
         <!--</android.support.v4.widget.SwipeRefreshLayout>-->
 

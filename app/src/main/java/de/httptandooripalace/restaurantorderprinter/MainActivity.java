@@ -216,10 +216,21 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                    ArrayList<String> _listDataHeader; // header titles
+//                    _listDataHeader = new ArrayList<>();
+//                    _listDataHeader.add("Search result");
+//
+//                    LinkedHashMap<String, List<Product>> _listDataChild;
+
                     String text = s.toString();
                     Log.d("TEXT CHANGED", "onTextChanged: " + text);
-
-                    adapter.filter(text);
+                    view.expandGroup(0);
+                    //view.destroyDrawingCache();
+                    view.invalidateViews();
+                    /*_listDataChild = */ adapter.filter(text);
+                    //MainAdapter adapter = new MainAdapter(context, _listDataHeader, _listDataChild);
+                    //view.setAdapter(adapter);
+                    //onResume();
                 }
 
                 @Override
