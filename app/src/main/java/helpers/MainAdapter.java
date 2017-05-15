@@ -177,6 +177,7 @@ public class MainAdapter extends BaseExpandableListAdapter {
     }
 
 
+
     @Override
     public boolean hasStableIds() {
         return false;

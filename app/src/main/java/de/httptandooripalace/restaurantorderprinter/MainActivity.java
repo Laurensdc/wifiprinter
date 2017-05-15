@@ -26,6 +26,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Convert json data to arrayList to pass it to gridView
             final ArrayList<String> catlist = new ArrayList<>();
-            LinkedHashMap<String, List<Product>> prodlist = new LinkedHashMap<>();
+            final LinkedHashMap<String, List<Product>> prodlist = new LinkedHashMap<>();
 
             for (int i = 0; i < data.length(); i++) {
                 JSONObject obj = new JSONObject();
@@ -198,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (currentToast != null) currentToast.cancel();
-                currentToast = Toast.makeText(getApplicationContext(), getString(R.string.added_products) + " " + prod.getName(),
+                currentToast = Toast.makeText(getApplicationContext(), getString(R.string.added_products) + " " + prod.getName() + " taille de la liste : " + adapter.getChildrenCount(0),
                         Toast.LENGTH_SHORT);
                 currentToast.show();
 
@@ -216,21 +217,43 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                    ArrayList<String> _listDataHeader; // header titles
-//                    _listDataHeader = new ArrayList<>();
-//                    _listDataHeader.add("Search result");
-//
-//                    LinkedHashMap<String, List<Product>> _listDataChild;
 
                     String text = s.toString();
                     Log.d("TEXT CHANGED", "onTextChanged: " + text);
                     view.expandGroup(0);
                     //view.destroyDrawingCache();
                     view.invalidateViews();
-                    /*_listDataChild = */ adapter.filter(text);
-                    //MainAdapter adapter = new MainAdapter(context, _listDataHeader, _listDataChild);
-                    //view.setAdapter(adapter);
-                    //onResume();
+
+                    //TODO : change the java product list too (filter method just changed the textViews of the list, not the data associated
+                    //TODO : faire une autre fonction filter dans mainActivity qui trie de la meme façon les produits mais sur la liste java (entité)
+                    //filter(text);
+                    final LinkedHashMap<String, List<Product>> prodlist3 = prodlist;//copie de la liste originelle
+                    List<Product> filteredList = new ArrayList<>();
+                    ArrayList<String> catlist2 = new ArrayList<>();
+                    if(!text.equals(""))
+                    {
+                        String searchres = "Search result";
+                        if(!catlist2.contains(searchres)) {
+                            catlist2.add(searchres);
+                        }
+                        Iterator<List<Product>> it = prodlist2.values().iterator();
+                        while(it.hasNext())
+                        {
+                            List<Product> prod = it.next();
+                            for(int i = 0; i < prod.size(); i++) {
+                                if(prod.get(i).getReference().contains(text)){
+                                    filteredList.add(prod.get(i));
+                                    adapter.notifyDataSetChanged();
+                                }
+                            }
+                        }
+                        prodlist2.put(searchres,filteredList);
+                        // Get the grid view and bind array adapter
+//                        view = (ExpandableListView) findViewById(R.id.overview_main);
+//                        final MainAdapter adapter = new MainAdapter(context, catlist2, prodlist3);//context, arraylist<String>,LinkedHashMap<String, List<Product>>
+//                        view.setAdapter(adapter);
+                    }
+                    adapter.filter(text);
                 }
 
                 @Override
@@ -240,6 +263,8 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
