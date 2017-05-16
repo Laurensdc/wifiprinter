@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private Toast currentToast;
     private Context context;
     private ExpandableListView view;
+    LinkedHashMap<String, List<Product>> prodlist2 = new LinkedHashMap<>();
 
     @Override
     protected void onResume() {
@@ -126,8 +127,7 @@ public class MainActivity extends AppCompatActivity {
             final MainAdapter adapter = new MainAdapter(this, catlist, prodlist);
             view.setAdapter(adapter);
 
-            final HashMap<String, List<Product>> prodlist2 = prodlist;
-
+            prodlist2 = prodlist;
 
             // Listview on child click listener
             view.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
@@ -135,10 +135,9 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public boolean onChildClick(ExpandableListView parent, View v,
                                             int groupPosition, int childPosition, long id) {
-
                 // Fetch properties of tapped item
                 String cat = catlist.get(groupPosition);
-                Product prod = prodlist2.get(catlist.get(groupPosition)).get(childPosition);
+                Product prod = prodlist2.get(catlist.get(groupPosition)).get(childPosition); // Error here !! prodlist2 is trying to get the index of the new adapter data but it doesn't correspond to his data
 
                 int id2 = prod.getId();
                 List<Product> products = SharedPrefHelper.getPrintItems(getApplicationContext());
@@ -239,19 +238,16 @@ public class MainActivity extends AppCompatActivity {
                     //view.destroyDrawingCache();
                     view.invalidateViews();
 
-                    //TODO : change the java product list too (filter method just changed the textViews of the list, not the data associated
-                    //TODO : faire une autre fonction filter dans mainActivity qui trie de la meme façon les produits mais sur la liste java (entité)
-                    //filter(text);
-                    final LinkedHashMap<String, List<Product>> prodlist3 = prodlist;//copie de la liste originelle
                     List<Product> filteredList = new ArrayList<>();
                     ArrayList<String> catlist2 = new ArrayList<>();
+
                     if(!text.equals(""))
                     {
                         String searchres = "Search result";
                         if(!catlist2.contains(searchres)) {
                             catlist2.add(searchres);
                         }
-                        Iterator<List<Product>> it = prodlist2.values().iterator();
+                        Iterator<List<Product>> it = prodlist.values().iterator();
                         while(it.hasNext())
                         {
                             List<Product> prod = it.next();
@@ -263,10 +259,6 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                         prodlist2.put(searchres,filteredList);
-                        // Get the grid view and bind array adapter
-//                        view = (ExpandableListView) findViewById(R.id.overview_main);
-//                        final MainAdapter adapter = new MainAdapter(context, catlist2, prodlist3);//context, arraylist<String>,LinkedHashMap<String, List<Product>>
-//                        view.setAdapter(adapter);
                     }
                     adapter.filter(text);
                 }

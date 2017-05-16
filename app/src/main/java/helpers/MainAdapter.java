@@ -49,10 +49,10 @@ public class MainAdapter extends BaseExpandableListAdapter {
         this._originalListDataHeader = listDataHeader;
     }
 
-    @Override
-    public void notifyDataSetChanged() {
-        super.notifyDataSetChanged();
-    }
+//    @Override
+//    public void notifyDataSetChanged() {
+//        super.notifyDataSetChanged();
+//    }
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
@@ -80,7 +80,6 @@ public class MainAdapter extends BaseExpandableListAdapter {
         TextView txtListChild = (TextView) convertView.findViewById(R.id.prod_title);
         String sourceString = "<b>" + p.getReference() + "</b> - " + p.getName();
         txtListChild.setText(Html.fromHtml(sourceString));
-        //txtListChild.setText("<b>"+p.getReference() + "</b> - " + p.getName());
 
         return convertView;
     }
@@ -125,54 +124,44 @@ public class MainAdapter extends BaseExpandableListAdapter {
     }
 
 
-    public void/*LinkedHashMap<String, List<Product>>*/ filter(String f) {
+    public void filter(String f) {
         _listDataHeader = _originalListDataHeader;
         _listDataChild = _originalListDataChild;
 
-
         if(f.equals("")) {
             notifyDataSetChanged();
-            return /*null*/;
+            return ;
         }
 
         Iterator<List<Product>> it = _listDataChild.values().iterator();
 
         _listDataHeader = new ArrayList<>();
         _listDataChild = new LinkedHashMap<>();
-
-
-   //     Iterator<String> itCat = _listDataChild.keySet().iterator();
-        //String s = null;
-
+        String searchres = "Search result";
         List<Product> filteredList = new ArrayList<>();
 
         while (it.hasNext())
         {
             List<Product> prodList = it.next();
-            //String cat = itCat.next();
             for(int i = 0; i < prodList.size(); i++) {
 
                 if(prodList.get(i).getReference().contains(f)/* || prodList.get(i).getName().contains(f)*/) {
 
                     //Log.d("DOFIEJOFIJ", prodList.get(i).getName());
-                    String searchres = "Search result";
+
                     if(!_listDataHeader.contains(searchres)) {
                         _listDataHeader.add(searchres);
                     }
 
                     filteredList.add(prodList.get(i));
-                    _listDataChild.put(searchres, filteredList);
-
-                    this.notifyDataSetChanged();
-
                 }
                 else {
 
                 }
-
             }
         }
-        //return _listDataChild;
+        _listDataChild.put(searchres, filteredList);
+        this.notifyDataSetChanged();
 
     }
 

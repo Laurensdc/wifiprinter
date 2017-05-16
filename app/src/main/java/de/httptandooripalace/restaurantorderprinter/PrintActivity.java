@@ -13,13 +13,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONObject;
+
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.StringEntity;
 import entities.Product;
 import entities.Settings;
 import helpers.PrintAdapter;
+import helpers.RequestClient;
 import helpers.Rounder;
 import helpers.SharedPrefHelper;
 import helpers.StringHelper;
@@ -51,6 +59,41 @@ public class PrintActivity extends AppCompatActivity {
         if(settings == null) {
             settings = new Settings();
             SharedPrefHelper.saveSettings(getApplicationContext(), settings);
+        }
+
+        //TODO : get requestclient method to display the product of this bill
+
+        try {
+            Log.d("RESPONSE", "trying to get the bill products");
+            RequestParams params = new RequestParams();
+            params.put("bill_id", "1");
+            RequestClient.post("products/getforbill/", params, new JsonHttpResponseHandler(){
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    // If the response is JSONObject instead of expected JSONArray
+                    try {
+                        Log.d("RESPONSE", response.toString()); // RESPONSE: NONE ...
+                        //TODO : inserts those data into bills arraylist
+                    }
+                    catch(Exception e) {
+                        Log.d("Exception HTTP", e.getMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(int c, Header[] h, String r, Throwable t) {
+                    try {
+                        Log.d("RESPONSE", r.toString());
+                    }
+                    catch(Exception e) {
+                        Log.d("Exception HTTP", e.getMessage());
+                    }
+                }
+            });
+        }
+        catch(Exception e) {
+            Log.d("Ex", e.getMessage());
+
         }
 
         // Bind products to print overview
