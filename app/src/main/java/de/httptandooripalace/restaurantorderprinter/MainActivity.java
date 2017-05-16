@@ -141,8 +141,21 @@ public class MainActivity extends AppCompatActivity {
                 Product prod = prodlist2.get(catlist.get(groupPosition)).get(childPosition);
 
                 int id2 = prod.getId();
+                List<Product> products = SharedPrefHelper.getPrintItems(getApplicationContext());
+                    if(products == null) products = new ArrayList<>();
+                    // If item is already in the list, just increase the count
+                                   if (products.contains(prod)) {
+                                       // Todo: check if this is bugging the main refresh count
+                                       products.remove(prod);
+                                       prod.increaseCount();
+                                       products.add(prod);
+                                   }
+                    // Otherwise add the product to print overview list
+                                   else {
+                                       products.add(prod);
+                                   }
 
-                try {
+                        try {
                     StringEntity entity;
 
                     JSONObject jsonParams = new JSONObject();
@@ -197,6 +210,8 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("Ex", e.getMessage());
 
                 }
+
+                SharedPrefHelper.setPrintItems(getApplicationContext(),products);
 
                 if (currentToast != null) currentToast.cancel();
                 currentToast = Toast.makeText(getApplicationContext(), getString(R.string.added_products) + " " + prod.getName() + " taille de la liste : " + adapter.getChildrenCount(0),
