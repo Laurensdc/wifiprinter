@@ -14,12 +14,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -46,6 +51,7 @@ public class PrintActivity extends AppCompatActivity {
     private final String u = "·129·";
     private final String U = "·154·";
     Context context;
+    int bill_nr = 0;
 
     private entities.Settings settings;
 
@@ -55,7 +61,7 @@ public class PrintActivity extends AppCompatActivity {
         setContentView(R.layout.print_activity);
 
         // Get products
-        products = SharedPrefHelper.getPrintItems(getApplicationContext());
+//        products = SharedPrefHelper.getPrintItems(getApplicationContext());
         settings = SharedPrefHelper.loadSettings(getApplicationContext());
 
         if(settings == null) {
@@ -65,21 +71,51 @@ public class PrintActivity extends AppCompatActivity {
 
         //TODO : get requestclient method to display the product of this bill
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            bill_nr = extras.getInt("bill_nr");
+            Log.d("RESPONSE",  "numero d'addition : "+ bill_nr);
+        }else{
+            Log.d("RESPONSE", "extras est null :::::::::::::::" + bill_nr);
+        }
+
         try {
             StringEntity entity;
 
             JSONObject jsonParams = new JSONObject();
             Log.d("RESPONSE", "trying to get the bill products");
             RequestParams params = new RequestParams();
-            jsonParams.put("bill_id", "1");
+            jsonParams.put("bill_id", bill_nr);
             entity = new StringEntity(jsonParams.toString());
             RequestClient.post(context,"products/getforbill/", entity, "application/json", new JsonHttpResponseHandler(){
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     // If the response is JSONObject instead of expected JSONArray
                     try {
-                        Log.d("RESPONSE", response.toString()); // RESPONSE: {"success":"true","products":[{"id_cat":"18","name_cat":" Dienstag","id_prod":"371","name_prod":"Chicken Curry","reference_prod":"512,","price_prod_excl":"4.03","price_prod_incl":"4.32","description_prod":"","bill_id":"1"},
-                        //TODO : inserts those data into bills arraylist
+                        Log.d("RESPONSE", response.get("products").toString()); // RESPONSE: {"success":"true","products":[{"id_cat":"18","name_cat":" Dienstag","id_prod":"371","name_prod":"Chicken Curry","reference_prod":"512,","price_prod_excl":"4.03","price_prod_incl":"4.32","description_prod":"","bill_id":"1"},
+                        //TODO : inserts those data into List<product>
+                        //response.get("products");
+                        //products = response.get("products");
+                        JSONArray jsonarray = new JSONArray(response.get("products")); // error is here !!
+                        //JSONArray jsonarray = new JSONArray();
+                        Log.d("RESPONSE", jsonarray.length()+""); //2
+                        for (int i = 0; i < jsonarray.length(); i++) {
+                            JSONObject jsonobject = jsonarray.getJSONObject(i);
+                            String name = jsonobject.getString("name_prod");
+                            int id = jsonobject.getInt("id_prod");
+                            double price_excl = jsonobject.getDouble("price_prod_incl");
+                            double price_incl = jsonobject.getDouble("price_prod_excl");
+                            String reference = jsonobject.getString("reference_prod");
+                            String category = jsonobject.getString("name_cat");
+                            Product p = new Product(id, name, price_excl, price_incl, reference, category);
+                            products.add(p);
+
+
+                        }
+                        //Gson gson = new Gson();
+                        //Type listType = new TypeToken<List<Product>>(){}.getType();
+                        //products = (List<Product>) gson.fromJson(prodddd.toString(), listType);
+                        Log.d("RESPONSE", products.toString()); //Exception HTTP: Not a primitive array: class org.json.JSONArray
                     }
                     catch(Exception e) {
                         Log.d("Exception HTTP", e.getMessage());

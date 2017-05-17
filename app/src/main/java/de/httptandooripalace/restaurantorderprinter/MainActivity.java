@@ -42,9 +42,11 @@ public class MainActivity extends AppCompatActivity {
     private Context context;
     private ExpandableListView view;
     LinkedHashMap<String, List<Product>> prodlist2 = new LinkedHashMap<>();
+    int bill_nr = 0;
 
     @Override
     protected void onResume() {
+
         super.onResume();
 
         String apiData = SharedPrefHelper.getString(getApplicationContext(), "apiData");
@@ -61,8 +63,6 @@ public class MainActivity extends AppCompatActivity {
             view = (ExpandableListView) findViewById(R.id.overview_main);
             MainAdapter adapter = new MainAdapter(this, err, msg);
             view.setAdapter(adapter);
-
-
 
         }
         else {
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                     StringEntity entity;
 
                     JSONObject jsonParams = new JSONObject();
-                    jsonParams.put("bill_id", "1");
+                    jsonParams.put("bill_id", bill_nr);
                     jsonParams.put("product_id", id2);
                     entity = new StringEntity(jsonParams.toString());
 
@@ -176,16 +176,6 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                            try {
-                                Log.d("RESPONSE", errorResponse.toString());
-                            }
-                            catch(Exception e) {
-                                Log.d("Exception HTTP", e.getMessage());
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                             try {
                                 Log.d("RESPONSE", errorResponse.toString());
                             }
@@ -278,7 +268,50 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
+        try {
+            StringEntity entity;
+            JSONObject bill = new JSONObject();
+            bill.put("table_nr", "1");
+            entity = new StringEntity(bill.toString());
 
+        RequestClient.put(context, "bills/", entity, "application/json", new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                // If the response is JSONObject instead of expected JSONArray
+                try {
+                    Log.d("RESPONSE", response.toString());//RESPONSE: {"id":"3","success":true}
+                    bill_nr = Integer.parseInt(response.get("id").toString());
+                }
+                catch(Exception e) {
+                    Log.d("Exception HTTP", e.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                try {
+                    Log.d("RESPONSE", errorResponse.toString());
+                }
+                catch(Exception e) {
+                    Log.d("Exception HTTP", e.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(int c, Header[] h, String r, Throwable t) {
+                try {
+                    Log.d("RESPONSE", r.toString());
+                }
+                catch(Exception e) {
+                    Log.d("Exception HTTP", e.getMessage());
+                }
+            }
+        });
+    }
+                catch(Exception e) {
+        Log.d("Ex", e.getMessage());
+
+    }
 
 //        SwipeRefreshLayout swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
 //        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -340,7 +373,9 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPrefHelper.putString(getApplicationContext(), "tableNr", val);
         Intent intent = new Intent(this, PrintActivity.class);
+        intent.putExtra("bill_nr", bill_nr);
         startActivity(intent);
+
     }
 
     public void setFocusToTableNumber(View view) {

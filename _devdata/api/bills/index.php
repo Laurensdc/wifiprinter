@@ -50,17 +50,20 @@ else if($method == 'PUT') {
 
     $json = json_decode($input, true);
 
-    // Object checks
+    Object checks
     if(!isset($json['bill'])) {
-        error('No bill object provided');
+       error('No bill object provided CHANGE');
     }
 
     $bill = $json['bill'];
 
     if(!isset($bill['table_nr'])) {
-        error('No table_nr provided');
+       error('No table_nr provided CHANGE');
     }
 
+    // if(!isset($json['table_nr'])) {
+    //     error('No bill object provided CHANGE');
+    // }
 
     try {
         $opt = [
