@@ -1,5 +1,6 @@
 package de.httptandooripalace.restaurantorderprinter;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.SettingInjectorService;
@@ -44,6 +45,7 @@ public class PrintActivity extends AppCompatActivity {
     private final String BR = "$intro$"; // Line break
     private final String u = "·129·";
     private final String U = "·154·";
+    Context context;
 
     private entities.Settings settings;
 
@@ -64,15 +66,19 @@ public class PrintActivity extends AppCompatActivity {
         //TODO : get requestclient method to display the product of this bill
 
         try {
+            StringEntity entity;
+
+            JSONObject jsonParams = new JSONObject();
             Log.d("RESPONSE", "trying to get the bill products");
             RequestParams params = new RequestParams();
-            params.put("bill_id", "1");
-            RequestClient.post("products/getforbill/", params, new JsonHttpResponseHandler(){
+            jsonParams.put("bill_id", "1");
+            entity = new StringEntity(jsonParams.toString());
+            RequestClient.post(context,"products/getforbill/", entity, "application/json", new JsonHttpResponseHandler(){
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     // If the response is JSONObject instead of expected JSONArray
                     try {
-                        Log.d("RESPONSE", response.toString()); // RESPONSE: NONE ...
+                        Log.d("RESPONSE", response.toString()); // RESPONSE: {"success":"true","products":[{"id_cat":"18","name_cat":" Dienstag","id_prod":"371","name_prod":"Chicken Curry","reference_prod":"512,","price_prod_excl":"4.03","price_prod_incl":"4.32","description_prod":"","bill_id":"1"},
                         //TODO : inserts those data into bills arraylist
                     }
                     catch(Exception e) {
