@@ -61,7 +61,7 @@ public class PrintActivity extends AppCompatActivity {
         setContentView(R.layout.print_activity);
 
         // Get products
-//        products = SharedPrefHelper.getPrintItems(getApplicationContext());
+       // products = SharedPrefHelper.getPrintItems(getApplicationContext());
         settings = SharedPrefHelper.loadSettings(getApplicationContext());
 
         if(settings == null) {
@@ -81,7 +81,6 @@ public class PrintActivity extends AppCompatActivity {
 
         try {
             StringEntity entity;
-
             JSONObject jsonParams = new JSONObject();
             Log.d("RESPONSE", "trying to get the bill products");
             RequestParams params = new RequestParams();
@@ -93,10 +92,7 @@ public class PrintActivity extends AppCompatActivity {
                     // If the response is JSONObject instead of expected JSONArray
                     try {
                         Log.d("RESPONSE", response.getJSONArray("products").toString()); // RESPONSE: {"success":"true","products":[{"id_cat":"18","name_cat":" Dienstag","id_prod":"371","name_prod":"Chicken Curry","reference_prod":"512,","price_prod_excl":"4.03","price_prod_incl":"4.32","description_prod":"","bill_id":"1"},
-                        JSONArray jsonarray = response.getJSONArray("products"); // error is here !!
-                        //JSONArray jsonarray = new JSONArray();
-                        Log.d("RESPONSE", jsonarray.length()+""); //2
-                        //List<Product> products = new ArrayList<Product>();
+                        JSONArray jsonarray = response.getJSONArray("products");
                         for (int i = 0; i < jsonarray.length(); i++) {
                             JSONObject jsonobject = jsonarray.getJSONObject(i);
                             String name = jsonobject.getString("name_prod");
@@ -108,11 +104,14 @@ public class PrintActivity extends AppCompatActivity {
                             Product p = new Product(id, name, price_excl, price_incl, reference, category);
                             products.add(p);
                         }
-                        Log.d("RESPONSE", products.toString());
                     }
                     catch(Exception e) {
                         Log.d("Exception HTTP", e.getMessage());
                     }
+                    // Bind products to print overview
+                    ListView view = (ListView) findViewById(R.id.listingLayout);
+                    PrintAdapter adapter = new PrintAdapter(getApplicationContext(), products);
+                    view.setAdapter(adapter);
                 }
 
                 @Override
@@ -130,11 +129,6 @@ public class PrintActivity extends AppCompatActivity {
             Log.d("Ex", e.getMessage());
 
         }
-
-        // Bind products to print overview
-        ListView view = (ListView) findViewById(R.id.listingLayout);
-        PrintAdapter adapter = new PrintAdapter(getApplicationContext(), products);
-        view.setAdapter(adapter);
 
     }
 
