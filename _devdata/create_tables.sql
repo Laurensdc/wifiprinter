@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS app_bills (
     id INT NOT NULL AUTO_INCREMENT,
     is_open BOOLEAN NOT NULL DEFAULT 1,
-    date timestamp DEFAULT NOW(),
+    date timestamp DEFAULT DATE_FORMAT(NOW(),'%m-%d-%Y %T'),
     table_nr VARCHAR(10),
 
     PRIMARY KEY (id)

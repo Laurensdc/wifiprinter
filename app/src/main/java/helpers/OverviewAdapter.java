@@ -61,6 +61,13 @@ public class OverviewAdapter extends BaseAdapter{
 
         TextView t2 = (TextView) convertView.findViewById(R.id.waiter_name);
         t2.setText(bill.getWaiter());
+
+        TextView t3 = (TextView) convertView.findViewById(R.id.bill_nr);
+        t3.setText(""+ bill.getId());
+
+        TextView t4 = (TextView) convertView.findViewById(R.id.hour);
+        t4.setText(bill.getDate().toString().substring(10,19));
+
         return convertView;
     }
 

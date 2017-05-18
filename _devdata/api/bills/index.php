@@ -50,20 +50,22 @@ else if($method == 'PUT') {
 
     $json = json_decode($input, true);
 
-    Object checks
-    if(!isset($json['bill'])) {
-       error('No bill object provided CHANGE');
-    }
-
-    $bill = $json['bill'];
-
-    if(!isset($bill['table_nr'])) {
-       error('No table_nr provided CHANGE');
-    }
-
-    // if(!isset($json['table_nr'])) {
-    //     error('No bill object provided CHANGE');
+    // Object checks
+    // if(!isset($json['bill'])) {
+    //    error('No bill object provided');
     // }
+
+    // $bill = $json['bill'];
+
+    // if(!isset($bill['table_nr'])) {
+    //    error('No table_nr provided');
+    // }
+
+     if(!isset($json['table_nr'])) {
+         error('No bill object provided');
+     }
+
+    $table_nr = $json['table_nr'];
 
     try {
         $opt = [
@@ -75,7 +77,7 @@ else if($method == 'PUT') {
         $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD, $opt);
 
         $stmt = $conn->prepare("INSERT INTO app_bills (table_nr) VALUES (:table_nr)");
-        $stmt->bindParam(':table_nr', $bill['table_nr']);
+        $stmt->bindParam(':table_nr', $table_nr);
         $success = $stmt->execute();
 
         $stmt2 = $conn->prepare("SELECT LAST_INSERT_ID() AS id");

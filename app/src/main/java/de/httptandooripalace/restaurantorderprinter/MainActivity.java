@@ -16,9 +16,11 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +36,7 @@ import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
 import entities.Product;
 import helpers.MainAdapter;
+import helpers.PrintAdapter;
 import helpers.RequestClient;
 import helpers.SharedPrefHelper;
 
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private ExpandableListView view;
     LinkedHashMap<String, List<Product>> prodlist2 = new LinkedHashMap<>();
     int bill_nr = 0;
+    String table_nr = "";
 
     @Override
     protected void onResume() {
@@ -258,6 +262,70 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
+
+            // Text change listener to filter on reference number
+            EditText table = (EditText) findViewById(R.id.table_number);
+            table.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    String val = s.toString();
+                    table_nr = val;
+                    //TODO : request to add the table_nr to the bill table
+
+                    try {
+                        StringEntity entity;
+                        JSONObject jsonParams = new JSONObject();
+                        Log.d("RESPONSE", "trying to add the table number on the bill table");
+                        jsonParams.put("bill_id", bill_nr);
+                        jsonParams.put("table_nr", table_nr);
+                        entity = new StringEntity(jsonParams.toString());
+
+                        RequestClient.post(context,"bills/addtable/", entity, "application/json", new JsonHttpResponseHandler(){
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                // If the response is JSONObject instead of expected JSONArray
+                                try {
+                                    Log.d("RESPONSE", response.toString());
+
+                                }
+                                catch(Exception e) {
+                                    Log.d("Exception HTTP", e.getMessage());
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(int c, Header[] h, String r, Throwable t) {
+                                try {
+                                    Log.d("RESPONSE", r.toString());
+                                }
+                                catch(Exception e) {
+                                    Log.d("Exception HTTP", e.getMessage());
+                                }
+                            }
+                        });
+                    }
+                    catch(Exception e) {
+                        Log.d("Ex", e.getMessage());
+
+                    }
+
+
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+
+
         }
     }
 
@@ -271,7 +339,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             StringEntity entity;
             JSONObject bill = new JSONObject();
-            bill.put("table_nr", "1");
+            bill.put("table_nr", table_nr);
             entity = new StringEntity(bill.toString());
 
         RequestClient.put(context, "bills/", entity, "application/json", new JsonHttpResponseHandler() {
@@ -279,7 +347,7 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 // If the response is JSONObject instead of expected JSONArray
                 try {
-                    Log.d("RESPONSE", response.toString());//RESPONSE: {"id":"3","success":true}
+                    Log.d("RESPONSE", response.toString());//RESPONSE: {"id":"3","success":true} BUT table_nr not inserted !!
                     bill_nr = Integer.parseInt(response.get("id").toString());
                 }
                 catch(Exception e) {
@@ -370,8 +438,9 @@ public class MainActivity extends AppCompatActivity {
 
         EditText e = (EditText) findViewById(R.id.table_number);
         String val = e.getText().toString();
-
-        SharedPrefHelper.putString(getApplicationContext(), "tableNr", val);
+        table_nr = val;
+        //TODO : a request to put the table_nr in the bill table
+        //SharedPrefHelper.putString(getApplicationContext(), "tableNr", val);
         Intent intent = new Intent(this, PrintActivity.class);
         intent.putExtra("bill_nr", bill_nr);
         startActivity(intent);
