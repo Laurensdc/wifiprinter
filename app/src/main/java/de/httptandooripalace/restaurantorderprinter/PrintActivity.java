@@ -39,7 +39,7 @@ import helpers.SharedPrefHelper;
 import helpers.StringHelper;
 
 public class PrintActivity extends AppCompatActivity {
-    private List<Product> products;
+    private List<Product> products = new ArrayList<Product>();
     private final int CHARCOUNT_BIG = 48; // Amount of characters fit on one printed line, using $big$ format
     private final int CHARCOUNT_BIGW = 24; // Amount of characters fit on one printed line, using $bigw$ format
 
@@ -92,13 +92,11 @@ public class PrintActivity extends AppCompatActivity {
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     // If the response is JSONObject instead of expected JSONArray
                     try {
-                        Log.d("RESPONSE", response.get("products").toString()); // RESPONSE: {"success":"true","products":[{"id_cat":"18","name_cat":" Dienstag","id_prod":"371","name_prod":"Chicken Curry","reference_prod":"512,","price_prod_excl":"4.03","price_prod_incl":"4.32","description_prod":"","bill_id":"1"},
-                        //TODO : inserts those data into List<product>
-                        //response.get("products");
-                        //products = response.get("products");
-                        JSONArray jsonarray = new JSONArray(response.get("products")); // error is here !!
+                        Log.d("RESPONSE", response.getJSONArray("products").toString()); // RESPONSE: {"success":"true","products":[{"id_cat":"18","name_cat":" Dienstag","id_prod":"371","name_prod":"Chicken Curry","reference_prod":"512,","price_prod_excl":"4.03","price_prod_incl":"4.32","description_prod":"","bill_id":"1"},
+                        JSONArray jsonarray = response.getJSONArray("products"); // error is here !!
                         //JSONArray jsonarray = new JSONArray();
                         Log.d("RESPONSE", jsonarray.length()+""); //2
+                        //List<Product> products = new ArrayList<Product>();
                         for (int i = 0; i < jsonarray.length(); i++) {
                             JSONObject jsonobject = jsonarray.getJSONObject(i);
                             String name = jsonobject.getString("name_prod");
@@ -109,13 +107,8 @@ public class PrintActivity extends AppCompatActivity {
                             String category = jsonobject.getString("name_cat");
                             Product p = new Product(id, name, price_excl, price_incl, reference, category);
                             products.add(p);
-
-
                         }
-                        //Gson gson = new Gson();
-                        //Type listType = new TypeToken<List<Product>>(){}.getType();
-                        //products = (List<Product>) gson.fromJson(prodddd.toString(), listType);
-                        Log.d("RESPONSE", products.toString()); //Exception HTTP: Not a primitive array: class org.json.JSONArray
+                        Log.d("RESPONSE", products.toString());
                     }
                     catch(Exception e) {
                         Log.d("Exception HTTP", e.getMessage());
