@@ -1,5 +1,6 @@
 package de.httptandooripalace.restaurantorderprinter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,8 +13,10 @@ import android.widget.ListView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,17 +35,16 @@ import helpers.RequestClient;
 public class OverviewActivity extends AppCompatActivity {
 
     private entities.Settings settings;
-    private static  List<Bill> bills = new ArrayList<>();;
-    private static  List<Product> products = new ArrayList<>();;
-
-
-
+    private static  List<Bill> bills = new ArrayList<>();
+    private static  List<Product> products = new ArrayList<>();
+    private Date date;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.overview_activity);
-
+        context = this;
         try {
 
             RequestClient.get("bills/getopen/", new JsonHttpResponseHandler(){
@@ -52,10 +54,33 @@ public class OverviewActivity extends AppCompatActivity {
                     try {
                         Log.d("RESPONSE", response.toString()); // RESPONSE: {"success":"true","bills":[{"id":"1","is_open":"1","date":"2017-05-09 02:59:18","table_nr":"1"}]}
                         //TODO : inserts those data into bills arraylist
+                        JSONArray jsonarray = response.getJSONArray("bills");
+                        for (int i = 0; i < jsonarray.length(); i++) {
+                            JSONObject jsonobject = jsonarray.getJSONObject(i);
+                            int id = jsonobject.getInt("id");
+                            String boolstr = jsonobject.getString("is_open");
+                            boolean is_open = true;
+                            if(boolstr.equals("1")){
+                                is_open = true;
+                            }else{
+                                is_open = false;
+                            }
+                            //Date date = jsonobject.getDate("date");
+                            String datestr = jsonobject.getString("date");
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            Date date = sdf.parse(datestr);
+                            String table_nr = jsonobject.getString("table_nr");
+                            Bill b = new Bill(null, is_open, date, table_nr, "", id);
+                            bills.add(b);
+                        }
                     }
                     catch(Exception e) {
                         Log.d("Exception HTTP", e.getMessage());
                     }
+                    Log.d("RESPONSE", "bills ::::"+bills);
+                    ListView view = (ListView) findViewById(R.id.list_open_bills);
+                    OverviewAdapter adapter = new OverviewAdapter(context, bills);
+                    view.setAdapter(adapter);
                 }
 
                 @Override
@@ -73,33 +98,6 @@ public class OverviewActivity extends AppCompatActivity {
             Log.d("Ex", e.getMessage());
 
         }
-
-//        //creating 3 bills manually, to test the layout
-//        System.out.print("start of the manual phase !!!!!!!!!!!!!!!!!!!!!");
-//        Product p1 = new Product(0, "tandori salad", 10, 13, "15", "salads");
-//        Product p2 = new Product(0, "other salad", 10, 13, "16", "salads");
-//        Product p3 = new Product(0, "thing salad", 10, 13, "17", "salads");
-//        Product p4 = new Product(0, "stuff salad", 10, 13, "18", "salads");
-//        Product p5 = new Product(0, "that salad", 10, 13, "19", "salads");
-//
-//        products.add(p1);
-//        products.add(p2);
-//        products.add(p3);
-//        products.add(p4);
-//
-//        Date d = new Date();//system time
-//
-//        Bill b1 = new Bill(products, true, d, "5", "Bryan", 1);
-//        Bill b2 = new Bill(products, true,d , "11", "Paul", 2);
-//        Bill b3 = new Bill(products, true,d , "3", "Jack", 3);
-//
-//        bills.add(b1);
-//        bills.add(b2);
-//        bills.add(b3);
-
-        ListView view = (ListView) findViewById(R.id.list_open_bills);
-        OverviewAdapter adapter = new OverviewAdapter(this, bills);
-        view.setAdapter(adapter);
     }
 
     // something

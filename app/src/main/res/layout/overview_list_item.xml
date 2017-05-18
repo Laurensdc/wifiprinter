@@ -51,6 +51,23 @@
                 android:layout_marginTop="51dp"
                 android:textSize="20dp"/>
 
+            <TextView
+                android:id="@+id/bill_nr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:id="@+id/hour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/table"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="12dp" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
