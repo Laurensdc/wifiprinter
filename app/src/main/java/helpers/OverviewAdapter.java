@@ -35,6 +35,10 @@ public class OverviewAdapter extends BaseAdapter{
         return bills.size();
     }
 
+    public Object getAdapter(){
+        return this;
+    }
+
     @Override
     public Object getItem(int position) {
         return bills.get(position);

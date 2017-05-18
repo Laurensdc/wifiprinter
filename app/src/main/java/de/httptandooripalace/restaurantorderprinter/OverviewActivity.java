@@ -115,6 +115,7 @@ public class OverviewActivity extends AppCompatActivity {
                     ListView view = (ListView) findViewById(R.id.list_open_bills);
                     OverviewAdapter adapter = new OverviewAdapter(context, bills);
                     view.setAdapter(adapter);
+
                 }
 
                 @Override
@@ -158,15 +159,17 @@ public class OverviewActivity extends AppCompatActivity {
             JSONObject jsonParams = new JSONObject();
             Log.d("RESPONSE", "trying to close a bill");
             RequestParams params = new RequestParams();
-            //jsonParams.put("bill_id", ???);//TODO : get the id of the bill corresponding
+            jsonParams.put("bill_id", 6);//TODO : get the id of the bill corresponding
             jsonParams.put("open", 0);
+            //System.out.println(view.getAdapter().getItem(1).toString());
             entity = new StringEntity(jsonParams.toString());
             RequestClient.post(context,"bills/", entity, "application/json", new JsonHttpResponseHandler(){
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     // If the response is JSONObject instead of expected JSONArray
                     try {
-                        Log.d("RESPONSE", response.getJSONArray("products").toString());
+                        Log.d("RESPONSE", response.toString());
+                        onResume();
                     }
                     catch(Exception e) {
                         Log.d("Exception HTTP", e.getMessage());
