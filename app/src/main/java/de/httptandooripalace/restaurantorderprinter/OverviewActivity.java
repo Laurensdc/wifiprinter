@@ -2,6 +2,7 @@ package de.httptandooripalace.restaurantorderprinter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -87,7 +89,6 @@ public class OverviewActivity extends AppCompatActivity {
                     // If the response is JSONObject instead of expected JSONArray
                     try {
                         Log.d("RESPONSE", response.toString()); // RESPONSE: {"success":"true","bills":[{"id":"1","is_open":"1","date":"2017-05-09 02:59:18","table_nr":"1"}]}
-                        //TODO : inserts those data into bills arraylist
                         JSONArray jsonarray = response.getJSONArray("bills");
                         for (int i = 0; i < jsonarray.length(); i++) {
                             JSONObject jsonobject = jsonarray.getJSONObject(i);
@@ -111,10 +112,11 @@ public class OverviewActivity extends AppCompatActivity {
                     catch(Exception e) {
                         Log.d("Exception HTTP", e.getMessage());
                     }
-                    Log.d("RESPONSE", "bills ::::"+bills);
+                    Log.d("RESPONSE", "bills ::::" + bills);
                     ListView view = (ListView) findViewById(R.id.list_open_bills);
                     OverviewAdapter adapter = new OverviewAdapter(context, bills);
                     view.setAdapter(adapter);
+                    //TODO : try to put a onclicklistener on the buttons here using adapter functions
 
                 }
 
@@ -153,15 +155,15 @@ public class OverviewActivity extends AppCompatActivity {
     }
 
     public void close_bill(View view){
-        //TODO : send this bill to the closed ones
         try {
             StringEntity entity;
             JSONObject jsonParams = new JSONObject();
             Log.d("RESPONSE", "trying to close a bill");
-            RequestParams params = new RequestParams();
-            jsonParams.put("bill_id", 6);//TODO : get the id of the bill corresponding
+            TextView t = (TextView)findViewById(R.id.bill_nr);
+            t.getTag();
+            jsonParams.put("bill_id", Integer.parseInt(t.getText().toString()));//TODO : get the id of the bill corresponding
+            System.out.println("TAGGGGGG : "+ t.getText());//return the good id !!
             jsonParams.put("open", 0);
-            //System.out.println(view.getAdapter().getItem(1).toString());
             entity = new StringEntity(jsonParams.toString());
             RequestClient.post(context,"bills/", entity, "application/json", new JsonHttpResponseHandler(){
                 @Override

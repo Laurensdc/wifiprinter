@@ -69,7 +69,6 @@ public class PrintActivity extends AppCompatActivity {
             SharedPrefHelper.saveSettings(getApplicationContext(), settings);
         }
 
-        //TODO : get requestclient method to display the product of this bill
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {

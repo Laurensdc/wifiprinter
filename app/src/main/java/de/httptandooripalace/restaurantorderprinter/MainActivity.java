@@ -276,7 +276,6 @@ public class MainActivity extends AppCompatActivity {
 
                     String val = s.toString();
                     table_nr = val;
-                    //TODO : request to add the table_nr to the bill table
 
                     try {
                         StringEntity entity;
@@ -439,7 +438,6 @@ public class MainActivity extends AppCompatActivity {
         EditText e = (EditText) findViewById(R.id.table_number);
         String val = e.getText().toString();
         table_nr = val;
-        //TODO : a request to put the table_nr in the bill table
         //SharedPrefHelper.putString(getApplicationContext(), "tableNr", val);
         Intent intent = new Intent(this, PrintActivity.class);
         intent.putExtra("bill_nr", bill_nr);

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -68,9 +69,13 @@ public class OverviewAdapter extends BaseAdapter{
 
         TextView t3 = (TextView) convertView.findViewById(R.id.bill_nr);
         t3.setText(""+ bill.getId());
+        t3.setTag(position);
 
         TextView t4 = (TextView) convertView.findViewById(R.id.hour);
         t4.setText(bill.getDate().toString().substring(10,19));
+
+        Button b = (Button) convertView.findViewById(R.id.close_bill);
+        b.setTag(position);
 
         return convertView;
     }
