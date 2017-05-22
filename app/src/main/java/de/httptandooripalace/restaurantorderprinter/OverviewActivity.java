@@ -44,7 +44,7 @@ public class OverviewActivity extends AppCompatActivity {
     public List<Bill> bills = new ArrayList<>();
     private static  List<Product> products = new ArrayList<>();
     Context context;
-    public static long recup_id = 0;
+    public static int recup_id = 0;
     int id =0;
     String boolstr = null;
     boolean is_open = true;
@@ -155,7 +155,6 @@ public class OverviewActivity extends AppCompatActivity {
     }
 
     public void new_bill(View view){
-        //TODO : delete the selection of the precedent bill, to start the new one
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
     }
@@ -168,9 +167,9 @@ public class OverviewActivity extends AppCompatActivity {
         try {
             StringEntity entity;
             JSONObject jsonParams = new JSONObject();
-            Log.d("RESPONSE", "trying to close a bill");
-            jsonParams.put("bill_id", adapter.getBillId(1));//TODO : get the id of the bill corresponding
-            System.out.println("TAGGGGGG : "+ adapter.getBillId(1));//return the good id !!
+            Log.d("RESPONSE", "trying to close a bill" + recup_id);
+            jsonParams.put("bill_id", recup_id);//TODO : get the id of the bill corresponding
+            System.out.println("TAGGGGGG : "+ recup_id);//return the good id !!
             jsonParams.put("open", 0);
             entity = new StringEntity(jsonParams.toString());
             RequestClient.post(context,"bills/", entity, "application/json", new JsonHttpResponseHandler(){
@@ -208,26 +207,10 @@ public class OverviewActivity extends AppCompatActivity {
     }
 
     public void edit_bill(View view){
-
-//        RequestParams params = new RequestParams();
-//        params.put("key", "value");
-//        params.put("more", "data");
-
-        RequestClient.get("products/get", null, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                // If the response is JSONObject instead of expected JSONArray
-                try {
-                    Log.d("RESPONSE", response.toString());
-                }
-                catch(Exception e) {
-                    Log.d("Exception HTTP", e.getMessage());
-                }
-            }
-
-        });
-
-        // TODO : open the selected bill using its ID
+        // TODO : open the main Activity and put the id in the bill_id variable
+        Intent i = new Intent(this, MainActivity.class);
+        i.putExtra("idd",adapter.getBillId(1));
+        startActivity(i);
     }
 
 }

@@ -105,7 +105,8 @@
                     app:backgroundTint="?attr/colorPrimary"
                     app:fabSize="mini"
                     app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
-                    android:soundEffectsEnabled="false"/>
+                    android:soundEffectsEnabled="false"
+                    android:focusable="false"/>
             </LinearLayout>
 
 

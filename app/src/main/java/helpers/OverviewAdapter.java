@@ -79,19 +79,13 @@ public class OverviewAdapter extends BaseAdapter{
 
         FloatingActionButton b =  (FloatingActionButton)convertView.findViewById(R.id.close_bill);
         b.setTag(bill.getId());
-//        final int i = bill.getId();
-//        b.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                OverviewActivity.recup_id = i;
-//            }
-//
-//            public void onClick(View v, int i) {
-//                // Perform action on click
-//                OverviewActivity.recup_id = i;
-//
-//            }
-//        });
+        final int i = bill.getId();
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OverviewActivity.recup_id = bill.getId();
+            }
+        });
 
         return convertView;
     }
