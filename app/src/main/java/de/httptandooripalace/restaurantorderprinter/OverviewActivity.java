@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -40,17 +41,26 @@ import helpers.RequestClient;
 public class OverviewActivity extends AppCompatActivity {
 
     private entities.Settings settings;
-    private static  List<Bill> bills = new ArrayList<>();
+    public List<Bill> bills = new ArrayList<>();
     private static  List<Product> products = new ArrayList<>();
-    private Date date;
     Context context;
-    public static int recup_id = 0;
+    public static long recup_id = 0;
+    int id =0;
+    String boolstr = null;
+    boolean is_open = true;
+    String datestr = null;
+    SimpleDateFormat sdf = null;
+    Date date = null;
+    String table_nr = null;
+    JSONArray jsonarray = null;
+    JSONObject jsonobject = null;
+    Bill b = null;
+    OverviewAdapter adapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.overview_activity);
-
     }
 
     // something
@@ -83,46 +93,41 @@ public class OverviewActivity extends AppCompatActivity {
         super.onResume();
         bills.clear();
         context = this;
-        try {
 
+        try {
             RequestClient.get("bills/getopen/", new JsonHttpResponseHandler(){
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     // If the response is JSONObject instead of expected JSONArray
                     try {
                         Log.d("RESPONSE", response.toString()); // RESPONSE: {"success":"true","bills":[{"id":"1","is_open":"1","date":"2017-05-09 02:59:18","table_nr":"1"}]}
-                        JSONArray jsonarray = response.getJSONArray("bills");
+                        jsonarray = response.getJSONArray("bills");
                         for (int i = 0; i < jsonarray.length(); i++) {
-                            JSONObject jsonobject = jsonarray.getJSONObject(i);
-                            int id = jsonobject.getInt("id");
-                            String boolstr = jsonobject.getString("is_open");
-                            boolean is_open = true;
+                            jsonobject = jsonarray.getJSONObject(i);
+                            id = jsonobject.getInt("id");
+                            boolstr = jsonobject.getString("is_open");
+                            is_open = true;
                             if(boolstr.equals("1")){
                                 is_open = true;
                             }else{
                                 is_open = false;
                             }
-                            //Date date = jsonobject.getDate("date");
-                            String datestr = jsonobject.getString("date");
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                            Date date = sdf.parse(datestr);
-                            String table_nr = jsonobject.getString("table_nr");
-                            Bill b = new Bill(null, is_open, date, table_nr, "", id);
+                            datestr = jsonobject.getString("date");
+                            sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            date = sdf.parse(datestr);
+                            table_nr = jsonobject.getString("table_nr");
+                            b = new Bill(null, is_open, date, table_nr, "", id);
                             bills.add(b);
+                            Log.d("RESPONSE", "bills ::::" + bills);
+                            ListView view = (ListView) findViewById(R.id.list_open_bills);
+                            adapter = new OverviewAdapter(context, bills);
+                            view.setAdapter(adapter);
                         }
                     }
                     catch(Exception e) {
                         Log.d("Exception HTTP", e.getMessage());
                     }
-                    Log.d("RESPONSE", "bills ::::" + bills);
-                    ListView view = (ListView) findViewById(R.id.list_open_bills);
-                    OverviewAdapter adapter = new OverviewAdapter(context, bills);
-                    view.setAdapter(adapter);
-                    //TODO : try to put a onclicklistener on the buttons here using adapter functions
-
-
-                }
-
+            }
                 @Override
                 public void onFailure(int c, Header[] h, String r, Throwable t) {
                     try {
@@ -134,11 +139,9 @@ public class OverviewActivity extends AppCompatActivity {
                 }
             });
         }
-        catch(Exception e) {
+        catch(Exception e){
             Log.d("Ex", e.getMessage());
-
         }
-
     }
 
     @Override
@@ -166,10 +169,8 @@ public class OverviewActivity extends AppCompatActivity {
             StringEntity entity;
             JSONObject jsonParams = new JSONObject();
             Log.d("RESPONSE", "trying to close a bill");
-            //TextView t = (TextView)findViewById(R.id.bill_nr);
-            //t.getTag();
-            jsonParams.put("bill_id", recup_id);//TODO : get the id of the bill corresponding
-            System.out.println("TAGGGGGG : "+ recup_id);//return the good id !!
+            jsonParams.put("bill_id", adapter.getBillId(1));//TODO : get the id of the bill corresponding
+            System.out.println("TAGGGGGG : "+ adapter.getBillId(1));//return the good id !!
             jsonParams.put("open", 0);
             entity = new StringEntity(jsonParams.toString());
             RequestClient.post(context,"bills/", entity, "application/json", new JsonHttpResponseHandler(){

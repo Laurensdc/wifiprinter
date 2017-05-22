@@ -1,6 +1,7 @@
 package helpers;
 
 import android.content.Context;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import java.util.List;
 import de.httptandooripalace.restaurantorderprinter.OverviewActivity;
 import de.httptandooripalace.restaurantorderprinter.R;
 import entities.Bill;
+import entities.Settings;
 
 /**
  * Created by uiz on 27/04/2017.
@@ -37,13 +39,13 @@ public class OverviewAdapter extends BaseAdapter{
         return bills.size();
     }
 
-    public Object getAdapter(){
-        return this;
-    }
-
     @Override
     public Object getItem(int position) {
         return bills.get(position);
+    }
+
+    public int getBillId(int position){
+        return bills.get(position).getId();
     }
 
 
@@ -75,22 +77,21 @@ public class OverviewAdapter extends BaseAdapter{
         TextView t4 = (TextView) convertView.findViewById(R.id.hour);
         t4.setText(bill.getDate().toString().substring(10,19));
 
-        Button b = (Button) convertView.findViewById(R.id.close_bill);
-        b.setTag(position);
-
-        int i = bill.getId();
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-
-            public void onClick(View v, int i) {
-                // Perform action on click
-                OverviewActivity.recup_id = i;
-
-            }
-        });
+        FloatingActionButton b =  (FloatingActionButton)convertView.findViewById(R.id.close_bill);
+        b.setTag(bill.getId());
+//        final int i = bill.getId();
+//        b.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                OverviewActivity.recup_id = i;
+//            }
+//
+//            public void onClick(View v, int i) {
+//                // Perform action on click
+//                OverviewActivity.recup_id = i;
+//
+//            }
+//        });
 
         return convertView;
     }
