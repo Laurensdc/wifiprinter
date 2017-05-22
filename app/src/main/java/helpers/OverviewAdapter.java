@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.httptandooripalace.restaurantorderprinter.OverviewActivity;
 import de.httptandooripalace.restaurantorderprinter.R;
 import entities.Bill;
 
@@ -76,6 +77,20 @@ public class OverviewAdapter extends BaseAdapter{
 
         Button b = (Button) convertView.findViewById(R.id.close_bill);
         b.setTag(position);
+
+        int i = bill.getId();
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+
+            public void onClick(View v, int i) {
+                // Perform action on click
+                OverviewActivity.recup_id = i;
+
+            }
+        });
 
         return convertView;
     }

@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -43,6 +44,7 @@ public class OverviewActivity extends AppCompatActivity {
     private static  List<Product> products = new ArrayList<>();
     private Date date;
     Context context;
+    public static int recup_id = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +120,7 @@ public class OverviewActivity extends AppCompatActivity {
                     view.setAdapter(adapter);
                     //TODO : try to put a onclicklistener on the buttons here using adapter functions
 
+
                 }
 
                 @Override
@@ -154,15 +157,19 @@ public class OverviewActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    public static void setId(int r){
+         recup_id = r;
+    }
+
     public void close_bill(View view){
         try {
             StringEntity entity;
             JSONObject jsonParams = new JSONObject();
             Log.d("RESPONSE", "trying to close a bill");
-            TextView t = (TextView)findViewById(R.id.bill_nr);
-            t.getTag();
-            jsonParams.put("bill_id", Integer.parseInt(t.getText().toString()));//TODO : get the id of the bill corresponding
-            System.out.println("TAGGGGGG : "+ t.getText());//return the good id !!
+            //TextView t = (TextView)findViewById(R.id.bill_nr);
+            //t.getTag();
+            jsonParams.put("bill_id", recup_id);//TODO : get the id of the bill corresponding
+            System.out.println("TAGGGGGG : "+ recup_id);//return the good id !!
             jsonParams.put("open", 0);
             entity = new StringEntity(jsonParams.toString());
             RequestClient.post(context,"bills/", entity, "application/json", new JsonHttpResponseHandler(){
