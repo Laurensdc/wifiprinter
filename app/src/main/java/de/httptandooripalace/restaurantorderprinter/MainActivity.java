@@ -51,6 +51,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
 
+        Bundle extras = getIntent().getExtras();
+        String userName;
+
+        if (extras != null) {
+            userName = extras.getString("id_edit");
+            bill_nr = Integer.parseInt(userName);
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!EXTRA : " + bill_nr);
+            // and get whatever type user account id is
+        }else{
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!L EXTRA EST NUL");
+        }
+
         super.onResume();
 
         String apiData = SharedPrefHelper.getString(getApplicationContext(), "apiData");
@@ -334,51 +346,55 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+        Bundle extras = getIntent().getExtras();
+        String userName;
+        if (extras == null) {
+            System.out.println("EXTRA EST NUL :: creation d'un nouveau bill");
+            try {
+                StringEntity entity;
+                JSONObject bill = new JSONObject();
+                bill.put("table_nr", table_nr);
+                entity = new StringEntity(bill.toString());
 
-        try {
-            StringEntity entity;
-            JSONObject bill = new JSONObject();
-            bill.put("table_nr", table_nr);
-            entity = new StringEntity(bill.toString());
+                RequestClient.put(context, "bills/", entity, "application/json", new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        // If the response is JSONObject instead of expected JSONArray
+                        try {
+                            Log.d("RESPONSE", response.toString());//RESPONSE: {"id":"3","success":true} BUT table_nr not inserted !!
+                            bill_nr = Integer.parseInt(response.get("id").toString());
+                        } catch (Exception e) {
+                            Log.d("Exception HTTP", e.getMessage());
+                        }
+                    }
 
-        RequestClient.put(context, "bills/", entity, "application/json", new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                // If the response is JSONObject instead of expected JSONArray
-                try {
-                    Log.d("RESPONSE", response.toString());//RESPONSE: {"id":"3","success":true} BUT table_nr not inserted !!
-                    bill_nr = Integer.parseInt(response.get("id").toString());
-                }
-                catch(Exception e) {
-                    Log.d("Exception HTTP", e.getMessage());
-                }
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                        try {
+                            Log.d("RESPONSE", errorResponse.toString());
+                        } catch (Exception e) {
+                            Log.d("Exception HTTP", e.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int c, Header[] h, String r, Throwable t) {
+                        try {
+                            Log.d("RESPONSE", r.toString());
+                        } catch (Exception e) {
+                            Log.d("Exception HTTP", e.getMessage());
+                        }
+                    }
+                });
+            } catch (Exception e) {
+                Log.d("Ex", e.getMessage());
+
             }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                try {
-                    Log.d("RESPONSE", errorResponse.toString());
-                }
-                catch(Exception e) {
-                    Log.d("Exception HTTP", e.getMessage());
-                }
-            }
-
-            @Override
-            public void onFailure(int c, Header[] h, String r, Throwable t) {
-                try {
-                    Log.d("RESPONSE", r.toString());
-                }
-                catch(Exception e) {
-                    Log.d("Exception HTTP", e.getMessage());
-                }
-            }
-        });
-    }
-                catch(Exception e) {
-        Log.d("Ex", e.getMessage());
-
-    }
+        }else{
+            userName = extras.getString("id_edit");
+            bill_nr = Integer.parseInt(userName);
+            System.out.println("EXTRA EST PAS NUL :: "+ bill_nr);
+        }
 
 //        SwipeRefreshLayout swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
 //        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

@@ -205,7 +205,7 @@ public class OverviewActivity extends AppCompatActivity {
     public void edit_bill(View view){
         // TODO : open the main Activity and put the id in the bill_id variable
         Intent i = new Intent(this, MainActivity.class);
-        i.putExtra("idd",adapter.getBillId(1));
+        i.putExtra("id_edit", view.getTag().toString());
         startActivity(i);
     }
 

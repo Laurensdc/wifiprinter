@@ -76,8 +76,11 @@ public class OverviewAdapter extends BaseAdapter{
         TextView t4 = (TextView) convertView.findViewById(R.id.hour);
         t4.setText(bill.getDate().toString().substring(10,19));
 
-        FloatingActionButton b =  (FloatingActionButton)convertView.findViewById(R.id.close_bill);
-        b.setTag(bill.getId());
+        FloatingActionButton b1 =  (FloatingActionButton)convertView.findViewById(R.id.close_bill);
+        b1.setTag(bill.getId());
+
+        FloatingActionButton b2 =  (FloatingActionButton)convertView.findViewById(R.id.edit_bill);
+        b2.setTag(bill.getId());
 
         return convertView;
     }
