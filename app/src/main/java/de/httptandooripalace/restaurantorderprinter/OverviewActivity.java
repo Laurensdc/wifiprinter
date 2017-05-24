@@ -198,15 +198,17 @@ public class OverviewActivity extends AppCompatActivity {
         }
     }
 
-    public void delete_bill(View view){
-        // TODO : delete this bill of the database ( on its ID)
-    }
-
     public void edit_bill(View view){
-        // TODO : open the main Activity and put the id in the bill_id variable
         Intent i = new Intent(this, MainActivity.class);
         i.putExtra("id_edit", view.getTag(R.string.id_tag).toString());
         i.putExtra("table_nr_edit", view.getTag(R.string.table_tag).toString());
+        startActivity(i);
+    }
+
+    public void print_bill(View view){
+        //TODO
+        Intent i = new Intent(this, PrintActivity.class);
+        i.putExtra("bill_nr", Integer.parseInt(view.getTag(R.string.id_tag).toString()));
         startActivity(i);
     }
 

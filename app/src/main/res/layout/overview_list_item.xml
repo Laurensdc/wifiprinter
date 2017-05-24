@@ -86,6 +86,16 @@
                     app:srcCompat="@android:drawable/ic_menu_delete"/>-->
 
                 <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/print_bill"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:onClick="print_bill"
+                    app:backgroundTint="?attr/colorButtonNormal"
+                    app:fabSize="mini"
+                    app:srcCompat="@drawable/printer" />
+
+                <android.support.design.widget.FloatingActionButton
                     android:id="@+id/edit_bill"
                     android:onClick="edit_bill"
                     android:layout_width="wrap_content"
