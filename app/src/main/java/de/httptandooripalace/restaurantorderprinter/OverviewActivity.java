@@ -44,7 +44,6 @@ public class OverviewActivity extends AppCompatActivity {
     public List<Bill> bills = new ArrayList<>();
     private static  List<Product> products = new ArrayList<>();
     Context context;
-    public static int recup_id = 0;
     int id =0;
     String boolstr = null;
     boolean is_open = true;
@@ -159,17 +158,14 @@ public class OverviewActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    public static void setId(int r){
-         recup_id = r;
-    }
 
     public void close_bill(View view){
         try {
             StringEntity entity;
             JSONObject jsonParams = new JSONObject();
-            Log.d("RESPONSE", "trying to close a bill" + recup_id);
-            jsonParams.put("bill_id", recup_id);//TODO : get the id of the bill corresponding
-            System.out.println("TAGGGGGG : "+ recup_id);//return the good id !!
+            Log.d("RESPONSE", "trying to close a bill" + view.getTag());
+            jsonParams.put("bill_id", view.getTag());//TODO : get the id of the bill corresponding
+            System.out.println("TAGGGGGG : "+ view.getTag());//return the good id !!
             jsonParams.put("open", 0);
             entity = new StringEntity(jsonParams.toString());
             RequestClient.post(context,"bills/", entity, "application/json", new JsonHttpResponseHandler(){
