@@ -17,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -40,24 +41,35 @@ import helpers.PrintAdapter;
 import helpers.RequestClient;
 import helpers.SharedPrefHelper;
 
+import static de.httptandooripalace.restaurantorderprinter.R.layout.main_activity;
+
 public class MainActivity extends AppCompatActivity {
     private Toast currentToast;
     private Context context;
     private ExpandableListView view;
     LinkedHashMap<String, List<Product>> prodlist2 = new LinkedHashMap<>();
     int bill_nr = 0;
-    String table_nr = "";
+    String table_nr = "#";
 
     @Override
     protected void onResume() {
 
         Bundle extras = getIntent().getExtras();
-        String userName;
+        String id_edit;
 
         if (extras != null) {
-            userName = extras.getString("id_edit");
-            bill_nr = Integer.parseInt(userName);
+            id_edit = extras.getString("id_edit");
+            bill_nr = Integer.parseInt(id_edit);
+            table_nr = extras.getString("table_nr_edit");
+            TextView lblTable_number = (TextView) findViewById(R.id.table_number);
+            if(table_nr != null) {
+                System.out.println(table_nr + "");
+                lblTable_number.setHint(table_nr);
+            }else{
+                lblTable_number.setHint("#");
+            }
             System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!EXTRA : " + bill_nr);
+            // and get whatever type user account id is
             // and get whatever type user account id is
         }else{
             System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!L EXTRA EST NUL");
@@ -345,9 +357,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
+        setContentView(main_activity);
         Bundle extras = getIntent().getExtras();
-        String userName;
+        String id_edit;
         if (extras == null) {
             System.out.println("EXTRA EST NUL :: creation d'un nouveau bill");
             try {
@@ -391,18 +403,10 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }else{
-            userName = extras.getString("id_edit");
-            bill_nr = Integer.parseInt(userName);
+            id_edit = extras.getString("id_edit");
+            bill_nr = Integer.parseInt(id_edit);
             System.out.println("EXTRA EST PAS NUL :: "+ bill_nr);
         }
-
-//        SwipeRefreshLayout swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
-//        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                refreshContent();
-//            }
-//        });
 
     }
 
@@ -444,17 +448,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void gotoOverview(View view) {
-        // Going to overview without products added
-//        if(SharedPrefHelper.getPrintItems(getApplicationContext()) == null) { // No Products added
-//            Toast.makeText(getApplicationContext(), "Please add products to bill",
-//                    Toast.LENGTH_SHORT).show();
-//            return;
-//        }
 
         EditText e = (EditText) findViewById(R.id.table_number);
         String val = e.getText().toString();
         table_nr = val;
-        //SharedPrefHelper.putString(getApplicationContext(), "tableNr", val);
         Intent intent = new Intent(this, PrintActivity.class);
         intent.putExtra("bill_nr", bill_nr);
         startActivity(intent);

@@ -52,5 +52,9 @@
     <string name="changing_ip">WARNING\nYou are changing the IP address of the WiFi printer.\nThis can break app functionality.</string>
     <string name="tryAgain">Try again</string>
 
+    <!-- Overview activity -->
+    <string name="id_tag">id_tag</string>
+    <string name="table_tag">table_tag</string>
+
 
 </resources>

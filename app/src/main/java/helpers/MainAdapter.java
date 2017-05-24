@@ -2,6 +2,7 @@ package helpers;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import de.httptandooripalace.restaurantorderprinter.MainActivity;
 import de.httptandooripalace.restaurantorderprinter.R;
 import entities.Product;
 
@@ -119,6 +121,7 @@ public class MainAdapter extends BaseExpandableListAdapter {
                 .findViewById(R.id.cat_title);
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
+
 
         return convertView;
     }

@@ -77,10 +77,12 @@ public class OverviewAdapter extends BaseAdapter{
         t4.setText(bill.getDate().toString().substring(10,19));
 
         FloatingActionButton b1 =  (FloatingActionButton)convertView.findViewById(R.id.close_bill);
-        b1.setTag(bill.getId());
+        b1.setTag(R.string.id_tag, bill.getId());
+        b1.setTag(R.string.table_tag, bill.getTableNr());
 
         FloatingActionButton b2 =  (FloatingActionButton)convertView.findViewById(R.id.edit_bill);
-        b2.setTag(bill.getId());
+        b2.setTag(R.string.id_tag, bill.getId());
+        b2.setTag(R.string.table_tag, bill.getTableNr());
 
         return convertView;
     }
