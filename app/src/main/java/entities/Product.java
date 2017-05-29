@@ -32,7 +32,7 @@ public class Product {
         this.name = name;
         this.reference = reference;
         this.count = 1;
-        if(this.getName().endsWith("cl") || this.getName().endsWith(" l") || this.getName().endsWith("L)") || this.getName().endsWith("cl)") || this.getCategory().contains("Getränke")){
+        if(this.getName()!=null && (this.getName().endsWith("cl") || this.getName().endsWith(" l") || this.getName().endsWith("L)") || this.getName().endsWith("cl)") || this.getCategory().contains("Getränke"))){
             this.drink = true;
         }else{
             this.drink = false;
@@ -78,7 +78,7 @@ public class Product {
         return price_excl;
     }
 
-    public void setPrice_excl(float price_excl) {
+    public void setPrice_excl(double price_excl) {
         this.price_excl = price_excl;
     }
 
@@ -86,7 +86,7 @@ public class Product {
         return price_incl;
     }
 
-    public void setPrice_incl(float price_incl) {
+    public void setPrice_incl(double price_incl) {
         this.price_incl = price_incl;
     }
 

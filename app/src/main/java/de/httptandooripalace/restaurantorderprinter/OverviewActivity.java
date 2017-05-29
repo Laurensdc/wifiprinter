@@ -42,7 +42,7 @@ public class OverviewActivity extends AppCompatActivity {
 
     private entities.Settings settings;
     public List<Bill> bills = new ArrayList<>();
-    private static  List<Product> products = new ArrayList<>();
+    public  List<Product> products = new ArrayList<>();
     Context context;
     int id =0;
     String boolstr = null;
@@ -53,8 +53,22 @@ public class OverviewActivity extends AppCompatActivity {
     String table_nr = null;
     JSONArray jsonarray = null;
     JSONObject jsonobject = null;
-    Bill b = null;
+
     OverviewAdapter adapter = null;
+
+    StringEntity entity;
+    JSONObject jsonParams = null;
+    RequestParams params = null;
+    JSONArray jsonarray2 = null;
+    JSONObject jsonobject2 = null;
+    String name = null;
+    int id2 = 0;
+    double price_excl = 0;
+    double price_incl = 0;
+    String reference = null;
+    String category = null;
+    Product p = null;
+    Bill b = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +106,8 @@ public class OverviewActivity extends AppCompatActivity {
         super.onResume();
         bills.clear();
         context = this;
-
+        p = new Product(id2, name, price_excl, price_incl, reference, category);
+        b = new Bill(products, is_open, date, table_nr, "", id);
         try {
             RequestClient.get("bills/getopen/", new JsonHttpResponseHandler(){
                 @Override
@@ -115,17 +130,92 @@ public class OverviewActivity extends AppCompatActivity {
                             sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                             date = sdf.parse(datestr);
                             table_nr = jsonobject.getString("table_nr");
-                            b = new Bill(null, is_open, date, table_nr, "", id);
+                            //TODO : récupérer la liste de produits correspondants à cet id_bill dans la bdd
+                            products.clear();
+                            try {
+                                jsonParams = new JSONObject();
+                                Log.d("RESPONSE", response.toString());
+                                params = new RequestParams();
+                                jsonParams.put("bill_id", i);
+                                entity = new StringEntity(jsonParams.toString());
+                                RequestClient.post(context,"products/getforbill/", entity, "application/json", new JsonHttpResponseHandler() {
+                                            @Override
+                                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                                // If the response is JSONObject instead of expected JSONArray
+                                                try {
+                                                    Log.d("RESPONSE", response.getJSONArray("products").toString()); // RESPONSE: {"success":"true","products":[{"id_cat":"18","name_cat":" Dienstag","id_prod":"371","name_prod":"Chicken Curry","reference_prod":"512,","price_prod_excl":"4.03","price_prod_incl":"4.32","description_prod":"","bill_id":"1"},
+                                                    jsonarray2 = response.getJSONArray("products");
+                                                    for (int j = 0; j < jsonarray2.length(); j++) {
+                                                        jsonobject2 = jsonarray2.getJSONObject(j);
+                                                        name = jsonobject2.getString("name_prod");
+                                                        id2 = jsonobject2.getInt("id_prod");
+                                                        price_excl = jsonobject2.getDouble("price_prod_incl");
+                                                        price_incl = jsonobject2.getDouble("price_prod_excl");
+                                                        reference = jsonobject2.getString("reference_prod");
+                                                        category = jsonobject2.getString("name_cat");
+                                                        //p = new Product(id2, name, price_excl, price_incl, reference, category);
+                                                        p.setCategory(category);
+                                                        p.setReference(reference);
+                                                        p.setPrice_incl(price_incl);
+                                                        p.setPrice_excl(price_excl);
+                                                        p.setName(name);
+                                                        p.setId(id2);
+                                                        products.add(p);
+                                                        System.out.println(" products list dans FORRRR : "+ products);
+
+
+
+                                                    }
+
+
+                                                } catch (Exception e) {
+
+                                                    System.out.println("Error is in the FOORRR ");
+                                                    Log.d("Exception HTTP", e.getMessage());
+
+                                                }
+                                                System.out.println(" products list APRES le for : "+ products);
+
+                                            }
+
+                                    @Override
+                                    public void onFailure(int c, Header[] h, String r, Throwable t) {
+                                        try {
+                                            Log.d("RESPONSE", r.toString());
+                                        }
+                                        catch(Exception e) {
+                                            Log.d("Exception HTTP", e.getMessage());
+                                        }
+                                    }
+                                });
+                            }
+                            catch(Exception e) {
+                                Log.d("Ex", e.getMessage());
+
+                            }
+
+
+                            //Fin de la requete getforbill
+                            // b = new Bill(products, is_open, date, table_nr, "", id);
+                            b.setProducts(products);
+                            b.setOpen(is_open);
+                            b.setDate(date);
+                            b.setTableNr(table_nr);
+                            b.setWaiter("");
+                            b.setId(id);
                             bills.add(b);
                             Log.d("RESPONSE", "bills ::::" + bills);
                             ListView view = (ListView) findViewById(R.id.list_open_bills);
                             adapter = new OverviewAdapter(context, bills);
                             view.setAdapter(adapter);
-                        }
+
+                        }//end of for bills
+
                     }
                     catch(Exception e) {
                         Log.d("Exception HTTP", e.getMessage());
                     }
+
             }
                 @Override
                 public void onFailure(int c, Header[] h, String r, Throwable t) {
@@ -141,6 +231,7 @@ public class OverviewActivity extends AppCompatActivity {
         catch(Exception e){
             Log.d("Ex", e.getMessage());
         }
+
     }
 
     @Override
