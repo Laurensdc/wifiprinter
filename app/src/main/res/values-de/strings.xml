@@ -4,6 +4,8 @@
     <string name="table_number">Tischnummer</string>
     <string name="printing_overview">Druckübersicht</string>
     <string name="settings">Einstellungen</string>
+    <string name="overview">Offene Rechnungen</string>
+    <string name="history">Geschlossene Rechnungen</string>
 
     <!-- Settings menu -->
     <string name="application_settings">Anwendungseinstellungen</string>

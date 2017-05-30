@@ -32,13 +32,22 @@
         </activity>
         <activity
             android:name=".OverviewActivity"
-            android:label="@string/settings"
+            android:label="@string/overview"
             android:windowSoftInputMode="adjustResize"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".HistoryActivity"
+            android:label="@string/history"
+            android:windowSoftInputMode="adjustResize"
+            android:launchMode="singleTask">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".OverviewActivity" />
         </activity>
 
     </application>

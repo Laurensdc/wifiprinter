@@ -95,6 +95,10 @@ public class OverviewActivity extends AppCompatActivity {
                 Intent i2 = new Intent(this, OverviewActivity.class);
                 startActivity(i2);
                 return true;
+            case R.id.bills_history:
+                Intent i3 = new Intent(this, HistoryActivity.class);
+                startActivity(i3);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

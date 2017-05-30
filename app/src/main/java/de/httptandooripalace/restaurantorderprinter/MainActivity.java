@@ -378,6 +378,46 @@ public class MainActivity extends AppCompatActivity {
                         } catch (Exception e) {
                             Log.d("Exception HTTP", e.getMessage());
                         }
+
+                        //START OF SECONF QUERRY
+                        try {
+                            StringEntity entity;
+                            JSONObject jsonParams = new JSONObject();
+                            Log.d("RESPONSE", "trying to add the table number on the bill table");
+                            jsonParams.put("bill_id", bill_nr);
+                            jsonParams.put("waiter_id", 1);
+                            entity = new StringEntity(jsonParams.toString());
+
+                            RequestClient.post(context,"bills/addwaiter/", entity, "application/json", new JsonHttpResponseHandler(){
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                    // If the response is JSONObject instead of expected JSONArray
+                                    try {
+                                        Log.d("RESPONSE", response.toString());
+
+                                    }
+                                    catch(Exception e) {
+                                        Log.d("Exception HTTP", e.getMessage());
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(int c, Header[] h, String r, Throwable t) {
+                                    try {
+                                        Log.d("RESPONSE", r.toString());
+                                    }
+                                    catch(Exception e) {
+                                        Log.d("Exception HTTP", e.getMessage());
+                                    }
+                                }
+                            });
+                        }
+                        catch(Exception e) {
+                            Log.d("Ex", e.getMessage());
+
+                        }
+                    //END od second querry
+
                     }
 
                     @Override
@@ -402,6 +442,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("Ex", e.getMessage());
 
             }
+
+
         }else{
             id_edit = extras.getString("id_edit");
             bill_nr = Integer.parseInt(id_edit);
@@ -428,6 +470,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.bills_overview:
                 Intent i2 = new Intent(this, OverviewActivity.class);
                 startActivity(i2);
+                return true;
+            case R.id.bills_history:
+                Intent i3 = new Intent(this, HistoryActivity.class);
+                startActivity(i3);
                 return true;
         }
 

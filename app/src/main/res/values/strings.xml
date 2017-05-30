@@ -3,6 +3,8 @@
     <string name="table_number">Table number</string>
     <string name="printing_overview">Printing overview</string>
     <string name="settings">Settings</string>
+    <string name="overview">Open bills</string>
+    <string name="history">Closed bills</string>
 
     <!-- Settings menu -->
     <string name="application_settings">Application setings</string>
