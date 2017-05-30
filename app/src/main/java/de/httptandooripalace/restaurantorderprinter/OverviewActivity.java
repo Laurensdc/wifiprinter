@@ -53,6 +53,7 @@ public class OverviewActivity extends AppCompatActivity {
     String table_nr = null;
     JSONArray jsonarray = null;
     JSONObject jsonobject = null;
+    String waiter_name = "";
 
     OverviewAdapter adapter = null;
 
@@ -122,18 +123,13 @@ public class OverviewActivity extends AppCompatActivity {
                         jsonarray = response.getJSONArray("bills");
                         for (int i = 0; i < jsonarray.length(); i++) {
                             jsonobject = jsonarray.getJSONObject(i);
-                            id = jsonobject.getInt("id");
-                            boolstr = jsonobject.getString("is_open");
+                            id = jsonobject.getInt("id_bill");
                             is_open = true;
-                            if(boolstr.equals("1")){
-                                is_open = true;
-                            }else{
-                                is_open = false;
-                            }
-                            datestr = jsonobject.getString("date");
+                            datestr = jsonobject.getString("date_bill");
                             sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                             date = sdf.parse(datestr);
                             table_nr = jsonobject.getString("table_nr");
+                            waiter_name = jsonobject.getString("waiter_name");
                             //TODO : récupérer la liste de produits correspondants à cet id_bill dans la bdd
                            /* products.clear();
                             try {
@@ -207,7 +203,7 @@ public class OverviewActivity extends AppCompatActivity {
                             b.setWaiter("");
                             b.setId(id);*/
 
-                            Bill b = new Bill(products, is_open, date, table_nr, "", id);
+                            Bill b = new Bill(products, is_open, date, table_nr, waiter_name, id);
                             bills.add(b);
 
                             Log.d("RESPONSE", "bills ::::" + bills);

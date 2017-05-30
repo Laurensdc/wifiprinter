@@ -30,7 +30,7 @@ try {
         INNER JOIN app_bill_has_waiters bhw ON b.id = bhw.bill_id
         INNER JOIN app_waiters w ON bhw.waiter_id = w.id 
 
-        /*WHERE b.is_open = 1*/
+        WHERE b.is_open = 0
 
         /*ORDER BY date_bill ASC,
                  id_bill ASC*/
