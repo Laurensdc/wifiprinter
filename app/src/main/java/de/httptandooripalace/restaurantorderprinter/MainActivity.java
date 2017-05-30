@@ -36,12 +36,14 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
 import entities.Product;
+import entities.Settings;
 import helpers.MainAdapter;
 import helpers.PrintAdapter;
 import helpers.RequestClient;
 import helpers.SharedPrefHelper;
 
 import static de.httptandooripalace.restaurantorderprinter.R.layout.main_activity;
+import static de.httptandooripalace.restaurantorderprinter.R.string.settings;
 
 public class MainActivity extends AppCompatActivity {
     private Toast currentToast;
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     LinkedHashMap<String, List<Product>> prodlist2 = new LinkedHashMap<>();
     int bill_nr = 0;
     String table_nr = "#";
+    private entities.Settings settings;
 
     @Override
     protected void onResume() {
@@ -360,8 +363,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(main_activity);
         Bundle extras = getIntent().getExtras();
         String id_edit;
+
+        settings = SharedPrefHelper.loadSettings(getApplicationContext());
+
+        if(settings == null) {
+            settings = new Settings();
+            SharedPrefHelper.saveSettings(getApplicationContext(), settings);
+        }
+
+
+
         if (extras == null) {
-            System.out.println("EXTRA EST NUL :: creation d'un nouveau bill");
+            System.out.println("EXTRA IS NULL :: creating a new bill");
             try {
                 StringEntity entity;
                 JSONObject bill = new JSONObject();
@@ -383,9 +396,9 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             StringEntity entity;
                             JSONObject jsonParams = new JSONObject();
-                            Log.d("RESPONSE", "trying to add the table number on the bill table");
+                            Log.d("RESPONSE", "trying to add the waiter on the bill");
                             jsonParams.put("bill_id", bill_nr);
-                            jsonParams.put("waiter_id", 1);
+                            jsonParams.put("waiter_id", settings.getWaiter_id());
                             entity = new StringEntity(jsonParams.toString());
 
                             RequestClient.post(context,"bills/addwaiter/", entity, "application/json", new JsonHttpResponseHandler(){
@@ -501,6 +514,8 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, PrintActivity.class);
         intent.putExtra("bill_nr", bill_nr);
         startActivity(intent);
+
+
 
     }
 

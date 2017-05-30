@@ -1,17 +1,26 @@
 package de.httptandooripalace.restaurantorderprinter;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.StringEntity;
 import entities.Settings;
 import helpers.HttpHandler;
+import helpers.RequestClient;
 import helpers.SharedPrefHelper;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -21,6 +30,9 @@ public class SettingsActivity extends AppCompatActivity {
         tax_nr, extra_line, waiter_name;
 
     private TextWatcher textwatcher;
+    private TextWatcher textwatcherwaiter;
+    Context context;
+    int waiter_id = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +81,54 @@ public class SettingsActivity extends AppCompatActivity {
             }
         };
 
+        textwatcherwaiter = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                somethingChanged = true;
+
+                try {
+                    StringEntity entity;
+                    JSONObject jsonParams = new JSONObject();
+                    Log.d("RESPONSE", "trying to create a new waiter");
+                    jsonParams.put("name", waiter_name.getText().toString());
+                    entity = new StringEntity(jsonParams.toString());
+                    RequestClient.post(context,"waiters/create/", entity, "application/json", new JsonHttpResponseHandler(){
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                            // If the response is JSONObject instead of expected JSONArray
+                            try {
+                                Log.d("RESPONSE", response.toString());//{"id":4,"success":true}
+                                waiter_id = Integer.parseInt(response.get("id").toString());
+                            }
+                            catch(Exception e) {
+                                Log.d("Exception HTTP", e.getMessage());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(int c, Header[] h, String r, Throwable t) {
+                            try {
+                                Log.d("RESPONSE", r.toString());
+                            }
+                            catch(Exception e) {
+                                Log.d("Exception HTTP", e.getMessage());
+                            }
+                        }
+                    });
+                }
+                catch(Exception e) {
+                    Log.d("Ex", e.getMessage());
+
+                }
+            }
+        };
+
         name_line_1.addTextChangedListener(textwatcher);
         name_line_2.addTextChangedListener(textwatcher);
         addr_line_1.addTextChangedListener(textwatcher);
@@ -76,7 +136,7 @@ public class SettingsActivity extends AppCompatActivity {
         tel_line.addTextChangedListener(textwatcher);
         tax_nr.addTextChangedListener(textwatcher);
         extra_line.addTextChangedListener(textwatcher);
-        waiter_name.addTextChangedListener(textwatcher);
+        waiter_name.addTextChangedListener(textwatcherwaiter);
 
     }
 
@@ -104,7 +164,8 @@ public class SettingsActivity extends AppCompatActivity {
                         tel_line.getText().toString(),
                         tax_nr.getText().toString(),
                         extra_line.getText().toString(),
-                        waiter_name.getText().toString()
+                        waiter_name.getText().toString(),
+                        waiter_id
                 );
 
                 SharedPrefHelper.saveSettings(getApplicationContext(), settings);

@@ -6,8 +6,9 @@ package entities;
 
 public class Settings {
     private String nameLine1, nameLine2, addrLine1, addrLine2, telLine, taxLine, extraLine, waiter;
+    private int waiter_id;
 
-    public Settings(String nameLine1, String nameLine2, String addrLine1, String addrLine2, String telLine, String taxLine, String extraLine, String waiter) {
+    public Settings(String nameLine1, String nameLine2, String addrLine1, String addrLine2, String telLine, String taxLine, String extraLine, String waiter, int waiter_id) {
         this.nameLine1 = nameLine1;
         this.nameLine2 = nameLine2;
         this.addrLine1 = addrLine1;
@@ -16,6 +17,7 @@ public class Settings {
         this.taxLine = taxLine;
         this.extraLine = extraLine;
         this.waiter = waiter;
+        this.waiter_id = waiter_id;
     }
 
     public Settings() {
@@ -27,6 +29,7 @@ public class Settings {
         this.taxLine = "";
         this.extraLine = "";
         this.waiter = "";
+        this.waiter_id = 0;
     }
 
     public String getWaiter() {
@@ -91,5 +94,13 @@ public class Settings {
 
     public void setExtraLine(String extraLine) {
         this.extraLine = extraLine;
+    }
+
+    public void setWaiter_id(int waiter_id) {
+        this.waiter_id = waiter_id;
+    }
+
+    public int getWaiter_id() {
+        return waiter_id;
     }
 }
