@@ -56,7 +56,7 @@ public class OverviewActivity extends AppCompatActivity {
 
     OverviewAdapter adapter = null;
 
-    StringEntity entity;
+    /*StringEntity entity;
     JSONObject jsonParams = null;
     RequestParams params = null;
     JSONArray jsonarray2 = null;
@@ -68,7 +68,7 @@ public class OverviewActivity extends AppCompatActivity {
     String reference = null;
     String category = null;
     Product p = null;
-    Bill b = null;
+    Bill b = null;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,8 +106,8 @@ public class OverviewActivity extends AppCompatActivity {
         super.onResume();
         bills.clear();
         context = this;
-        p = new Product(id2, name, price_excl, price_incl, reference, category);
-        b = new Bill(products, is_open, date, table_nr, "", id);
+        /*p = new Product(id2, name, price_excl, price_incl, reference, category);
+        b = new Bill(products, is_open, date, table_nr, "", id);*/
         try {
             RequestClient.get("bills/getopen/", new JsonHttpResponseHandler(){
                 @Override
@@ -131,7 +131,7 @@ public class OverviewActivity extends AppCompatActivity {
                             date = sdf.parse(datestr);
                             table_nr = jsonobject.getString("table_nr");
                             //TODO : récupérer la liste de produits correspondants à cet id_bill dans la bdd
-                            products.clear();
+                           /* products.clear();
                             try {
                                 jsonParams = new JSONObject();
                                 Log.d("RESPONSE", response.toString());
@@ -192,18 +192,20 @@ public class OverviewActivity extends AppCompatActivity {
                             catch(Exception e) {
                                 Log.d("Ex", e.getMessage());
 
-                            }
+                            }*/
 
 
                             //Fin de la requete getforbill
-                            // b = new Bill(products, is_open, date, table_nr, "", id);
-                            b.setProducts(products);
+                            /*b.setProducts(products);
                             b.setOpen(is_open);
                             b.setDate(date);
                             b.setTableNr(table_nr);
                             b.setWaiter("");
-                            b.setId(id);
+                            b.setId(id);*/
+
+                            Bill b = new Bill(products, is_open, date, table_nr, "", id);
                             bills.add(b);
+
                             Log.d("RESPONSE", "bills ::::" + bills);
                             ListView view = (ListView) findViewById(R.id.list_open_bills);
                             adapter = new OverviewAdapter(context, bills);

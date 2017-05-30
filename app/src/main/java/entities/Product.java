@@ -32,7 +32,7 @@ public class Product {
         this.name = name;
         this.reference = reference;
         this.count = 1;
-        if(this.getName()!=null && (this.getName().endsWith("cl") || this.getName().endsWith(" l") || this.getName().endsWith("L)") || this.getName().endsWith("cl)") || this.getCategory().contains("Getränke"))){
+        if( this.getName().endsWith("cl") || this.getName().endsWith(" l") || this.getName().endsWith("L)") || this.getName().endsWith("cl)") || this.getCategory().contains("Getränke")){
             this.drink = true;
         }else{
             this.drink = false;

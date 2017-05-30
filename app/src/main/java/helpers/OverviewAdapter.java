@@ -76,7 +76,7 @@ public class OverviewAdapter extends BaseAdapter{
         TextView t4 = (TextView) convertView.findViewById(R.id.hour);
         t4.setText(bill.getDate().toString().substring(10,19));
 
-        TextView t5 = (TextView) convertView.findViewById(R.id.list_products);
+      /*  TextView t5 = (TextView) convertView.findViewById(R.id.list_products);
         if(bill.getProducts().size() > 2 ) {
             t5.setText(bill.getProducts().get(0).getName() + ", " + bill.getProducts().get(1).getName() + ", " + bill.getProducts().get(2).getName() + " ...");
         }else if(bill.getProducts().size() > 1){
@@ -85,7 +85,7 @@ public class OverviewAdapter extends BaseAdapter{
             t5.setText(bill.getProducts().get(0).getName() + " ..." );
         }else{
             t5.setText("pas de produits");
-        }
+        }*/
 
         FloatingActionButton b1 =  (FloatingActionButton)convertView.findViewById(R.id.close_bill);
         b1.setTag(R.string.id_tag, bill.getId());
