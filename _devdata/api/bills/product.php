@@ -23,23 +23,27 @@ if($method == 'PUT') {
         error('Missing product_id');
     }
 
+    if(!isset($json['total_price_excl'])) {
+        error('Missing total_price_excl');
+    }
+
     $bill_id = $json['bill_id'];
     $product_id = $json['product_id'];
+    $total_price_excl = $json['total_price_excl'];
 
     /*** Add a product on a bill***
 
 Request body format:
 
 {
-    {
+    
         "bill_id":int,
-        "product_id":int
-    }
+        "product_id":int,
+        "total_price_excl": decimal(4,2)
+    
 }
-
 */
-
-    try {
+ try {
         $opt = [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -48,6 +52,17 @@ Request body format:
 
         $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD, $opt);
 
+        $stmt2 = $conn->prepare("UPDATE app_bills SET total_price_excl = :total_price_excl WHERE id = :bill_id");
+        $stmt2->bindParam(':total_price_excl', $total_price_excl);
+        $stmt2->bindParam(':bill_id', $bill_id);
+        $stmt2->execute();
+
+        $rowcount2 = $stmt2->rowCount();
+        $success2 = ($rowcount2 > 0) ? true : false;
+        $returnObj2 = array('success' => $success2);
+
+        echo json_encode($returnObj2);
+        die();
         $stmt = $conn->prepare("INSERT INTO app_bill_has_products (bill_id, product_id) VALUES (:bill_id, :product_id)");
         $stmt->bindParam(':bill_id', $bill_id);
         $stmt->bindParam(':product_id', $product_id);
@@ -57,12 +72,15 @@ Request body format:
         $returnObj = array('success' => $success);
 
         echo json_encode($returnObj);
+        
+
         $conn = null;
         die();
     }
     catch(PDOException $e) {
         error($e->getMessage());
     }
+
 }
 else if($method == 'DELETE') {
 

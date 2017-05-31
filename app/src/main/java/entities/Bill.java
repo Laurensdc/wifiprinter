@@ -14,14 +14,16 @@ public class Bill {
     private String tableNr;
     private String waiter;
     private int id;
+    private double total_price_excl;
 
-    public Bill(List<Product> products, boolean isOpen, Date date, String tableNr, String waiter, int id) {
+    public Bill(List<Product> products, boolean isOpen, Date date, String tableNr, String waiter, int id, double total_price_excl) {
         this.products = products;
         this.isOpen = isOpen;
         this.date = date;
         this.tableNr = tableNr;
         this.waiter = waiter;
         this.id = id;
+        this.total_price_excl = total_price_excl;
     }
 
     public List<Product> getProducts() {
@@ -70,5 +72,13 @@ public class Bill {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public double getTotal_price_excl() {
+        return total_price_excl;
+    }
+
+    public void setTotal_price_excl(double total_price_excl) {
+        this.total_price_excl = total_price_excl;
     }
 }

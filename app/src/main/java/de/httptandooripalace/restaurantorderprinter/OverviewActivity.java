@@ -203,7 +203,7 @@ public class OverviewActivity extends AppCompatActivity {
                             b.setWaiter("");
                             b.setId(id);*/
 
-                            Bill b = new Bill(products, is_open, date, table_nr, waiter_name, id);
+                            Bill b = new Bill(products, is_open, date, table_nr, waiter_name, id, 2);
                             bills.add(b);
 
                             Log.d("RESPONSE", "bills ::::" + bills);

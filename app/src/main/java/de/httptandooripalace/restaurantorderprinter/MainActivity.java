@@ -192,7 +192,6 @@ public class MainActivity extends AppCompatActivity {
                     jsonParams.put("bill_id", bill_nr);
                     jsonParams.put("product_id", id2);
                     entity = new StringEntity(jsonParams.toString());
-
                     RequestClient.put(getApplicationContext(), "bills/product/", entity, "application/json", new JsonHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -230,6 +229,9 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("Ex", e.getMessage());
 
                 }
+
+                //TODO : add the prod.getPrice() to the total bill price
+
 
                 SharedPrefHelper.setPrintItems(getApplicationContext(),products);
 

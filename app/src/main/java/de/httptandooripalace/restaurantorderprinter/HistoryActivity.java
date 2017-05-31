@@ -102,7 +102,7 @@ public class HistoryActivity extends AppCompatActivity {
                             //TODO : récupérer la liste de produits correspondants à cet id_bill dans la bdd
 
 
-                            Bill b = new Bill(products, is_open, date, table_nr, waiter_name, id);
+                            Bill b = new Bill(products, is_open, date, table_nr, waiter_name, id, 2);
                             bills.add(b);
 
                             Log.d("RESPONSE", "bills ::::" + bills);

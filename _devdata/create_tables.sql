@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS app_bills (
     is_open BOOLEAN NOT NULL DEFAULT 1,
     date timestamp DEFAULT NOW(),
     table_nr VARCHAR(10),
+    total_price_excl DECIMAL(6,2),
 
     PRIMARY KEY (id)
 );
