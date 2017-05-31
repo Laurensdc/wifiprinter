@@ -264,7 +264,48 @@ public class PrintActivity extends AppCompatActivity {
         if(products == null) return;
         if(products.size() <= 0) return;
 
-        sendPrintJob(getBillContent() + getBillFooter());
+        sendPrintJob(getBillHeader() + getBillContent() + getBillFooter());
+    }
+
+    public String getBillHeader(){
+        StringBuilder strb = new StringBuilder("");
+
+        strb.append("$bighw$");
+        if(!settings.getNameLine1().equals("")) {
+            strb.append(alignCenterBigw(settings.getNameLine1().toUpperCase()));
+            strb.append(BR);
+        }
+
+        if(!settings.getNameLine2().equals("")) {
+            strb.append(alignCenterBigw(settings.getNameLine2().toUpperCase()));
+            strb.append(BR);
+        }
+
+        if(!settings.getAddrLine1().equals("")) {
+            strb.append(alignCenterBigw(settings.getAddrLine1().toUpperCase()));
+            strb.append(BR);
+        }
+
+        if(!settings.getAddrLine2().equals("")) {
+            strb.append(alignCenterBigw(settings.getAddrLine2().toUpperCase()));
+            strb.append(BR);
+        }
+
+        if(!settings.getTelLine().equals("")) {
+            strb.append(alignCenterBigw(settings.getTelLine().toUpperCase()));
+            strb.append(BR);
+        }
+
+        if(!settings.getTaxLine().equals("")) {
+            strb.append(alignCenterBigw(settings.getTaxLine().toUpperCase()));
+            strb.append(BR);
+        }
+
+        if(!settings.getExtraLine().equals("")) {
+            strb.append(alignCenterBigw(settings.getExtraLine().toUpperCase()));
+            strb.append(BR);
+        }
+        return strb.toString();
     }
 
     public void printDrinkBill(MenuItem item){
@@ -469,41 +510,7 @@ public class PrintActivity extends AppCompatActivity {
         strb.append(CHAR_TABLE_EURO);
         strb.append(BR);
 
-        strb.append("$bigw$");
-        if(!settings.getNameLine1().equals("")) {
-            strb.append(alignCenterBigw(settings.getNameLine1().toUpperCase()));
-            strb.append(BR);
-        }
 
-        if(!settings.getNameLine2().equals("")) {
-            strb.append(alignCenterBigw(settings.getNameLine2().toUpperCase()));
-            strb.append(BR);
-        }
-
-        if(!settings.getAddrLine1().equals("")) {
-            strb.append(alignCenterBigw(settings.getAddrLine1().toUpperCase()));
-            strb.append(BR);
-        }
-
-        if(!settings.getAddrLine2().equals("")) {
-            strb.append(alignCenterBigw(settings.getAddrLine2().toUpperCase()));
-            strb.append(BR);
-        }
-
-        if(!settings.getTelLine().equals("")) {
-            strb.append(alignCenterBigw(settings.getTelLine().toUpperCase()));
-            strb.append(BR);
-        }
-
-        if(!settings.getTaxLine().equals("")) {
-            strb.append(alignCenterBigw(settings.getTaxLine().toUpperCase()));
-            strb.append(BR);
-        }
-
-        if(!settings.getExtraLine().equals("")) {
-            strb.append(alignCenterBigw(settings.getExtraLine().toUpperCase()));
-            strb.append(BR);
-        }
 
         s = "$bighw$" + BR + alignCenterBigw(getString(R.string.bill)) + BR;
         strb.append(s);
