@@ -48,6 +48,7 @@ public class HistoryActivity extends AppCompatActivity {
     JSONArray jsonarray = null;
     JSONObject jsonobject = null;
     String waiter_name = "";
+    Double total_price_excl = 0.0;
 
     HistoryAdapter adapter = null;
 
@@ -99,10 +100,11 @@ public class HistoryActivity extends AppCompatActivity {
                             date = sdf.parse(datestr);
                             table_nr = jsonobject.getString("table_nr");
                             waiter_name = jsonobject.getString("waiter_name");
+                            total_price_excl = jsonobject.getDouble("total_price_excl");
                             //TODO : récupérer la liste de produits correspondants à cet id_bill dans la bdd
 
 
-                            Bill b = new Bill(products, is_open, date, table_nr, waiter_name, id, 2);
+                            Bill b = new Bill(products, is_open, date, table_nr, waiter_name, id, total_price_excl);
                             bills.add(b);
 
                             Log.d("RESPONSE", "bills ::::" + bills);

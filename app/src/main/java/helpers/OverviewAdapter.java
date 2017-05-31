@@ -76,6 +76,9 @@ public class OverviewAdapter extends BaseAdapter{
         TextView t4 = (TextView) convertView.findViewById(R.id.hour);
         t4.setText(bill.getDate().toString().substring(10,19));
 
+        TextView t6 = (TextView) convertView.findViewById(R.id.total_price);
+        t6.setText(bill.getTotal_price_excl()+" €");
+
       /*  TextView t5 = (TextView) convertView.findViewById(R.id.list_products);
         if(bill.getProducts().size() > 2 ) {
             t5.setText(bill.getProducts().get(0).getName() + ", " + bill.getProducts().get(1).getName() + ", " + bill.getProducts().get(2).getName() + " ...");

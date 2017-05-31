@@ -76,6 +76,16 @@
             android:text="Waiter"
             android:textSize="20sp" />
 
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/waiter"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_toEndOf="@+id/waiter"
+            android:text="Price" />
+
 
     </RelativeLayout>
 

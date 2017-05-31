@@ -76,6 +76,9 @@ public class HistoryAdapter extends BaseAdapter{
         TextView t4 = (TextView) convertView.findViewById(R.id.waiter);
         t4.setText(bill.getWaiter());
 
+        TextView t5 = (TextView) convertView.findViewById(R.id.price);
+        t5.setText(bill.getTotal_price_excl()+" €");
+
         return convertView;
     }
 

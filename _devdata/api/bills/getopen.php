@@ -22,6 +22,7 @@ try {
         b.id AS 'id_bill',
         b.date AS 'date_bill',
         b.table_nr AS 'table_nr',
+    b.total_price_excl AS 'total_price_excl',
         w.name AS 'waiter_name'
 
         FROM app_bills b 
