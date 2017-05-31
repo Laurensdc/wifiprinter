@@ -35,6 +35,7 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
+import entities.Bill;
 import entities.Product;
 import entities.Settings;
 import helpers.MainAdapter;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     int bill_nr = 0;
     String table_nr = "#";
     private entities.Settings settings;
+    Bill b = null;
 
     @Override
     protected void onResume() {
@@ -232,6 +234,52 @@ public class MainActivity extends AppCompatActivity {
 
                 //TODO : add the prod.getPrice() to the total bill price
 
+                    try {
+                        b.setTotal_price_excl(b.getTotal_price_excl()+prod.getPrice_excl());
+                        StringEntity entity;
+
+                        JSONObject jsonParams = new JSONObject();
+                        jsonParams.put("bill_id", bill_nr);
+                        jsonParams.put("total_price_excl", b.getTotal_price_excl());
+                        entity = new StringEntity(jsonParams.toString());
+                        RequestClient.put(getApplicationContext(), "bills/price/", entity, "application/json", new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                // If the response is JSONObject instead of expected JSONArray
+                                try {
+                                    Log.d("RESPONSE", response.toString());
+                                }
+                                catch(Exception e) {
+                                    Log.d("Exception HTTP", e.getMessage());
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                                try {
+                                    Log.d("RESPONSE", errorResponse.toString());
+                                }
+                                catch(Exception e) {
+                                    Log.d("Exception HTTP", e.getMessage());
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(int c, Header[] h, String r, Throwable t) {
+                                try {
+                                    Log.d("RESPONSE", r.toString());
+                                }
+                                catch(Exception e) {
+                                    Log.d("Exception HTTP", e.getMessage());
+                                }
+                            }
+                        });
+                    }
+                    catch(Exception e) {
+                        Log.d("Ex", e.getMessage());
+
+                    }
+
 
                 SharedPrefHelper.setPrintItems(getApplicationContext(),products);
 
@@ -305,7 +353,7 @@ public class MainActivity extends AppCompatActivity {
 
                     String val = s.toString();
                     table_nr = val;
-
+                    b.setTableNr(table_nr);
                     try {
                         StringEntity entity;
                         JSONObject jsonParams = new JSONObject();
@@ -365,6 +413,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(main_activity);
         Bundle extras = getIntent().getExtras();
         String id_edit;
+        b = new Bill(null, true,null,null,null,0,0);
 
         settings = SharedPrefHelper.loadSettings(getApplicationContext());
 
@@ -382,7 +431,6 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject bill = new JSONObject();
                 bill.put("table_nr", table_nr);
                 entity = new StringEntity(bill.toString());
-
                 RequestClient.put(context, "bills/", entity, "application/json", new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -390,10 +438,11 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             Log.d("RESPONSE", response.toString());//RESPONSE: {"id":"3","success":true} BUT table_nr not inserted !!
                             bill_nr = Integer.parseInt(response.get("id").toString());
+
                         } catch (Exception e) {
                             Log.d("Exception HTTP", e.getMessage());
                         }
-
+                        b.setId(bill_nr);
                         //START OF SECONF QUERRY
                         try {
                             StringEntity entity;
