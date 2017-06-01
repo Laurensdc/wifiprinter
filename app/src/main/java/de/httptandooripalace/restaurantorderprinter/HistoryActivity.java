@@ -84,6 +84,7 @@ public class HistoryActivity extends AppCompatActivity {
         bills.clear();
         context = this;
         try {
+            System.out.println("GETTING CLOSED BILLS");
             RequestClient.get("bills/getclosed/", new JsonHttpResponseHandler(){
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -107,7 +108,7 @@ public class HistoryActivity extends AppCompatActivity {
                             Bill b = new Bill(products, is_open, date, table_nr, waiter_name, id, total_price_excl);
                             bills.add(b);
 
-                            Log.d("RESPONSE", "bills ::::" + bills);
+                            Log.d("RESPONSE", "bills :" + bills);
                             ListView view = (ListView) findViewById(R.id.list_closed_bills);
                             adapter = new HistoryAdapter(context, bills);
                             view.setAdapter(adapter);

@@ -73,15 +73,17 @@ public class PrintActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             bill_nr = extras.getInt("bill_nr");
-            Log.d("RESPONSE",  "numero d'addition : "+ bill_nr);
+            Log.d("RESPONSE",  "BILL NUMBER : "+ bill_nr);
         }else{
-            Log.d("RESPONSE", "extras est null :::::::::::::::" + bill_nr);
+            Log.d("RESPONSE", "NO BILL NR : " + bill_nr);
         }
+
+        //TODO : Get the bill information
 
         try {
             StringEntity entity;
             JSONObject jsonParams = new JSONObject();
-            Log.d("RESPONSE", "trying to get the bill products");
+            Log.d("RESPONSE", "GETTING BILL PRODUCTS");
             RequestParams params = new RequestParams();
             jsonParams.put("bill_id", bill_nr);
             entity = new StringEntity(jsonParams.toString());

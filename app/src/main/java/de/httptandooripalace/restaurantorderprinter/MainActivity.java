@@ -68,16 +68,16 @@ public class MainActivity extends AppCompatActivity {
             table_nr = extras.getString("table_nr_edit");
             TextView lblTable_number = (TextView) findViewById(R.id.table_number);
             if(table_nr != null) {
-                System.out.println(table_nr + "");
+                System.out.println("TABLE "+table_nr + "");
                 lblTable_number.setHint(table_nr);
             }else{
                 lblTable_number.setHint("#");
             }
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!EXTRA : " + bill_nr);
+            System.out.println("EDITING BILL NR : " + bill_nr);
             // and get whatever type user account id is
             // and get whatever type user account id is
         }else{
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!L EXTRA EST NUL");
+            System.out.println("NO EDITING BILL NR");
         }
 
         super.onResume();
@@ -199,9 +199,11 @@ public class MainActivity extends AppCompatActivity {
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                             // If the response is JSONObject instead of expected JSONArray
                             try {
+                                System.out.println("Adding product to the bill : ");
                                 Log.d("RESPONSE", response.toString());
                             }
                             catch(Exception e) {
+                                System.out.println("Adding product to the bill : ");
                                 Log.d("Exception HTTP", e.getMessage());
                             }
                         }
@@ -247,9 +249,11 @@ public class MainActivity extends AppCompatActivity {
                             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                                 // If the response is JSONObject instead of expected JSONArray
                                 try {
+                                    System.out.println("Updating price on the bill : ");
                                     Log.d("RESPONSE", response.toString());
                                 }
                                 catch(Exception e) {
+                                    System.out.println("Updating price on the bill : ");
                                     Log.d("Exception HTTP", e.getMessage());
                                 }
                             }
@@ -357,7 +361,6 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         StringEntity entity;
                         JSONObject jsonParams = new JSONObject();
-                        Log.d("RESPONSE", "trying to add the table number on the bill table");
                         jsonParams.put("bill_id", bill_nr);
                         jsonParams.put("table_nr", table_nr);
                         entity = new StringEntity(jsonParams.toString());
@@ -367,10 +370,12 @@ public class MainActivity extends AppCompatActivity {
                             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                                 // If the response is JSONObject instead of expected JSONArray
                                 try {
+                                    System.out.println("Adding table number on the bill");
                                     Log.d("RESPONSE", response.toString());
 
                                 }
                                 catch(Exception e) {
+                                    System.out.println("Adding table number on the bill");
                                     Log.d("Exception HTTP", e.getMessage());
                                 }
                             }
@@ -425,7 +430,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         if (extras == null) {
-            System.out.println("EXTRA IS NULL :: creating a new bill");
+            System.out.println("CREATING A NEW BILL");
             try {
                 StringEntity entity;
                 JSONObject bill = new JSONObject();
@@ -448,7 +453,7 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             StringEntity entity;
                             JSONObject jsonParams = new JSONObject();
-                            Log.d("RESPONSE", "trying to add the waiter on the bill");
+                            Log.d("RESPONSE", "ADDING THE WAITER ON THE BILL");
                             jsonParams.put("bill_id", bill_nr);
                             jsonParams.put("waiter_id", settings.getWaiter_id());
                             entity = new StringEntity(jsonParams.toString());
@@ -512,7 +517,7 @@ public class MainActivity extends AppCompatActivity {
         }else{
             id_edit = extras.getString("id_edit");
             bill_nr = Integer.parseInt(id_edit);
-            System.out.println("EXTRA EST PAS NUL :: "+ bill_nr);
+            System.out.println("BILL NR :"+ bill_nr);
         }
 
     }

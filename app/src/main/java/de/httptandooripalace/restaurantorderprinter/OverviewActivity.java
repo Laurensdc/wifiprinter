@@ -119,6 +119,7 @@ public class OverviewActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     // If the response is JSONObject instead of expected JSONArray
+                    System.out.println("GETTING OPEN BILLS");
                     try {
                         Log.d("RESPONSE", response.toString()); // RESPONSE: {"success":"true","bills":[{"id":"1","is_open":"1","date":"2017-05-09 02:59:18","table_nr":"1"}]}
                         jsonarray = response.getJSONArray("bills");
@@ -208,13 +209,12 @@ public class OverviewActivity extends AppCompatActivity {
                             Bill b = new Bill(products, is_open, date, table_nr, waiter_name, id, total_price_excl);
                             bills.add(b);
 
-                            Log.d("RESPONSE", "bills ::::" + bills);
                             ListView view = (ListView) findViewById(R.id.list_open_bills);
                             adapter = new OverviewAdapter(context, bills);
                             view.setAdapter(adapter);
 
                         }//end of for bills
-
+                        Log.d("RESPONSE", "bills :" + bills);
                     }
                     catch(Exception e) {
                         Log.d("Exception HTTP", e.getMessage());
@@ -258,7 +258,7 @@ public class OverviewActivity extends AppCompatActivity {
         try {
             StringEntity entity;
             JSONObject jsonParams = new JSONObject();
-            Log.d("RESPONSE", "trying to close a bill" + view.getTag(R.string.id_tag));
+            Log.d("RESPONSE", "CLOSING BILL " + view.getTag(R.string.id_tag));
             jsonParams.put("bill_id", view.getTag(R.string.id_tag));//TODO : get the id of the bill corresponding
             System.out.println("TAGGGGGG : "+ view.getTag(R.string.id_tag));//return the good id !!
             jsonParams.put("open", 0);
