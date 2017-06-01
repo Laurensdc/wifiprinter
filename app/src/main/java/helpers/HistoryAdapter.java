@@ -68,7 +68,7 @@ public class HistoryAdapter extends BaseAdapter{
         t1.setText(""+bill.getId());
 
         TextView t2 = (TextView) convertView.findViewById(R.id.date);
-        t2.setText(bill.getDate().toString().substring(0,10));
+        t2.setText(bill.getDate().toString().substring(4,10));
 
         TextView t3 = (TextView) convertView.findViewById(R.id.table);
         t3.setText(""+ bill.getTableNr());

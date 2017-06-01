@@ -430,13 +430,14 @@ public class MainActivity extends AppCompatActivity {
                 StringEntity entity;
                 JSONObject bill = new JSONObject();
                 bill.put("table_nr", table_nr);
+                bill.put("total_price_excl", b.getTotal_price_excl());
                 entity = new StringEntity(bill.toString());
                 RequestClient.put(context, "bills/", entity, "application/json", new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         // If the response is JSONObject instead of expected JSONArray
                         try {
-                            Log.d("RESPONSE", response.toString());//RESPONSE: {"id":"3","success":true} BUT table_nr not inserted !!
+                            Log.d("RESPONSE", response.toString());//RESPONSE: {"id":"3","success":true}
                             bill_nr = Integer.parseInt(response.get("id").toString());
 
                         } catch (Exception e) {
