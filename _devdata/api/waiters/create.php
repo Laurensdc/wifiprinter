@@ -15,14 +15,8 @@ if(!$input) {
 
 $json = json_decode($input, true);
 
-// Object checks
-if(!isset($json['waiter'])) {
-    error('No waiter object provided');
-}
 
-$waiter = $json['waiter'];
-
-if(!isset($waiter['name'])) {
+if(!isset($json['name'])) {
     error('No waiter name passed');
 }
 
@@ -31,9 +25,8 @@ if(!isset($waiter['name'])) {
 Request body format:
 
 {
-    "waiter":{
         "name":string
-    }
+    
 }
 
 */
@@ -48,7 +41,7 @@ try {
     $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD, $opt);
 
     $stmt = $conn->prepare("INSERT INTO app_waiters (name) VALUES (:name)");
-    $stmt->bindParam(':name', $waiter['name']);
+    $stmt->bindParam(':name', $json['name']);
     $success = $stmt->execute();
 
     $stmt2 = $conn->prepare("SELECT LAST_INSERT_ID() AS id");

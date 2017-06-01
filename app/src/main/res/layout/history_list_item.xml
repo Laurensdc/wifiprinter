@@ -36,7 +36,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:text="Id"
-            android:textSize="20sp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/date"
@@ -48,7 +48,7 @@
             android:layout_marginTop="10dp"
             android:layout_toEndOf="@+id/id"
             android:text="Date"
-            android:textSize="20sp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/table"
@@ -61,7 +61,7 @@
             android:layout_toEndOf="@+id/date"
             android:paddingLeft="10dp"
             android:text="Table"
-            android:textSize="20sp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/waiter"
@@ -74,7 +74,7 @@
             android:layout_toEndOf="@+id/table"
             android:paddingLeft="10dp"
             android:text="Waiter"
-            android:textSize="20sp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/price"
@@ -85,7 +85,7 @@
             android:layout_marginTop="0dp"
             android:layout_toEndOf="@+id/waiter"
             android:text="Price"
-            android:textSize="20sp" />
+            android:textSize="15sp" />
 
 
     </RelativeLayout>

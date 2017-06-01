@@ -6,6 +6,7 @@ header('Content-Type: application/json');
 
 $method = $_SERVER['REQUEST_METHOD']; // HTTP Request method
 $input = file_get_contents("php://input"); // HTTP Request body (raw)
+
 if($method != 'POST') {
     error('This route accepts POST requests only');
 }
@@ -27,17 +28,6 @@ if(!isset($json['waiter_id'])) {
 
 $bill_id = $json['bill_id'];
 $waiter_id = $json['waiter_id'];
-
-/*** Open or close a bill ***
-
-Request body format:
-
-{
-    "bill_id":int,
-    "waiter_id":int
-}
-
-*/
 
 try {
     $opt = [

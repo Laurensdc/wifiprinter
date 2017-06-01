@@ -8,13 +8,6 @@ if($method != 'GET') {
     error('This route accepts GET requests only');
 }
 
-/*** Get products ***
-
-Request body format :
-
-    NONE, JUST SEND THE REQUEST
-*/
-
 try {
     $opt = [
         PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
@@ -27,7 +20,6 @@ try {
     $stmt = $conn->prepare("SELECT DISTINCT
         cat.id_category AS 'id_cat',
         catl.name AS 'name_cat',
-        cat.reference AS 'reference_cat',
         p.id_product AS 'id_prod',
         pl.name AS 'name_prod',
         p.reference AS 'reference_prod',

@@ -33,7 +33,6 @@ Request body format:
 {
     
         "bill_id":int,
-        "product_id":int,
         "total_price_excl": decimal(4,2)
     
 }

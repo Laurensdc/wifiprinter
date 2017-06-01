@@ -50,6 +50,7 @@ else if($method == 'PUT') {
 
     $json = json_decode($input, true);
 
+    
     // Object checks
     // if(!isset($json['bill'])) {
     //    error('No bill object provided');
@@ -67,6 +68,11 @@ else if($method == 'PUT') {
 
     $table_nr = $json['table_nr'];
 
+
+    if(!isset($json['total_price_excl'])) {
+        error('No total_price_excl provided');
+    }
+
     try {
         $opt = [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
@@ -76,8 +82,9 @@ else if($method == 'PUT') {
 
         $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD, $opt);
 
-        $stmt = $conn->prepare("INSERT INTO app_bills (table_nr) VALUES (:table_nr)");
-        $stmt->bindParam(':table_nr', $table_nr);
+        $stmt = $conn->prepare("INSERT INTO app_bills (table_nr, total_price_excl) VALUES (:table_nr, :total_price_excl)");
+        $stmt->bindParam(':table_nr', $json['table_nr']);
+        $stmt->bindParam(':total_price_excl', $json['total_price_excl']);
         $success = $stmt->execute();
 
         $stmt2 = $conn->prepare("SELECT LAST_INSERT_ID() AS id");
