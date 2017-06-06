@@ -173,19 +173,19 @@ public class MainActivity extends AppCompatActivity {
                 Product prod = prodlist2.get(catlist.get(groupPosition)).get(childPosition); // Error here !! prodlist2 is trying to get the index of the new adapter data but it doesn't correspond to his data
 
                 int id2 = prod.getId();
-                List<Product> products = SharedPrefHelper.getPrintItems(getApplicationContext());
-                    if(products == null) products = new ArrayList<>();
-                    // If item is already in the list, just increase the count
-                                   if (products.contains(prod)) {
-                                       // Todo: check if this is bugging the main refresh count
-                                       products.remove(prod);
-                                       prod.increaseCount();
-                                       products.add(prod);
-                                   }
-                    // Otherwise add the product to print overview list
-                                   else {
-                                       products.add(prod);
-                                   }
+//                List<Product> products = SharedPrefHelper.getPrintItems(getApplicationContext());
+//                    if(products == null) products = new ArrayList<>();
+//                    // If item is already in the list, just increase the count
+//                                   if (products.contains(prod)) {
+//                                       // Todo: check if this is bugging the main refresh count
+//                                       products.remove(prod);
+//                                       prod.increaseCount();
+//                                       products.add(prod);
+//                                   }
+//                    // Otherwise add the product to print overview list
+//                                   else {
+//                                       products.add(prod);
+//                                   }
 
                         try {
                     StringEntity entity;
@@ -285,7 +285,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
 
-                SharedPrefHelper.setPrintItems(getApplicationContext(),products);
+               // SharedPrefHelper.setPrintItems(getApplicationContext(),products);
 
                 if (currentToast != null) currentToast.cancel();
                 currentToast = Toast.makeText(getApplicationContext(), getString(R.string.added_products) + " " + prod.getName() + " taille de la liste : " + adapter.getChildrenCount(0),

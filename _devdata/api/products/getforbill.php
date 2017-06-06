@@ -40,7 +40,8 @@ try {
         ROUND(p.price, 2) AS 'price_prod_excl',
         ROUND(p.price * (COALESCE(ptx.rate, 0) / 100 + 1), 2) AS 'price_prod_incl',
         pl.description_short AS 'description_prod',
-        app_bhs.bill_id AS bill_id
+        app_bhs.bill_id AS 'bill_id',
+        app_bhs.count AS 'count'
 
         FROM        ps_product p
         INNER JOIN  ps_product_lang pl ON p.id_product = pl.id_product

@@ -106,7 +106,8 @@ public class PrintActivity extends AppCompatActivity {
                             double price_incl = jsonobject.getDouble("price_prod_excl");
                             String reference = jsonobject.getString("reference_prod");
                             String category = jsonobject.getString("name_cat");
-                            Product p = new Product(id, name, price_excl, price_incl, reference, category);
+                            int count = jsonobject.getInt("count");
+                            Product p = new Product(id, name, price_excl, price_incl, reference, category, count);
                             products.add(p);
                         }
                     }
