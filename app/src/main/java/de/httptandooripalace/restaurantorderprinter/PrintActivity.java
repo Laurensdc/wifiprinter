@@ -52,6 +52,7 @@ public class PrintActivity extends AppCompatActivity {
     private final String U = "·154·";
     Context context;
     int bill_nr = 0;
+    String tableNr = "";
 
     private entities.Settings settings;
 
@@ -73,6 +74,7 @@ public class PrintActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             bill_nr = extras.getInt("bill_nr");
+            tableNr = extras.getString("tableNr");
             Log.d("RESPONSE",  "BILL NUMBER : "+ bill_nr);
         }else{
             Log.d("RESPONSE", "NO BILL NR : " + bill_nr);
@@ -91,6 +93,8 @@ public class PrintActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     // If the response is JSONObject instead of expected JSONArray
+
+                    
                     try {
                         Log.d("RESPONSE", response.getJSONArray("products").toString()); // RESPONSE: {"success":"true","products":[{"id_cat":"18","name_cat":" Dienstag","id_prod":"371","name_prod":"Chicken Curry","reference_prod":"512,","price_prod_excl":"4.03","price_prod_incl":"4.32","description_prod":"","bill_id":"1"},
                         JSONArray jsonarray = response.getJSONArray("products");
@@ -314,7 +318,7 @@ public class PrintActivity extends AppCompatActivity {
         if(products == null) return;
         if(products.size() <= 0) return;
 
-        String tableNr = SharedPrefHelper.getString(getApplicationContext(), "tableNr");
+        //String tableNr = SharedPrefHelper.getString(getApplicationContext(), "tableNr");
         String s;
         StringBuilder strb = new StringBuilder("");
         int number_drinks = 0;
@@ -323,6 +327,7 @@ public class PrintActivity extends AppCompatActivity {
         strb.append(CHAR_TABLE_EURO);
         strb.append(BR);
 
+       // tableNr = "randomThingToTestIfThePrintWorksWithATableNr";
         if(!tableNr.equals("")) {
             strb.append("$bighw$");
             strb.append(getString(R.string.table_nr).toUpperCase() + tableNr);
@@ -413,7 +418,7 @@ public class PrintActivity extends AppCompatActivity {
         if(products == null) return;
         if(products.size() <= 0) return;
 
-        String tableNr = SharedPrefHelper.getString(getApplicationContext(), "tableNr");
+       // String tableNr = SharedPrefHelper.getString(getApplicationContext(), "tableNr");
         String s;
         StringBuilder strb = new StringBuilder("");
         int number_kitchen = 0;
@@ -422,6 +427,7 @@ public class PrintActivity extends AppCompatActivity {
         strb.append(CHAR_TABLE_EURO);
         strb.append(BR);
 
+        //tableNr = "randomThingToTestIfThePrintWorksWithATableNr";
         if(!tableNr.equals("")) {
             strb.append("$bighw$");
             strb.append(getString(R.string.table_nr).toUpperCase() + tableNr);
@@ -504,7 +510,7 @@ public class PrintActivity extends AppCompatActivity {
 
     // sendPrintJob bill layout
     public String getBillContent() {
-        String tableNr = SharedPrefHelper.getString(getApplicationContext(), "tableNr");
+        //String tableNr = SharedPrefHelper.getString(getApplicationContext(), "tableNr");
         String s;
         StringBuilder strb = new StringBuilder("");
 
@@ -517,6 +523,7 @@ public class PrintActivity extends AppCompatActivity {
         s = "$bighw$" + BR + alignCenterBigw(getString(R.string.bill)) + BR;
         strb.append(s);
 
+       // tableNr = "randomThingToTestIfThePrintWorksWithATableNr";
         if(!tableNr.equals("")) {
             strb.append("$bighw$");
             strb.append(alignCenterBigw(getString(R.string.table_nr).toUpperCase() + tableNr));

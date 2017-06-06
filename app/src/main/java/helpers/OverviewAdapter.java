@@ -100,6 +100,7 @@ public class OverviewAdapter extends BaseAdapter{
 
         FloatingActionButton b3 =  (FloatingActionButton)convertView.findViewById(R.id.print_bill);
         b3.setTag(R.string.id_tag, bill.getId());
+        b3.setTag(R.string.table_tag, bill.getTableNr());
 
         return convertView;
     }

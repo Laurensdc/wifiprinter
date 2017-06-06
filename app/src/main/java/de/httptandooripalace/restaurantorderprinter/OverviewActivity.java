@@ -301,9 +301,10 @@ public class OverviewActivity extends AppCompatActivity {
     }
 
     public void print_bill(View view){
-        //TODO
+        //TODO : access the good table nr
         Intent i = new Intent(this, PrintActivity.class);
         i.putExtra("bill_nr", Integer.parseInt(view.getTag(R.string.id_tag).toString()));
+        i.putExtra("tableNr", view.getTag(R.string.table_tag).toString());
         startActivity(i);
     }
 

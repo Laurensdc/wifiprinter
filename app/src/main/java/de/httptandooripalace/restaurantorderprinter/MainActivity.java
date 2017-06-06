@@ -570,6 +570,7 @@ public class MainActivity extends AppCompatActivity {
         table_nr = val;
         Intent intent = new Intent(this, PrintActivity.class);
         intent.putExtra("bill_nr", bill_nr);
+        intent.putExtra("tableNr", table_nr);
         startActivity(intent);
 
 

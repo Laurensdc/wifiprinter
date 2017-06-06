@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -153,6 +154,11 @@ public class HistoryActivity extends AppCompatActivity {
     private void refreshContent() {
         finish();
         startActivity(getIntent());
+    }
+
+    public void new_bill(View view){
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
     }
 
 }
