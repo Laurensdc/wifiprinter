@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS app_bills (
 CREATE TABLE IF NOT EXISTS app_bill_has_products(
     bill_id INT NOT NULL,
     product_id INT NOT NULL,
-
+    count INT,
+    
     PRIMARY KEY (bill_id, product_id),
     FOREIGN KEY (bill_id) REFERENCES app_bills(id)
 );

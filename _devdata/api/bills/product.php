@@ -33,10 +33,11 @@ Request body format:
 {
     
         "bill_id":int,
-        "product_id":int,
+        "product_id":int
     
 }
 */
+
  try {
         $opt = [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
@@ -46,8 +47,22 @@ Request body format:
 
         $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD, $opt);
 
-        
-        $stmt = $conn->prepare("INSERT INTO app_bill_has_products (bill_id, product_id) VALUES (:bill_id, :product_id)");
+        $dupesql = $conn->prepare("SELECT * FROM app_bill_has_products WHERE (bill_id = :bill_id AND product_id = :product_id)");
+
+        $dupesql->bindParam(':product_id', $product_id);
+        $dupesql->bindParam(':bill_id', $bill_id);
+
+        $dupesql->execute();
+        $rowcount = $dupesql->rowCount();
+        $success = ($rowcount > 0) ? true : false;
+        $returnObj1 = array('success' => $success);
+        echo json_encode($returnObj1);
+
+        if ( $success) {
+          $stmt = $conn->prepare("UPDATE app_bill_has_products SET count = count+1 WHERE (bill_id = :bill_id AND product_id = :product_id)");
+        }else{
+            $stmt = $conn->prepare("INSERT INTO app_bill_has_products (bill_id, product_id, count) VALUES (:bill_id, :product_id, 1)");
+        }
         $stmt->bindParam(':bill_id', $bill_id);
         $stmt->bindParam(':product_id', $product_id);
         $stmt->execute();
@@ -56,7 +71,6 @@ Request body format:
         $returnObj = array('success' => $success);
 
         echo json_encode($returnObj);
-        
 
         $conn = null;
         die();
