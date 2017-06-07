@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
             err.add("Error");
             LinkedHashMap<String, List<Product>> msg = new LinkedHashMap<>();
             List<Product> durrr = new ArrayList<Product>();
-            durrr.add(new Product(-1, getString(R.string.could_not_get_db_info), 0, 0, null, null));
+            durrr.add(new Product(-1, getString(R.string.could_not_get_db_info), 0, 0, null, null, 1));
             msg.put("Error", durrr);
             view = (ExpandableListView) findViewById(R.id.overview_main);
             MainAdapter adapter = new MainAdapter(this, err, msg);
@@ -145,7 +145,8 @@ public class MainActivity extends AppCompatActivity {
                             Float.parseFloat(obj.getString("price_prod_excl")),
                             Float.parseFloat(obj.getString("price_prod_incl")),
                             stripCommaAtEnd(obj.getString("reference_prod")),
-                            catname
+                            catname,
+                            1
                     ));
                 } catch(JSONException ex) {
                     Log.d("JSONEX", "Couldn't get product: " + ex.getMessage());

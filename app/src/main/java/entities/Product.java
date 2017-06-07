@@ -47,11 +47,11 @@ public class Product {
     public boolean getDrink() { return this.drink; }
     public void setDrink(Boolean d) { this.drink= d; }
 
-    public void increaseCount() { count++; }
-    public void decreaseCount() { count--; }
+    public void increaseCount() { this.count = count++; }
+    public void decreaseCount() { this.count = count--; }
 
     public int getCount() {
-        return count;
+        return this.count;
     }
 
     public void setCount(int count) {
