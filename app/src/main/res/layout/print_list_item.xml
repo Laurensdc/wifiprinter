@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingStart="0dp"
     android:paddingEnd="8dp"
-    android:weightSum="1">
+    android:weightSum="1"
+    tools:context="de.httptandooripalace.restaurantorderprinter.PrintActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -44,7 +46,8 @@
                 android:minWidth="0dp"
                 android:id="@+id/btnplus"
                 android:text="+"
-                android:elevation="0dp" />
+                android:elevation="0dp"
+                android:onClick="addProduct"/>
 
             <Button
                 android:layout_width="wrap_content"

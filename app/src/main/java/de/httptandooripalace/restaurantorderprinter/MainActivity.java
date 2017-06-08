@@ -235,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
 
-                //TODO : add the prod.getPrice() to the total bill price
+                // adding the prod.getPrice() to the total bill price
 
                     try {
                         b.setTotal_price_excl(b.getTotal_price_excl()+prod.getPrice_excl());

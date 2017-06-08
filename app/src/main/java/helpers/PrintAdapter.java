@@ -11,8 +11,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.httptandooripalace.restaurantorderprinter.PrintActivity;
 import de.httptandooripalace.restaurantorderprinter.R;
 import entities.Product;
+
 
 /**
  * Created by uizen on 3/27/2017.
@@ -62,16 +64,18 @@ public class PrintAdapter extends BaseAdapter {
 
         final int pos = position;
         Button btnPlus = (Button) convertView.findViewById(R.id.btnplus);
-        btnPlus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Product p = products.get(pos);
-                p.increaseCount();
-                products.set(pos, p);
-                tv.setText(productText(p));
-
-            }
-        });
+        btnPlus.setTag(R.string.id_tag, products.get(position).getId());
+        btnPlus.setTag(R.string.price_tag, products.get(position).getPrice_excl());
+//        btnPlus.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Product p = products.get(pos);
+//                p.increaseCount();
+//                //PrintActivity.addProduct(p);
+//                products.set(pos, p);
+//                tv.setText(productText(p));
+//            }
+//        });
 
         Button btnMinus = (Button) convertView.findViewById(R.id.btnminus);
         btnMinus.setOnClickListener(new View.OnClickListener() {

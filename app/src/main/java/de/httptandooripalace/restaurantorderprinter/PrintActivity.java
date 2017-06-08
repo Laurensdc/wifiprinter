@@ -30,6 +30,7 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
+import entities.Bill;
 import entities.Product;
 import entities.Settings;
 import helpers.PrintAdapter;
@@ -53,6 +54,7 @@ public class PrintActivity extends AppCompatActivity {
     Context context;
     int bill_nr = 0;
     String tableNr = "";
+    Bill b = null;
 
     private entities.Settings settings;
 
@@ -871,6 +873,109 @@ public class PrintActivity extends AppCompatActivity {
         }
 
         return newstr;
+    }
+
+    public void addProduct(View view){
+
+        int id_product = Integer.parseInt(view.getTag(R.string.id_tag).toString());
+        double price_tag = Double.parseDouble(view.getTag(R.string.price_tag).toString());
+
+        try {
+            StringEntity entity;
+
+            JSONObject jsonParams = new JSONObject();
+            jsonParams.put("bill_id", bill_nr);
+            jsonParams.put("product_id", id_product);
+            entity = new StringEntity(jsonParams.toString());
+            RequestClient.put(getApplicationContext(), "bills/product/", entity, "application/json", new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    // If the response is JSONObject instead of expected JSONArray
+                    try {
+                        System.out.println("Adding product to the bill : ");
+                        Log.d("RESPONSE", response.toString());
+                    }
+                    catch(Exception e) {
+                        System.out.println("Adding product to the bill : ");
+                        Log.d("Exception HTTP", e.getMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    try {
+                        Log.d("RESPONSE", errorResponse.toString());
+                    }
+                    catch(Exception e) {
+                        Log.d("Exception HTTP", e.getMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(int c, Header[] h, String r, Throwable t) {
+                    try {
+                        Log.d("RESPONSE", r.toString());
+                    }
+                    catch(Exception e) {
+                        Log.d("Exception HTTP", e.getMessage());
+                    }
+                }
+            });
+        }
+        catch(Exception e) {
+            Log.d("Ex", e.getMessage());
+
+        }
+
+        // adding the prod.getPrice() to the total bill price
+
+        try {
+            b.setTotal_price_excl(b.getTotal_price_excl()+price_tag);
+            StringEntity entity;
+
+            JSONObject jsonParams = new JSONObject();
+            jsonParams.put("bill_id", bill_nr);
+            jsonParams.put("total_price_excl", b.getTotal_price_excl());
+            entity = new StringEntity(jsonParams.toString());
+            RequestClient.put(getApplicationContext(), "bills/price/", entity, "application/json", new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    // If the response is JSONObject instead of expected JSONArray
+                    try {
+                        System.out.println("Updating price on the bill : ");
+                        Log.d("RESPONSE", response.toString());
+                    }
+                    catch(Exception e) {
+                        System.out.println("Updating price on the bill : ");
+                        Log.d("Exception HTTP", e.getMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    try {
+                        Log.d("RESPONSE", errorResponse.toString());
+                    }
+                    catch(Exception e) {
+                        Log.d("Exception HTTP", e.getMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(int c, Header[] h, String r, Throwable t) {
+                    try {
+                        Log.d("RESPONSE", r.toString());
+                    }
+                    catch(Exception e) {
+                        Log.d("Exception HTTP", e.getMessage());
+                    }
+                }
+            });
+        }
+        catch(Exception e) {
+            Log.d("Ex", e.getMessage());
+
+        }
     }
 
 
