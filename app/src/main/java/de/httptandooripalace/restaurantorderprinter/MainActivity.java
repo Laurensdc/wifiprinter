@@ -298,52 +298,52 @@ public class MainActivity extends AppCompatActivity {
             });
 
             // Text change listener to filter on reference number
-            EditText refnr = (EditText) findViewById(R.id.ref_nr);
-            refnr.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                    String text = s.toString();
-                    Log.d("TEXT CHANGED", "onTextChanged: " + text);
-                    view.expandGroup(0);
-                    //view.destroyDrawingCache();
-                    view.invalidateViews();
-
-                    List<Product> filteredList = new ArrayList<>();
-                    ArrayList<String> catlist2 = new ArrayList<>();
-
-                    if(!text.equals(""))
-                    {
-                        String searchres = "Search result";
-                        if(!catlist2.contains(searchres)) {
-                            catlist2.add(searchres);
-                        }
-                        Iterator<List<Product>> it = prodlist.values().iterator();
-                        while(it.hasNext())
-                        {
-                            List<Product> prod = it.next();
-                            for(int i = 0; i < prod.size(); i++) {
-                                if(prod.get(i).getReference().contains(text)){
-                                    filteredList.add(prod.get(i));
-                                    adapter.notifyDataSetChanged();
-                                }
-                            }
-                        }
-                        prodlist2.put(searchres,filteredList);
-                    }
-                    adapter.filter(text);
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                }
-            });
+//            EditText refnr = (EditText) findViewById(R.id.ref_nr);
+//            refnr.addTextChangedListener(new TextWatcher() {
+//                @Override
+//                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//                }
+//
+//                @Override
+//                public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//                    String text = s.toString();
+//                    Log.d("TEXT CHANGED", "onTextChanged: " + text);
+//                    view.expandGroup(0);
+//                    //view.destroyDrawingCache();
+//                    view.invalidateViews();
+//
+//                    List<Product> filteredList = new ArrayList<>();
+//                    ArrayList<String> catlist2 = new ArrayList<>();
+//
+//                    if(!text.equals(""))
+//                    {
+//                        String searchres = "Search result";
+//                        if(!catlist2.contains(searchres)) {
+//                            catlist2.add(searchres);
+//                        }
+//                        Iterator<List<Product>> it = prodlist.values().iterator();
+//                        while(it.hasNext())
+//                        {
+//                            List<Product> prod = it.next();
+//                            for(int i = 0; i < prod.size(); i++) {
+//                                if(prod.get(i).getReference().contains(text)){
+//                                    filteredList.add(prod.get(i));
+//                                    adapter.notifyDataSetChanged();
+//                                }
+//                            }
+//                        }
+//                        prodlist2.put(searchres,filteredList);
+//                    }
+//                    adapter.filter(text);
+//                }
+//
+//                @Override
+//                public void afterTextChanged(Editable s) {
+//
+//                }
+//            });
 
             // Text change listener to filter on reference number
             EditText table = (EditText) findViewById(R.id.table_number);

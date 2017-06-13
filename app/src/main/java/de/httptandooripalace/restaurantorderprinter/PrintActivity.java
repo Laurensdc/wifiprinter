@@ -1,5 +1,6 @@
 package de.httptandooripalace.restaurantorderprinter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -51,10 +52,11 @@ public class PrintActivity extends AppCompatActivity {
     private final String BR = "$intro$"; // Line break
     private final String u = "·129·";
     private final String U = "·154·";
-    Context context;
-    int bill_nr = 0;
+    static Context context;
+    static int bill_nr = 0;
     String tableNr = "";
-    Bill b = null;
+    static Bill b = null;
+    static Activity activity = null;
 
     private entities.Settings settings;
 
@@ -66,6 +68,8 @@ public class PrintActivity extends AppCompatActivity {
         // Get products
        // products = SharedPrefHelper.getPrintItems(getApplicationContext());
         settings = SharedPrefHelper.loadSettings(getApplicationContext());
+        context = this;
+        activity = this;
 
         if(settings == null) {
             settings = new Settings();
@@ -96,7 +100,7 @@ public class PrintActivity extends AppCompatActivity {
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     // If the response is JSONObject instead of expected JSONArray
 
-                    
+
                     try {
                         Log.d("RESPONSE", response.getJSONArray("products").toString()); // RESPONSE: {"success":"true","products":[{"id_cat":"18","name_cat":" Dienstag","id_prod":"371","name_prod":"Chicken Curry","reference_prod":"512,","price_prod_excl":"4.03","price_prod_incl":"4.32","description_prod":"","bill_id":"1"},
                         JSONArray jsonarray = response.getJSONArray("products");
@@ -875,10 +879,13 @@ public class PrintActivity extends AppCompatActivity {
         return newstr;
     }
 
-    public void addProduct(View view){
+    public static void addProduct(Product p){
 
-        int id_product = Integer.parseInt(view.getTag(R.string.id_tag).toString());
-        double price_tag = Double.parseDouble(view.getTag(R.string.price_tag).toString());
+        //int id_product = Integer.parseInt(view.getTag(R.string.id_tag).toString());
+        //double price_tag = Double.parseDouble(view.getTag(R.string.price_tag).toString());
+
+        int id_product = p.getId();
+        double price_tag = p.getPrice_excl();
 
         try {
             StringEntity entity;
@@ -887,7 +894,7 @@ public class PrintActivity extends AppCompatActivity {
             jsonParams.put("bill_id", bill_nr);
             jsonParams.put("product_id", id_product);
             entity = new StringEntity(jsonParams.toString());
-            RequestClient.put(getApplicationContext(), "bills/product/", entity, "application/json", new JsonHttpResponseHandler() {
+            RequestClient.put(context, "bills/product/", entity, "application/json", new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     // If the response is JSONObject instead of expected JSONArray
@@ -937,7 +944,7 @@ public class PrintActivity extends AppCompatActivity {
             jsonParams.put("bill_id", bill_nr);
             jsonParams.put("total_price_excl", b.getTotal_price_excl());
             entity = new StringEntity(jsonParams.toString());
-            RequestClient.put(getApplicationContext(), "bills/price/", entity, "application/json", new JsonHttpResponseHandler() {
+            RequestClient.put(context, "bills/price/", entity, "application/json", new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     // If the response is JSONObject instead of expected JSONArray
@@ -973,10 +980,131 @@ public class PrintActivity extends AppCompatActivity {
             });
         }
         catch(Exception e) {
+            String err = (e.getMessage()==null)?"SD Card failed":e.getMessage();
+            Log.e("sdcard-err2:",err);
+            //Log.d("Ex", e.getMessage());
+
+        }
+        activity.finish();
+        Intent login = new Intent(context, PrintActivity.class);
+        context.startActivity(login);
+
+    }
+
+
+    public static void removeProduct(Product p){
+
+        int id_product = p.getId();
+
+        try {
+            StringEntity entity;
+
+            JSONObject jsonParams = new JSONObject();
+            jsonParams.put("bill_id", bill_nr);
+            jsonParams.put("product_id", id_product);
+            entity = new StringEntity(jsonParams.toString());
+            RequestClient.delete(context, "bills/product/", entity, "application/json", new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    // If the response is JSONObject instead of expected JSONArray
+                    try {
+                        System.out.println("deleting a product from the bill : ");
+                        Log.d("RESPONSE", response.toString());
+                    }
+                    catch(Exception e) {
+                        System.out.println("deleting a product from the bill : ");
+                        Log.d("Exception HTTP", e.getMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    try {
+                        Log.d("RESPONSE", errorResponse.toString());
+                    }
+                    catch(Exception e) {
+                        Log.d("Exception HTTP", e.getMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(int c, Header[] h, String r, Throwable t) {
+                    try {
+                        Log.d("RESPONSE", r.toString());
+                    }
+                    catch(Exception e) {
+                        Log.d("Exception HTTP", e.getMessage());
+                    }
+                }
+            });
+        }
+        catch(Exception e) {
             Log.d("Ex", e.getMessage());
 
         }
+
+        activity.finish();
+        Intent login = new Intent(context, PrintActivity.class);
+        context.startActivity(login);
+        // TODO : here call the querry to delete a product on the bill
     }
+
+    public static void decreaseProduct(Product p){
+        int id_product = p.getId();
+
+        try {
+            StringEntity entity;
+
+            JSONObject jsonParams = new JSONObject();
+            jsonParams.put("bill_id", bill_nr);
+            jsonParams.put("product_id", id_product);
+            entity = new StringEntity(jsonParams.toString());
+            RequestClient.delete(context, "bills/decreaseProduct/", entity, "application/json", new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    // If the response is JSONObject instead of expected JSONArray
+                    try {
+                        System.out.println("Decreasing counf of product on the bill : ");
+                        Log.d("RESPONSE", response.toString());
+                    }
+                    catch(Exception e) {
+                        System.out.println("Decreasing count of product on the bill : ");
+                        Log.d("Exception HTTP", e.getMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    try {
+                        Log.d("RESPONSE", errorResponse.toString());
+                    }
+                    catch(Exception e) {
+                        Log.d("Exception HTTP", e.getMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(int c, Header[] h, String r, Throwable t) {
+                    try {
+                        Log.d("RESPONSE", r.toString());
+                    }
+                    catch(Exception e) {
+                        Log.d("Exception HTTP", e.getMessage());
+                    }
+                }
+            });
+        }
+        catch(Exception e) {
+            Log.d("Ex", e.getMessage());
+
+        }
+
+        activity.finish();
+        Intent login = new Intent(context, PrintActivity.class);
+        context.startActivity(login);
+        // TODO : here call the querry to decrease a product on the bill
+    }
+
 
 
 

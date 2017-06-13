@@ -1,6 +1,7 @@
 package helpers;
 
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,29 +65,32 @@ public class PrintAdapter extends BaseAdapter {
 
         final int pos = position;
         Button btnPlus = (Button) convertView.findViewById(R.id.btnplus);
-        btnPlus.setTag(R.string.id_tag, products.get(position).getId());
-        btnPlus.setTag(R.string.price_tag, products.get(position).getPrice_excl());
-//        btnPlus.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Product p = products.get(pos);
-//                p.increaseCount();
-//                //PrintActivity.addProduct(p);
-//                products.set(pos, p);
-//                tv.setText(productText(p));
-//            }
-//        });
+        //btnPlus.setTag(R.string.id_tag, products.get(position).getId());
+       // btnPlus.setTag(R.string.price_tag, products.get(position).getPrice_excl());
+        btnPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Product p = products.get(pos);
+                p.increaseCount();
+                PrintActivity.addProduct(p);
+                products.set(pos, p);
+                tv.setText(productText(p));
+
+                //redraw the view ?
+            }
+        });
 
         Button btnMinus = (Button) convertView.findViewById(R.id.btnminus);
         btnMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Product p = products.get(pos);
-                if(p.getCount() < 1) return;
                 p.decreaseCount();
+                PrintActivity.decreaseProduct(p);
+
                 products.set(pos, p);
                 tv.setText(productText(p));
-
+                //redraw the viex ?
             }
         });
 

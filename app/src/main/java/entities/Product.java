@@ -51,7 +51,7 @@ public class Product {
     public void decreaseCount() { this.count = count--; }
 
     public int getCount() {
-        return this.count;
+        return count;
     }
 
     public void setCount(int count) {
