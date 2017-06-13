@@ -86,8 +86,6 @@ public class PrintActivity extends AppCompatActivity {
             Log.d("RESPONSE", "NO BILL NR : " + bill_nr);
         }
 
-        //TODO : Get the bill information
-
         try {
             StringEntity entity;
             JSONObject jsonParams = new JSONObject();
@@ -251,7 +249,7 @@ public class PrintActivity extends AppCompatActivity {
 
             StringBuilder strb = new StringBuilder();
 
-            strb.append("<BIG>Bill<BR><BR>"); // Todo table number and other info
+            strb.append("<BIG>Bill<BR><BR>");
 
 
             strb.append("testestestestestestse");
@@ -1046,7 +1044,6 @@ public class PrintActivity extends AppCompatActivity {
         activity.finish();
         Intent login = new Intent(context, PrintActivity.class);
         context.startActivity(login);
-        // TODO : here call the querry to delete a product on the bill
     }
 
     public static void decreaseProduct(Product p){
@@ -1102,7 +1099,6 @@ public class PrintActivity extends AppCompatActivity {
         activity.finish();
         Intent login = new Intent(context, PrintActivity.class);
         context.startActivity(login);
-        // TODO : here call the querry to decrease a product on the bill
     }
 
 

@@ -259,8 +259,8 @@ public class OverviewActivity extends AppCompatActivity {
             StringEntity entity;
             JSONObject jsonParams = new JSONObject();
             Log.d("RESPONSE", "CLOSING BILL " + view.getTag(R.string.id_tag));
-            jsonParams.put("bill_id", view.getTag(R.string.id_tag));//TODO : get the id of the bill corresponding
-            System.out.println("TAGGGGGG : "+ view.getTag(R.string.id_tag));//return the good id !!
+            jsonParams.put("bill_id", view.getTag(R.string.id_tag));
+            System.out.println("TAGGGGGG : "+ view.getTag(R.string.id_tag));
             jsonParams.put("open", 0);
             entity = new StringEntity(jsonParams.toString());
             RequestClient.post(context,"bills/", entity, "application/json", new JsonHttpResponseHandler(){
@@ -301,7 +301,6 @@ public class OverviewActivity extends AppCompatActivity {
     }
 
     public void print_bill(View view){
-        //TODO : access the good table nr
         Intent i = new Intent(this, PrintActivity.class);
         i.putExtra("bill_nr", Integer.parseInt(view.getTag(R.string.id_tag).toString()));
         i.putExtra("tableNr", view.getTag(R.string.table_tag).toString());
