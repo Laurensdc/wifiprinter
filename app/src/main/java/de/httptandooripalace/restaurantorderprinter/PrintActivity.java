@@ -106,8 +106,8 @@ public class PrintActivity extends AppCompatActivity {
                             JSONObject jsonobject = jsonarray.getJSONObject(i);
                             String name = jsonobject.getString("name_prod");
                             int id = jsonobject.getInt("id_prod");
-                            double price_excl = jsonobject.getDouble("price_prod_incl");
-                            double price_incl = jsonobject.getDouble("price_prod_excl");
+                            double price_excl = jsonobject.getDouble("price_prod_excl");
+                            double price_incl = jsonobject.getDouble("price_prod_incl");
                             String reference = jsonobject.getString("reference_prod");
                             String category = jsonobject.getString("name_cat");
                             int count = jsonobject.getInt("count");
