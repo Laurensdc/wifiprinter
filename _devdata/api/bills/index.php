@@ -16,7 +16,13 @@ if($method == 'GET') {
 
         $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD, $opt);
 
-        $stmt = $conn->prepare("SELECT * FROM app_bills");
+        $stmt = $conn->prepare("SELECT b.id AS 'id',
+                                       b.is_open AS 'is_open',
+                                       SUBDATE(b.date, INTERVAL 15 HOUR) AS 'date',
+                                       b.table_nr AS 'table_nr',
+                                       b.total_price_excl AS 'total_price_excl'
+            FROM app_bills b
+            ");
         $stmt->execute();
         $result = $stmt->fetchAll();
         $returnObj = array('success' => 'true', 'bills' => utf8ize($result));
