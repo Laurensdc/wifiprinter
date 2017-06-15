@@ -61,7 +61,7 @@
         android:id="@+id/price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="325dp"
+        android:layout_marginLeft="280dp"
         android:layout_marginTop="10dp"
         android:layout_weight="1"
         android:text="Price"
@@ -82,7 +82,7 @@
 
     </LinearLayout>
 
-    <LinearLayout
+  <!--  <LinearLayout
         android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
             app:fabSize="mini"
             app:srcCompat="@android:drawable/btn_plus" />
 
-    </LinearLayout>
+    </LinearLayout>-->
 
 
 </RelativeLayout>

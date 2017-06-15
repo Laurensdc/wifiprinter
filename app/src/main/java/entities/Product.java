@@ -31,7 +31,7 @@ public class Product {
         this.price_incl = price_incl;
         this.name = name;
         this.reference = reference;
-        this.count = 1;
+        this.count = count;
         if( this.getName().endsWith("cl") || this.getName().endsWith(" l") || this.getName().endsWith("L)") || this.getName().endsWith("cl)") || this.getCategory().contains("Getränke")){
             this.drink = true;
         }else{
@@ -51,7 +51,7 @@ public class Product {
     public void decreaseCount() { this.count = count--; }
 
     public int getCount() {
-        return this.count;
+        return count;
     }
 
     public void setCount(int count) {

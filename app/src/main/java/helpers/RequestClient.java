@@ -46,6 +46,11 @@ public class RequestClient {
 
     }
 
+    public static void delete(Context c, String url, StringEntity entity, String type, AsyncHttpResponseHandler responseHandler) {
+        client.delete(c, getAbsoluteUrl(url), entity, type, responseHandler);
+
+    }
+
     private static String getAbsoluteUrl(String relativeUrl) {
         return BASE_URL + relativeUrl;
     }
