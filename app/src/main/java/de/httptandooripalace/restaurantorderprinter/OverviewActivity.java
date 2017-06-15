@@ -249,7 +249,8 @@ public class OverviewActivity extends AppCompatActivity {
     }
 
     public void new_bill(View view){
-        Intent i = new Intent(this, MainActivity.class);
+        //Changed to CategoryActivity from MainActivity Sergejs 14.06
+        Intent i = new Intent(this, CategoryActivity.class);
         startActivity(i);
     }
 
@@ -294,7 +295,8 @@ public class OverviewActivity extends AppCompatActivity {
     }
 
     public void edit_bill(View view){
-        Intent i = new Intent(this, MainActivity.class);
+        //Changed from MainActivity Sergejs 14.06
+        Intent i = new Intent(this, PrintActivity.class);
         i.putExtra("id_edit", view.getTag(R.string.id_tag).toString());
         i.putExtra("table_nr_edit", view.getTag(R.string.table_tag).toString());
         startActivity(i);

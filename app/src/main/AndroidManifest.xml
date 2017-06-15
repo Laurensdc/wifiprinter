@@ -16,7 +16,7 @@
             android:launchMode="singleTask">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".OverviewActivity" />
+                android:value=".CategoryActivity" />
         </activity>
         <activity
             android:name=".PrintActivity"
@@ -28,28 +28,32 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/settings"
-            android:windowSoftInputMode="adjustResize">
-        </activity>
+            android:windowSoftInputMode="adjustResize"></activity>
         <activity
             android:name=".OverviewActivity"
             android:label="@string/overview"
-            android:windowSoftInputMode="adjustResize"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".HistoryActivity"
             android:label="@string/history"
-            android:windowSoftInputMode="adjustResize"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".OverviewActivity" />
         </activity>
-
+        <activity android:name=".CategoryActivity">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".MainActivity" />
+    </activity>
     </application>
 
 </manifest>

@@ -37,6 +37,8 @@ try {
         p.id_product AS 'id_prod',
         pl.name AS 'name_prod',
         p.reference AS 'reference_prod',
+        #12.06 added 1 lines >
+        catl.id_group AS 'id_group',
         ROUND(p.price, 2) AS 'price_prod_excl',
         ROUND(p.price * (COALESCE(ptx.rate, 0) / 100 + 1), 2) AS 'price_prod_incl',
         pl.description_short AS 'description_prod',

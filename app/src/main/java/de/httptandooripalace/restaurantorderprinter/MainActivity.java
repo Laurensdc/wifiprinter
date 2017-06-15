@@ -116,46 +116,52 @@ public class MainActivity extends AppCompatActivity {
 
                 try {
                     obj = data.getJSONObject(i);
-                } catch(JSONException ex) {
+                } catch (JSONException ex) {
                     Log.d("JSONEX", ex.getMessage());
                 }
 
                 String catname = "";
-
+                String cat_id_json;
+                int cat_id =0;
+                int selected_cat_id = CategoryActivity.group;
                 try {
                     catname = obj.getString("name_cat");
-                } catch(JSONException ex) {
+                    cat_id_json = obj.getString("id_group");
+                    cat_id = Integer.parseInt(cat_id_json);
+                } catch (JSONException ex) {
                     Log.d("JSONEX", ex.getMessage());
                 }
+                //12.06 added Sergejs
+                if (cat_id == selected_cat_id) {
+                    //TextView t = (TextView) findViewById(R.id.textView_01);
+                    //t.setText(cat_id);
+                    // Actual list view data
+                    if (!catlist.contains(catname)) {
+                        catlist.add(catname);
+                    }
 
-                // Actual list view data
-                if (!catlist.contains(catname)) {
-                    catlist.add(catname);
+                    List<Product> prods = prodlist.get(catname);
+                    if (prods == null) {
+                        prods = new ArrayList<>();
+                    }
+
+                    try {
+                        prods.add(new Product(
+                                Integer.parseInt(obj.getString("id_prod")),
+                                obj.getString("name_prod"),
+                                Float.parseFloat(obj.getString("price_prod_excl")),
+                                Float.parseFloat(obj.getString("price_prod_incl")),
+                                stripCommaAtEnd(obj.getString("reference_prod")),
+                                catname,
+                                1
+                        ));
+                    } catch (JSONException ex) {
+                        Log.d("JSONEX", "Couldn't get product: " + ex.getMessage());
+                    }
+
+                    prodlist.put(catname, prods);
                 }
-
-                List<Product> prods = prodlist.get(catname);
-                if (prods == null) {
-                    prods = new ArrayList<>();
-                }
-
-                try {
-                    prods.add(new Product(
-                            Integer.parseInt(obj.getString("id_prod")),
-                            obj.getString("name_prod"),
-                            Float.parseFloat(obj.getString("price_prod_excl")),
-                            Float.parseFloat(obj.getString("price_prod_incl")),
-                            stripCommaAtEnd(obj.getString("reference_prod")),
-                            catname,
-                            1
-                    ));
-                } catch(JSONException ex) {
-                    Log.d("JSONEX", "Couldn't get product: " + ex.getMessage());
-                }
-
-                prodlist.put(catname, prods);
-
             }
-
             // Get the grid view and bind array adapter
             view = (ExpandableListView) findViewById(R.id.overview_main);
             final MainAdapter adapter = new MainAdapter(this, catlist, prodlist);
@@ -450,7 +456,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.d("Exception HTTP", e.getMessage());
                         }
                         b.setId(bill_nr);
-                        //START OF SECONF QUERRY
+                        //START OF SECOND QUERRY
                         try {
                             StringEntity entity;
                             JSONObject jsonParams = new JSONObject();
