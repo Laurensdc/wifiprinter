@@ -1,9 +1,11 @@
 package de.httptandooripalace.restaurantorderprinter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -26,6 +28,7 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,6 +47,8 @@ import helpers.RequestClient;
 import helpers.SharedPrefHelper;
 
 import static de.httptandooripalace.restaurantorderprinter.R.layout.main_activity;
+import static de.httptandooripalace.restaurantorderprinter.R.string.bill;
+import static de.httptandooripalace.restaurantorderprinter.R.string.bill_settings;
 import static de.httptandooripalace.restaurantorderprinter.R.string.settings;
 
 public class MainActivity extends AppCompatActivity {
@@ -55,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     String table_nr = "#";
     private entities.Settings settings;
     Bill b = null;
-
+    Intent intent;
     @Override
     protected void onResume() {
 
@@ -63,9 +68,8 @@ public class MainActivity extends AppCompatActivity {
         String id_edit;
 
         if (extras != null) {
-            id_edit = extras.getString("id_edit");
-            bill_nr = Integer.parseInt(id_edit);
-            table_nr = extras.getString("table_nr_edit");
+            bill_nr = intent.getIntExtra("bill_nr",1);
+            table_nr = intent.getStringExtra("tableNr");
             TextView lblTable_number = (TextView) findViewById(R.id.table_number);
             if(table_nr != null) {
                 System.out.println("TABLE "+table_nr + "");
@@ -175,11 +179,11 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public boolean onChildClick(ExpandableListView parent, View v,
                                             int groupPosition, int childPosition, long id) {
-                // Fetch properties of tapped item
-                String cat = catlist.get(groupPosition);
-                Product prod = prodlist2.get(catlist.get(groupPosition)).get(childPosition); // Error here !! prodlist2 is trying to get the index of the new adapter data but it doesn't correspond to his data
+                    // Fetch properties of tapped item
+                    String cat = catlist.get(groupPosition);
+                    Product prod = prodlist2.get(catlist.get(groupPosition)).get(childPosition); // Error here !! prodlist2 is trying to get the index of the new adapter data but it doesn't correspond to his data
 
-                int id2 = prod.getId();
+                    int id2 = prod.getId();
 //                List<Product> products = SharedPrefHelper.getPrintItems(getApplicationContext());
 //                    if(products == null) products = new ArrayList<>();
 //                    // If item is already in the list, just increase the count
@@ -194,54 +198,54 @@ public class MainActivity extends AppCompatActivity {
 //                                       products.add(prod);
 //                                   }
 
-                        try {
-                    StringEntity entity;
+                    try {
+                        StringEntity entity;
 
-                    JSONObject jsonParams = new JSONObject();
-                    jsonParams.put("bill_id", bill_nr);
-                    jsonParams.put("product_id", id2);
-                    entity = new StringEntity(jsonParams.toString());
-                    RequestClient.put(getApplicationContext(), "bills/product/", entity, "application/json", new JsonHttpResponseHandler() {
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                            // If the response is JSONObject instead of expected JSONArray
-                            try {
-                                System.out.println("Adding product to the bill : ");
-                                Log.d("RESPONSE", response.toString());
+                        JSONObject jsonParams = new JSONObject();
+                        jsonParams.put("bill_id", bill_nr);
+                        jsonParams.put("product_id", id2);
+                        entity = new StringEntity(jsonParams.toString());
+                        RequestClient.put(getApplicationContext(), "bills/product/", entity, "application/json", new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                // If the response is JSONObject instead of expected JSONArray
+                                try {
+                                    System.out.println("Adding product to the bill : ");
+                                    Log.d("RESPONSE", response.toString());
+                                }
+                                catch(Exception e) {
+                                    System.out.println("Adding product to the bill : ");
+                                    Log.d("Exception HTTP", e.getMessage());
+                                }
                             }
-                            catch(Exception e) {
-                                System.out.println("Adding product to the bill : ");
-                                Log.d("Exception HTTP", e.getMessage());
-                            }
-                        }
 
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                            try {
-                                Log.d("RESPONSE", errorResponse.toString());
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                                try {
+                                    Log.d("RESPONSE", errorResponse.toString());
+                                }
+                                catch(Exception e) {
+                                    Log.d("Exception HTTP", e.getMessage());
+                                }
                             }
-                            catch(Exception e) {
-                                Log.d("Exception HTTP", e.getMessage());
-                            }
-                        }
 
-                        @Override
-                        public void onFailure(int c, Header[] h, String r, Throwable t) {
-                            try {
-                                Log.d("RESPONSE", r.toString());
+                            @Override
+                            public void onFailure(int c, Header[] h, String r, Throwable t) {
+                                try {
+                                    Log.d("RESPONSE", r.toString());
+                                }
+                                catch(Exception e) {
+                                    Log.d("Exception HTTP", e.getMessage());
+                                }
                             }
-                            catch(Exception e) {
-                                Log.d("Exception HTTP", e.getMessage());
-                            }
-                        }
-                    });
-                }
-                catch(Exception e) {
-                    Log.d("Ex", e.getMessage());
+                        });
+                    }
+                    catch(Exception e) {
+                        Log.d("Ex", e.getMessage());
 
-                }
+                    }
 
-                // adding the prod.getPrice() to the total bill price
+                    //TODO : add the prod.getPrice() to the total bill price
 
                     try {
                         b.setTotal_price_excl(b.getTotal_price_excl()+prod.getPrice_excl());
@@ -292,65 +296,65 @@ public class MainActivity extends AppCompatActivity {
                     }
 
 
-               // SharedPrefHelper.setPrintItems(getApplicationContext(),products);
+                    // SharedPrefHelper.setPrintItems(getApplicationContext(),products);
 
-                if (currentToast != null) currentToast.cancel();
-                currentToast = Toast.makeText(getApplicationContext(), getString(R.string.added_products) + " " + prod.getName() + " taille de la liste : " + adapter.getChildrenCount(0),
-                        Toast.LENGTH_SHORT);
-                currentToast.show();
+                    if (currentToast != null) currentToast.cancel();
+                    currentToast = Toast.makeText(getApplicationContext(), getString(R.string.added_products) + " " + prod.getName() + " taille de la liste : " + adapter.getChildrenCount(0),
+                            Toast.LENGTH_SHORT);
+                    currentToast.show();
 
-                return true;
+                    return true;
                 }
             });
 
-            // Text change listener to filter on reference number
-//            EditText refnr = (EditText) findViewById(R.id.ref_nr);
-//            refnr.addTextChangedListener(new TextWatcher() {
-//                @Override
-//                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//                }
-//
-//                @Override
-//                public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//                    String text = s.toString();
-//                    Log.d("TEXT CHANGED", "onTextChanged: " + text);
-//                    view.expandGroup(0);
-//                    //view.destroyDrawingCache();
-//                    view.invalidateViews();
-//
-//                    List<Product> filteredList = new ArrayList<>();
-//                    ArrayList<String> catlist2 = new ArrayList<>();
-//
-//                    if(!text.equals(""))
-//                    {
-//                        String searchres = "Search result";
-//                        if(!catlist2.contains(searchres)) {
-//                            catlist2.add(searchres);
-//                        }
-//                        Iterator<List<Product>> it = prodlist.values().iterator();
-//                        while(it.hasNext())
-//                        {
-//                            List<Product> prod = it.next();
-//                            for(int i = 0; i < prod.size(); i++) {
-//                                if(prod.get(i).getReference().contains(text)){
-//                                    filteredList.add(prod.get(i));
-//                                    adapter.notifyDataSetChanged();
-//                                }
-//                            }
-//                        }
-//                        prodlist2.put(searchres,filteredList);
-//                    }
-//                    adapter.filter(text);
-//                }
-//
-//                @Override
-//                public void afterTextChanged(Editable s) {
-//
-//                }
-//            });
+            /* Text change listener to filter on reference number
+            EditText refnr = (EditText) findViewById(R.id.ref_nr);
+            refnr.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    String text = s.toString();
+                    Log.d("TEXT CHANGED", "onTextChanged: " + text);
+                    view.expandGroup(0);
+                    //view.destroyDrawingCache();
+                    view.invalidateViews();
+
+                    List<Product> filteredList = new ArrayList<>();
+                    ArrayList<String> catlist2 = new ArrayList<>();
+
+                    if(!text.equals(""))
+                    {
+                        String searchres = "Search result";
+                        if(!catlist2.contains(searchres)) {
+                            catlist2.add(searchres);
+                        }
+                        Iterator<List<Product>> it = prodlist.values().iterator();
+                        while(it.hasNext())
+                        {
+                            List<Product> prod = it.next();
+                            for(int i = 0; i < prod.size(); i++) {
+                                if(prod.get(i).getReference().contains(text)){
+                                    filteredList.add(prod.get(i));
+                                    adapter.notifyDataSetChanged();
+                                }
+                            }
+                        }
+                        prodlist2.put(searchres,filteredList);
+                    }
+                    adapter.filter(text);
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+            */
             // Text change listener to filter on reference number
             EditText table = (EditText) findViewById(R.id.table_number);
             table.addTextChangedListener(new TextWatcher() {
@@ -365,6 +369,7 @@ public class MainActivity extends AppCompatActivity {
                     String val = s.toString();
                     table_nr = val;
                     b.setTableNr(table_nr);
+                    CategoryActivity.o_table=table_nr;
                     try {
                         StringEntity entity;
                         JSONObject jsonParams = new JSONObject();
@@ -423,7 +428,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(main_activity);
-        Bundle extras = getIntent().getExtras();
+        intent = getIntent();
+        Bundle extras;
         String id_edit;
         b = new Bill(null, true,null,null,null,0,0);
 
@@ -435,7 +441,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
+        extras = getIntent().getExtras();
         if (extras == null) {
             System.out.println("CREATING A NEW BILL");
             try {
@@ -456,6 +462,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.d("Exception HTTP", e.getMessage());
                         }
                         b.setId(bill_nr);
+                        CategoryActivity.o_bill=bill_nr;
                         //START OF SECOND QUERRY
                         try {
                             StringEntity entity;
@@ -493,7 +500,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.d("Ex", e.getMessage());
 
                         }
-                    //END od second querry
+                        //END od second querry
 
                     }
 
@@ -522,8 +529,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         }else{
-            id_edit = extras.getString("id_edit");
-            bill_nr = Integer.parseInt(id_edit);
+            //id_edit = extras.getString("bill_nr");
+            //bill_nr = Integer.parseInt(id_edit);
+            bill_nr = intent.getIntExtra("bill_nr",1);
+            table_nr = intent.getStringExtra("tableNr");
             System.out.println("BILL NR :"+ bill_nr);
         }
 
@@ -552,6 +561,15 @@ public class MainActivity extends AppCompatActivity {
                 Intent i3 = new Intent(this, HistoryActivity.class);
                 startActivity(i3);
                 return true;
+            case android.R.id.home:
+                Intent resultIntent = new Intent(this,CategoryActivity.class);
+                //ArrayList<String> bill_info = new ArrayList<String>();
+                //bill_info.add(Integer.toString(bill_nr));
+                //bill_info.add(table_nr);
+                resultIntent.putExtra("bill_nr", bill_nr);
+                resultIntent.putExtra("tableNr", table_nr);
+                setResult(RESULT_OK, resultIntent);
+                finish();
         }
 
         return super.onOptionsItemSelected(item);

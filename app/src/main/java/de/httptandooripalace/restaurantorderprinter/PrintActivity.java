@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
@@ -57,14 +58,16 @@ public class PrintActivity extends AppCompatActivity {
     String tableNr = "";
     static Bill b = null;
     static Activity activity = null;
-
+    Button new_b;
     private entities.Settings settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.print_activity);
-
+        new_b =(Button)findViewById(R.id.add_products);
+        new_b.setText("Add products to bill");
+        new_b.setOnClickListener(add_products(new_b));//setting listener for button
         // Get products
        // products = SharedPrefHelper.getPrintItems(getApplicationContext());
         settings = SharedPrefHelper.loadSettings(getApplicationContext());
@@ -141,7 +144,16 @@ public class PrintActivity extends AppCompatActivity {
         }
 
     }
-
+    View.OnClickListener add_products(final Button button)  {
+        return new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent(context, CategoryActivity.class);
+                i.putExtra("bill_nr",bill_nr);
+                i.putExtra("tableNr", tableNr);
+                startActivity(i);
+            }
+        };
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -1100,8 +1112,5 @@ public class PrintActivity extends AppCompatActivity {
         Intent login = new Intent(context, PrintActivity.class);
         context.startActivity(login);
     }
-
-
-
 
 }

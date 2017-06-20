@@ -220,7 +220,7 @@ public class OverviewActivity extends AppCompatActivity {
                         Log.d("Exception HTTP", e.getMessage());
                     }
 
-            }
+                }
                 @Override
                 public void onFailure(int c, Header[] h, String r, Throwable t) {
                     try {
@@ -249,8 +249,9 @@ public class OverviewActivity extends AppCompatActivity {
     }
 
     public void new_bill(View view){
-        //Changed to CategoryActivity from MainActivity Sergejs 14.06
-        Intent i = new Intent(this, CategoryActivity.class);
+        Intent i = new Intent(this, CategoryActivity.class); //Changed to CategoryActivity from MainActivity for test!
+        CategoryActivity.o_bill=0;
+        CategoryActivity.o_table=null;
         startActivity(i);
     }
 
@@ -260,8 +261,8 @@ public class OverviewActivity extends AppCompatActivity {
             StringEntity entity;
             JSONObject jsonParams = new JSONObject();
             Log.d("RESPONSE", "CLOSING BILL " + view.getTag(R.string.id_tag));
-            jsonParams.put("bill_id", view.getTag(R.string.id_tag));
-            System.out.println("TAGGGGGG : "+ view.getTag(R.string.id_tag));
+            jsonParams.put("bill_id", view.getTag(R.string.id_tag));//TODO : get the id of the bill corresponding
+            System.out.println("TAGGGGGG : "+ view.getTag(R.string.id_tag));//return the good id !!
             jsonParams.put("open", 0);
             entity = new StringEntity(jsonParams.toString());
             RequestClient.post(context,"bills/", entity, "application/json", new JsonHttpResponseHandler(){
@@ -295,14 +296,14 @@ public class OverviewActivity extends AppCompatActivity {
     }
 
     public void edit_bill(View view){
-        //Changed from MainActivity Sergejs 14.06
         Intent i = new Intent(this, PrintActivity.class);
-        i.putExtra("id_edit", view.getTag(R.string.id_tag).toString());
-        i.putExtra("table_nr_edit", view.getTag(R.string.table_tag).toString());
+        i.putExtra("bill_nr",Integer.parseInt(view.getTag(R.string.id_tag).toString()));
+        i.putExtra("tableNr", view.getTag(R.string.table_tag).toString());
         startActivity(i);
     }
 
     public void print_bill(View view){
+        //TODO : access the good table nr
         Intent i = new Intent(this, PrintActivity.class);
         i.putExtra("bill_nr", Integer.parseInt(view.getTag(R.string.id_tag).toString()));
         i.putExtra("tableNr", view.getTag(R.string.table_tag).toString());
