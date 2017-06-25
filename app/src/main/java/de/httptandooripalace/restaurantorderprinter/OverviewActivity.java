@@ -41,7 +41,7 @@ import helpers.RequestClient;
 public class OverviewActivity extends AppCompatActivity {
 
     private entities.Settings settings;
-    public List<Bill> bills = new ArrayList<>();
+    public static List<Bill> bills = new ArrayList<>();
     public  List<Product> products = new ArrayList<>();
     Context context;
     int id =0;
@@ -296,7 +296,7 @@ public class OverviewActivity extends AppCompatActivity {
     }
 
     public void edit_bill(View view){
-        Intent i = new Intent(this, PrintActivity.class);
+        Intent i = new Intent(this, CategoryActivity.class);
         i.putExtra("bill_nr",Integer.parseInt(view.getTag(R.string.id_tag).toString()));
         i.putExtra("tableNr", view.getTag(R.string.table_tag).toString());
         startActivity(i);
@@ -305,7 +305,7 @@ public class OverviewActivity extends AppCompatActivity {
     public void print_bill(View view){
         //TODO : access the good table nr
         Intent i = new Intent(this, PrintActivity.class);
-        i.putExtra("bill_nr", Integer.parseInt(view.getTag(R.string.id_tag).toString()));
+        i.putExtra("bill_nr",Integer.parseInt(view.getTag(R.string.id_tag).toString()));
         i.putExtra("tableNr", view.getTag(R.string.table_tag).toString());
         startActivity(i);
     }

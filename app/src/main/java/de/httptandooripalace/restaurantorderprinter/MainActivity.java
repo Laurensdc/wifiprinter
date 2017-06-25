@@ -46,6 +46,9 @@ import helpers.PrintAdapter;
 import helpers.RequestClient;
 import helpers.SharedPrefHelper;
 
+import static android.R.attr.x;
+import static android.R.attr.y;
+import static android.view.View.Y;
 import static de.httptandooripalace.restaurantorderprinter.R.layout.main_activity;
 import static de.httptandooripalace.restaurantorderprinter.R.string.bill;
 import static de.httptandooripalace.restaurantorderprinter.R.string.bill_settings;
@@ -61,10 +64,12 @@ public class MainActivity extends AppCompatActivity {
     private entities.Settings settings;
     Bill b = null;
     Intent intent;
+    List<Bill> open_bills = OverviewActivity.bills;
+
     @Override
     protected void onResume() {
 
-        Bundle extras = getIntent().getExtras();
+        final Bundle extras = getIntent().getExtras();
         String id_edit;
 
         if (extras != null) {
@@ -248,6 +253,17 @@ public class MainActivity extends AppCompatActivity {
                     //TODO : add the prod.getPrice() to the total bill price
 
                     try {
+                        if(extras!=null){
+                            for (int y =0; y<=open_bills.size();y++){
+                                if(open_bills.get(y).getId()==bill_nr){
+                                    b.setTotal_price_excl(open_bills.get(y).getTotal_price_excl());
+                                    open_bills.get(y).setTotal_price_excl(open_bills.get(y).getTotal_price_excl()+prod.getPrice_excl());
+                                    OverviewActivity.bills=open_bills;
+                                    break;
+                                }
+                            }
+                        }
+
                         b.setTotal_price_excl(b.getTotal_price_excl()+prod.getPrice_excl());
                         StringEntity entity;
 

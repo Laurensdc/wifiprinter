@@ -41,6 +41,9 @@ import helpers.Rounder;
 import helpers.SharedPrefHelper;
 import helpers.StringHelper;
 
+import static de.httptandooripalace.restaurantorderprinter.R.string.price_tag;
+
+
 public class PrintActivity extends AppCompatActivity {
     private List<Product> products = new ArrayList<Product>();
     private final int CHARCOUNT_BIG = 48; // Amount of characters fit on one printed line, using $big$ format
@@ -60,7 +63,6 @@ public class PrintActivity extends AppCompatActivity {
     static Activity activity = null;
     Button new_b;
     private entities.Settings settings;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -151,6 +153,7 @@ public class PrintActivity extends AppCompatActivity {
                 i.putExtra("bill_nr",bill_nr);
                 i.putExtra("tableNr", tableNr);
                 startActivity(i);
+                finish();
             }
         };
     }
@@ -890,7 +893,7 @@ public class PrintActivity extends AppCompatActivity {
     }
 
     public static void addProduct(Product p){
-
+        List<Bill> open_bills = OverviewActivity.bills;
         //int id_product = Integer.parseInt(view.getTag(R.string.id_tag).toString());
         //double price_tag = Double.parseDouble(view.getTag(R.string.price_tag).toString());
 
@@ -947,12 +950,19 @@ public class PrintActivity extends AppCompatActivity {
         // adding the prod.getPrice() to the total bill price
 
         try {
-            b.setTotal_price_excl(b.getTotal_price_excl()+price_tag);
             StringEntity entity;
-
             JSONObject jsonParams = new JSONObject();
-            jsonParams.put("bill_id", bill_nr);
-            jsonParams.put("total_price_excl", b.getTotal_price_excl());
+            for (int y =0; y<=open_bills.size();y++){
+                if(open_bills.get(y).getId()==bill_nr){
+                    open_bills.get(y).setTotal_price_excl(open_bills.get(y).getTotal_price_excl()+price_tag);
+                    OverviewActivity.bills=open_bills;
+                    jsonParams.put("bill_id", bill_nr);
+                    jsonParams.put("total_price_excl", open_bills.get(y).getTotal_price_excl());
+                    break;
+                }
+            }
+            //b.setTotal_price_excl(b.getTotal_price_excl()+price_tag);
+
             entity = new StringEntity(jsonParams.toString());
             RequestClient.put(context, "bills/price/", entity, "application/json", new JsonHttpResponseHandler() {
                 @Override
@@ -1060,7 +1070,8 @@ public class PrintActivity extends AppCompatActivity {
 
     public static void decreaseProduct(Product p){
         int id_product = p.getId();
-
+        List<Bill> open_bills = OverviewActivity.bills;
+        double price_tag = p.getPrice_excl();
         try {
             StringEntity entity;
 
@@ -1105,6 +1116,62 @@ public class PrintActivity extends AppCompatActivity {
         }
         catch(Exception e) {
             Log.d("Ex", e.getMessage());
+
+        }
+        try {
+            StringEntity entity;
+            JSONObject jsonParams = new JSONObject();
+            for (int y =0; y<=open_bills.size();y++){
+                if(open_bills.get(y).getId()==bill_nr){
+                    open_bills.get(y).setTotal_price_excl(open_bills.get(y).getTotal_price_excl()-price_tag);
+                    OverviewActivity.bills=open_bills;
+                    jsonParams.put("bill_id", bill_nr);
+                    jsonParams.put("total_price_excl", open_bills.get(y).getTotal_price_excl());
+                    break;
+                }
+            }
+            //b.setTotal_price_excl(b.getTotal_price_excl()+price_tag);
+
+            entity = new StringEntity(jsonParams.toString());
+            RequestClient.put(context, "bills/price/", entity, "application/json", new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    // If the response is JSONObject instead of expected JSONArray
+                    try {
+                        System.out.println("Updating price on the bill : ");
+                        Log.d("RESPONSE", response.toString());
+                    }
+                    catch(Exception e) {
+                        System.out.println("Updating price on the bill : ");
+                        Log.d("Exception HTTP", e.getMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    try {
+                        Log.d("RESPONSE", errorResponse.toString());
+                    }
+                    catch(Exception e) {
+                        Log.d("Exception HTTP", e.getMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(int c, Header[] h, String r, Throwable t) {
+                    try {
+                        Log.d("RESPONSE", r.toString());
+                    }
+                    catch(Exception e) {
+                        Log.d("Exception HTTP", e.getMessage());
+                    }
+                }
+            });
+        }
+        catch(Exception e) {
+            String err = (e.getMessage()==null)?"SD Card failed":e.getMessage();
+            Log.e("sdcard-err2:",err);
+            //Log.d("Ex", e.getMessage());
 
         }
 
