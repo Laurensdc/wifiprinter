@@ -25,11 +25,14 @@ Push this code to a server and update the link in the Android code.
 ### How to change the font size of the print characters ?
 
 You can find the table with EPSON commands on this page : 
-https://reference.epson-biz.com/modules/ref_escpos/index.php?content_id=23
+https://reference.epson-biz.com/modules/ref_escpos/index.php?content_id=23.
 You have to use the "n" decimal code corresponding to the size you want and prefixed with the table format.
 Ex "·27··33··32·" with n = 32
 Don't forget to use those particular · points ·
 
+### How to setup the printer on a wifi network ?
+
+You can find those instructions in _devdata/README.txt
 
 
 
