@@ -22,6 +22,16 @@ The app communicates with a REST API as a link with the database.
 The code for this is in `_devdata/api`.  
 Push this code to a server and update the link in the Android code.
 
+### How to change the font size of the print characters ?
+
+You can find the table with EPSON commands on this page : 
+https://reference.epson-biz.com/modules/ref_escpos/index.php?content_id=23
+You have to use the "n" decimal code corresponding to the size you want and prefixed with the table format.
+Ex "·27··33··32·" with n = 32
+Don't forget to use those particular · points ·
+
+
+
 
 ## Features
 
